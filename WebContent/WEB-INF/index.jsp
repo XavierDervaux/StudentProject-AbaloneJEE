@@ -1,10 +1,4 @@
-<%@ page pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Connexion</title>
-    </head>
+<jsp:include page="header.jsp" />
     <body>
         <p>Connecte toi ou le fait pas</p>
         <p>(Mais fait le, s'mieux oush.)</p>
