@@ -1,6 +1,6 @@
 package be.abalone.controller;
 
-import java.io.IOException;
+import java.io.IOException; //lol
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
