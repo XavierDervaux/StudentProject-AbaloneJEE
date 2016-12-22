@@ -16,22 +16,22 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 	}
 	
 	public boolean create(List<Achievement> obj){		
-		return false; //Utilisation impossible sans l'id du moniteur
+		return false; //Utilisation impossible sans l'id du joueur
 	}
 	
-	public boolean create(int id_moniteur, int id_acreditation){		
+	public boolean create(int id_joueur, int id_achiev){		
 		boolean res = true;
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO `moniteurAcred` (id,id_acreditation) "
-					   + "VALUES (" + id_moniteur + ",'" + id_acreditation + "');";
+			String sql = "INSERT INTO `fait` (id_joueur,id_achiev) "
+					   + "VALUES (" + id_joueur + ",'" + id_achiev + "');";
 
 			requete.executeUpdate(sql);
 			requete.close();				
 		} catch (SQLException sqlE) {
-			//Le SGBD retournera une erreur sila combinaison id_acred/id_moniteur existe d√©j√†, a cause de la contrainte d'unicit√© des identifiants.
-			//Cela signifie que la cl√© existe d√©j√†, donc pas besoin de l'ins√©rer et cela n'influe pas sur le reste du d√©roulement.
+			//Le SGBD retournera une erreur sila combinaison des id existe dÈj‡†, a cause de la contrainte d'unicitÈ des identifiants.
+			//Cela signifie que la clÈ existe dÈj‡†, donc pas besoin de l'insÈrer et cela n'influe pas sur le reste du dÈroulement.
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			res = false;
@@ -48,19 +48,19 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 		return false; //Utilisation impossible dans ce contexte
 	}
 	
-	public List<Achievement> find(int id_moniteur){
+	public List<Achievement> find(int id_joueur){
 		List<Achievement> res = null;
 		
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `moniteurAcred` WHERE id='" + id_moniteur + "';";
+			String sql = "SELECT * FROM `fait` WHERE id_joueur='" + id_joueur + "';";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){ 
 				res = new ArrayList<Achievement>();
 				
 				while(rs.next()){
-					res.add(new Achievement(rs.getInt("id"), rs.getString("id_acreditation") ) ); 
+					res.add(new Achievement(rs.getInt("id"), rs.getString("titre"), rs.getString("nom"), rs.getString("description")) ); 
 				}
 			}
 		} catch (Exception e) {
@@ -76,14 +76,14 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 		
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `moniteurAcred` WHERE id_acreditation='" + id_achiev + "';";
+			String sql = "SELECT * FROM `fait` WHERE id_achivement='" + id_achiev + "';";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){ 
 				res = new ArrayList<Joueur>();
 				
 				while(rs.next()){
-					res.add(adf.getMoniteurDAO().find(rs.getInt("id") )); 
+					res.add(adf.getJoueurDAO().find(rs.getInt("id") )); 
 				}
 			}
 		} catch (Exception e) {

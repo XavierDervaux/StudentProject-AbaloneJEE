@@ -5,6 +5,7 @@ import java.util.List;
 public class Joueur {
 	private int id = 0;
 	private String pseudo = null;
+	private String mdp = null;
 	private String email = null;
 	private List<Achievement> achievs = null;
 	

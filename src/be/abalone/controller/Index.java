@@ -14,7 +14,7 @@ public class Index extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Boolean estConnecte = true;
+		Boolean estConnecte = false;
 		if(estConnecte){ //On redirige vers le menu
     		response.sendRedirect("/Abalone/Menu.html");
     	} else { //N'est pas encore connecté, on affihce le formulaire de connexion/inscription
