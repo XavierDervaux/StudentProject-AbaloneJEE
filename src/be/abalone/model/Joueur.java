@@ -12,18 +12,21 @@ public class Joueur {
 	
 // Constructeurs
 //---------------------------------------------------	
-	public Joueur(String pseudo, String email) {
+	public Joueur(String pseudo, String mdp, String email) {
 		this.pseudo = pseudo;
+		this.mdp = mdp;
 		this.email = email;
 	}
-	public Joueur(int id, String pseudo, String email) {
+	public Joueur(int id, String pseudo, String mdp, String email) {
 		this.id = id;
 		this.pseudo = pseudo;
+		this.mdp = mdp;
 		this.email = email;
 	}
-	public Joueur(int id, String pseudo, String email, List<Achievement> achievs) {
+	public Joueur(int id, String pseudo, String mdp, String email, List<Achievement> achievs) {
 		this.id = id;
 		this.pseudo = pseudo;
+		this.mdp = mdp;
 		this.email = email;
 		this.achievs = achievs;
 	}
@@ -42,6 +45,12 @@ public class Joueur {
 	}
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
+	}
+	public String getMdp() {
+		return mdp;
+	}
+	public void setMdp(String mdp) {
+		this.mdp = mdp;
 	}
 	public String getEmail() {
 		return email;
