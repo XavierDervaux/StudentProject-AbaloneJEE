@@ -1,4 +1,4 @@
-package be.abalone.model;
+package model;
 
 public class Personne {
 	private String nom;
