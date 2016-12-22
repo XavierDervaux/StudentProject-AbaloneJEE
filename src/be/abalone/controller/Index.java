@@ -2,7 +2,6 @@ package be.abalone.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,11 +13,12 @@ public class Index extends HttpServlet {
         super();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	if(true){ //N'est pas encore connecté, on affihce le formulaire de connexion/inscription
-    		this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
-    	} else { //On redirige vers le menu
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Boolean estConnecte = true;
+		if(estConnecte){ //On redirige vers le menu
     		response.sendRedirect("/Abalone/Menu.html");
+    	} else { //N'est pas encore connecté, on affihce le formulaire de connexion/inscription
+    		this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
     	}
     }
 
