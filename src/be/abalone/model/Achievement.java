@@ -1,7 +1,7 @@
 package be.abalone.model;
 
 public class Achievement {
-	private int id = -1;
+	private int id = 0;
 	private String titre = null;
 	private String nom = null;
 	private String description = null;

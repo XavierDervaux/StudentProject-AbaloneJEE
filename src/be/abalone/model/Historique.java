@@ -1,9 +1,9 @@
 package be.abalone.model;
 
 public class Historique {
-	private int id = -1;
-	private int scoreGagnant = -1;
-	private int scorePerdant = -1;
+	private int id = 0;
+	private int scoreGagnant = 0;
+	private int scorePerdant = 0;
 	private Joueur gagnant = null;
 	private Joueur perdant = null;
 	private Boolean estForfait = null;

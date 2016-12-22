@@ -12,14 +12,14 @@ public class AchievementDAO extends DAO<Achievement>{
 	
 	public boolean create(Achievement obj){		
 		boolean res = true;
-
+		
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO `acreditation` (id,nom) "
-					   + "VALUES (" + null + ",'" + obj.getNom() + "');";
+			String sql = "INSERT INTO `achievement` (id,titre,nom,description) "
+					   + "VALUES (" + null + ",'" + obj.getTitre() + ",'" + obj.getNom() + ",'" + obj.getDescription() + "');";
 			requete.executeUpdate(sql);
 			
-			Statement fetchId = connect.createStatement();
+			/*Statement fetchId = connect.createStatement();
 			String sql2 = "SELECT last_insert_rowid();";
 			ResultSet rs = fetchId.executeQuery(sql2);
 			
@@ -27,8 +27,8 @@ public class AchievementDAO extends DAO<Achievement>{
 				obj.setId(rs.getInt("last_insert_rowid()"));
 			}
 			
+			fetchId.close();*/
 			requete.close();
-			fetchId.close();
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			res = false;
@@ -40,13 +40,13 @@ public class AchievementDAO extends DAO<Achievement>{
 	public boolean delete(Achievement obj){
 		boolean res = false;
 		
-		if(obj.getId() == 0){ //L'objet vient d'etre cr√©e et ne sort pas de la DB
+		if(obj.getId() == 0){ //L'objet vient d'etre crÈÈ et ne sort pas de la DB
 			System.err.println("Erreur, vous ne pouvez pas supprimer un enregistrement sur base de cet objet.");
-			System.err.println("R√©essayez avec un objet provenant de la BDD.\n");
+			System.err.println("RÈessayez avec un objet provenant de la BDD.\n");
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "DELETE FROM `acreditation` WHERE id='" + obj.getId() + "';";
+				String sql = "DELETE FROM `achievement` WHERE id='" + obj.getId() + "';";
 	
 				requete.executeUpdate(sql);
 				requete.close();
@@ -63,12 +63,13 @@ public class AchievementDAO extends DAO<Achievement>{
 		boolean res = false;
 		
 		if(obj.getId() == 0){ //L'objet vient d'etre cr√©e et ne sort pas de la DB
-			System.err.println("Erreur, vous ne pouvez pas mettre un enregistrement √† jour sur base de cet objet.");
-			System.err.println("R√©essayez avec un objet provenant de la BDD.\n");
+			System.err.println("Erreur, vous ne pouvez pas mettre un enregistrement ‡ jour sur base de cet objet.");
+			System.err.println("RÈessayez avec un objet provenant de la BDD.\n");
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "UPDATE `acreditation` SET nom='" + obj.getNom() + "'WHERE id='" + obj.getId() + "';";
+				String sql = "UPDATE `achievement` titre='" + obj.getTitre() + "', nom='" + obj.getNom() + "', decription='" + obj.getDescription() + "' " 
+						   + "WHERE id='" + obj.getId() + "';";
 	
 				requete.executeUpdate(sql);
 				requete.close();
@@ -86,11 +87,11 @@ public class AchievementDAO extends DAO<Achievement>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `acreditation` WHERE id='" + id + "';";
+			String sql = "SELECT * FROM `achievement` WHERE id='" + id + "';";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){
-				res = new Achievement(rs.getInt("id"), rs.getString("nom")); 
+				res = new Achievement(rs.getInt("id"), rs.getString("titre"), rs.getString("nom"), rs.getString("description")); 
 			}
 			
 			requete.close();
@@ -106,14 +107,14 @@ public class AchievementDAO extends DAO<Achievement>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `acreditation`;";
+			String sql = "SELECT * FROM `achievement`;";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){
 				res = new ArrayList<Achievement>();
 				
 				while(rs.next()){
-					res.add(new Achievement(rs.getInt("id"), rs.getString("nom")) ); 
+					res.add(new Achievement(rs.getInt("id"), rs.getString("titre"), rs.getString("nom"), rs.getString("description"))); 
 				}
 			}
 			

@@ -1,7 +1,7 @@
 package be.abalone.model;
 
 public class Bille {
-	private int id = -1;
+	private int id = 0;
 	private int couleur = -1; //0 Noir, 1 Blanc
 	
 	
