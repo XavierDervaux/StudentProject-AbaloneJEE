@@ -3,8 +3,6 @@ package be.abalone.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import be.abalone.database.AbstractDAOFactory;
-import be.abalone.database.DAOFactory;
 import be.abalone.model.*;
 
 public class JoueurDAO extends DAO<Joueur>{
@@ -17,20 +15,20 @@ public class JoueurDAO extends DAO<Joueur>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO `moniteur` (id,nom,prenom,adresse) "
-					   + "VALUES (" + null + ", '" + obj.getNom() + "', '" + obj.getPrenom() + "', '" + obj.getAdresse() + "');";
+			String sql = "INSERT INTO `joueur` (id,pseudo,mdp,email) "
+					   + "VALUES (" + null + ", '" + obj.getPseudo() + "', '" + obj.getMdp() + "', '" + obj.getEmail() + "');";
 			requete.executeUpdate(sql);
 			
-			Statement fetchId = connect.createStatement();
+			/*Statement fetchId = connect.createStatement();
 			String sql2 = "SELECT last_insert_rowid();";
 			ResultSet rs = fetchId.executeQuery(sql2);
 			
 			if(rs != null){
 				obj.setId(rs.getInt("last_insert_rowid()"));
 			}
-			
+
+			fetchId.close();*/
 			requete.close();
-			fetchId.close();
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			res = false;
@@ -42,14 +40,14 @@ public class JoueurDAO extends DAO<Joueur>{
 	public boolean delete(Joueur obj){
 		boolean res = false;
 		
-		if(obj.getId() == 0){ //L'objet vient d'etre cr√©e et ne sort pas de la DB
+		if(obj.getId() == 0){ //L'objet vient d'etre crÈÈ et ne sort pas de la DB
 			System.err.println("Erreur, vous ne pouvez pas supprimer un enregistrement sur base de cet objet.");
-			System.err.println("R√©essayez avec un objet provenant de la BDD.\n");
+			System.err.println("RÈessayez avec un objet provenant de la BDD.\n");
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "DELETE FROM `moniteur` WHERE id='" + obj.getId() + "';";
-				//Le sgbd supprimera seul les enregistrements correspondants √† la table interm√©diaire pour respecter l'int√©grit√© r√©f√©rentielle.
+				String sql = "DELETE FROM `joueur` WHERE id='" + obj.getId() + "';";
+				//Le sgbd supprimera seul les enregistrements correspondants ‡† la table intermÈdiaire pour respecter l'intÈgritÈ rÈfÈrentielle.
 	
 				requete.executeUpdate(sql);
 				requete.close();
@@ -66,13 +64,13 @@ public class JoueurDAO extends DAO<Joueur>{
 		boolean res = false;
 		
 		if(obj.getId() == 0){ //L'objet vient d'etre cr√©e et ne sort pas de la DB
-			System.err.println("Erreur, vous ne pouvez pas mettre un enregistrement √† jour sur base de cet objet.");
-			System.err.println("R√©essayez avec un objet provenant de la BDD.\n");
+			System.err.println("Erreur, vous ne pouvez pas mettre un enregistrement ‡ jour sur base de cet objet.");
+			System.err.println("RÈessayez avec un objet provenant de la BDD.\n");
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "UPDATE `moniteur` "
-						   + "SET nom='" + obj.getNom() + "', prenom='" + obj.getPrenom() + "', adresse='" + obj.getAdresse() + "' " 
+				String sql = "UPDATE `joueur` "
+						   + "SET pseudo='" + obj.getPseudo() + "', mdp='" + obj.getMdp() + "', email='" + obj.getEmail() + "' " 
 						   + "WHERE id='" + obj.getId() + "';";
 	
 				requete.executeUpdate(sql);
@@ -88,16 +86,14 @@ public class JoueurDAO extends DAO<Joueur>{
 	
 	public Joueur find(int id){
 		Joueur res = null;
-		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `moniteur` WHERE id='" + id + "' ;";
+			String sql = "SELECT * FROM `joueur` WHERE id='" + id + "' ;";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){
-				res = new Joueur( rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), 
-						            rs.getString("adresse"), adf.getMoniteurAcredDAO().find(id) ); 
+				res = new Joueur( rs.getInt("id"), rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email") ); 
 			}
 			
 			requete.close();
@@ -110,19 +106,17 @@ public class JoueurDAO extends DAO<Joueur>{
 	
 	public List<Joueur> getAll(){
 		List<Joueur> res = null;
-		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `moniteur`;";
+			String sql = "SELECT * FROM `joueur`;";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){
 				res = new ArrayList<Joueur>();
 				
-				while(rs.next()){ //S'il existe des moniteurs
-					int id = rs.getInt("id");
-					res.add(new Joueur(id, rs.getString("nom"), rs.getString("prenom"), rs.getString("adresse"), adf.getMoniteurAcredDAO().find(id))); 
+				while(rs.next()){ 
+					res.add(new Joueur( rs.getInt("id"), rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email") )); 
 				}
 			}
 		
