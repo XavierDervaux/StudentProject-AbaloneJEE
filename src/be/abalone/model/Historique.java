@@ -1,30 +1,35 @@
 package be.abalone.model;
 
+import java.util.Date;
+
 public class Historique {
 	private int id = 0;
+	private Date date = null;
 	private int scoreGagnant = 0;
 	private int scorePerdant = 0;
+	private Boolean estForfait = null;
 	private Joueur gagnant = null;
 	private Joueur perdant = null;
-	private Boolean estForfait = null;
 	
 	
 // Constructeurs
 //---------------------------------------------------	
-	public Historique(int scoreGagnant, int scorePerdant, Joueur gagnant, Joueur perdant, Boolean estForfait) {
+	public Historique(Date date, int scoreGagnant, int scorePerdant, Boolean estForfait, Joueur gagnant, Joueur perdant) {
+		this.date = date;
 		this.scoreGagnant = scoreGagnant;
 		this.scorePerdant = scorePerdant;
+		this.estForfait = estForfait;
 		this.gagnant = gagnant;
 		this.perdant = perdant;
-		this.estForfait = estForfait;
 	}
-	public Historique(int id, int scoreGagnant, int scorePerdant, Joueur gagnant, Joueur perdant, Boolean estForfait) {
+	public Historique(int id, Date date, int scoreGagnant, int scorePerdant, Boolean estForfait, Joueur gagnant, Joueur perdant) {
 		this.id = id;
+		this.date = date;
 		this.scoreGagnant = scoreGagnant;
 		this.scorePerdant = scorePerdant;
+		this.estForfait = estForfait;
 		this.gagnant = gagnant;
 		this.perdant = perdant;
-		this.estForfait = estForfait;
 	}
 	
 
@@ -35,6 +40,12 @@ public class Historique {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	public int getScoreGagnant() {
 		return scoreGagnant;
@@ -76,17 +87,16 @@ public class Historique {
 //---------------------------------------------------	
 	
 	
-// toString, hashCode, equals
-//---------------------------------------------------	
-	@Override
+@Override
 	public String toString() {
-		return "Historique [id=" + id + ", scoreGagnant=" + scoreGagnant + ", scorePerdant=" + scorePerdant
-				+ ", gagnant=" + gagnant + ", perdant=" + perdant + ", estForfait=" + estForfait + "]";
+		return "Historique [id=" + id + ", date=" + date + ", scoreGagnant=" + scoreGagnant + ", scorePerdant="
+				+ scorePerdant + ", estForfait=" + estForfait + ", gagnant=" + gagnant + ", perdant=" + perdant + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((estForfait == null) ? 0 : estForfait.hashCode());
 		result = prime * result + ((gagnant == null) ? 0 : gagnant.hashCode());
 		result = prime * result + id;
@@ -104,6 +114,11 @@ public class Historique {
 		if (getClass() != obj.getClass())
 			return false;
 		Historique other = (Historique) obj;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
 		if (estForfait == null) {
 			if (other.estForfait != null)
 				return false;
