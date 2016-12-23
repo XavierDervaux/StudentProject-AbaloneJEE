@@ -18,9 +18,9 @@ public class HistoriqueDAO extends DAO<Historique>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO `historique` (id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant) "
-					   + "VALUES (" + null + ", '" + obj.getDate() + "', '" + obj.getScoreGagnant() + "', '" + obj.getScorePerdant() + "', '" 
-					   				+ obj.getEstForfait() + "', '" + obj.getGagnant().getId() + "', '" + obj.getPerdant().getId() + "');";
+			String sql = "INSERT INTO historique (id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant) "
+					   + "VALUES (','" + obj.getDate() + "','" + obj.getScoreGagnant() + "','" + obj.getScorePerdant() + "','" 
+					   				+ obj.getEstForfait() + "','" + obj.getGagnant().getId() + "','" + obj.getPerdant().getId() + "')";
 			requete.executeUpdate(sql);
 			
 			Statement fetchId = connect.createStatement();
@@ -50,7 +50,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "DELETE FROM `historique` WHERE id='" + obj.getId() + "';";
+				String sql = "DELETE FROM historique WHERE id='" + obj.getId() + "'";
 					
 				requete.executeUpdate(sql);
 				requete.close();
@@ -72,10 +72,10 @@ public class HistoriqueDAO extends DAO<Historique>{
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "UPDATE `historique` " //(id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant)
+				String sql = "UPDATE historique " //(id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant)
 						   + "SET datePartie='" + obj.getDate() + "', score_gagnant='" + obj.getScoreGagnant() + "', score_perdant='" + obj.getScorePerdant() + "', est_forfait='" 
 			   				+ obj.getEstForfait() + "', id_gagnant='" + obj.getGagnant().getId() + "', id_perdant'" + obj.getPerdant().getId() + "' " 
-						   + "WHERE id='" + obj.getId() + "';";
+						   + "WHERE id='" + obj.getId() + "'";
 	
 				requete.executeUpdate(sql);
 				requete.close();
@@ -94,7 +94,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `historique` WHERE id='" + id + "';";
+			String sql = "SELECT * FROM historique WHERE id='" + id + "'";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){ 
@@ -117,7 +117,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `historique`;";
+			String sql = "SELECT * FROM historique";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){

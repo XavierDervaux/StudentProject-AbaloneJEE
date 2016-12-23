@@ -15,7 +15,7 @@ public class Setting  extends HttpServlet{
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Boolean estConnecte = false;
+		//Boolean estConnecte = false;
 		//if(estConnecte){ //On redirige vers la page paramètre
 		this.getServletContext().getRequestDispatcher("/WEB-INF/setting.jsp").forward(request, response);
     	//} else { //N'est pas encore connecté, on affihce le formulaire de connexion/inscription

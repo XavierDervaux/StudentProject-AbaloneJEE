@@ -24,8 +24,8 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO `fait` (id_joueur,id_achiev) "
-					   + "VALUES (" + id_joueur + ",'" + id_achiev + "');";
+			String sql = "INSERT INTO fait (id_joueur,id_achiev) "
+					   + "VALUES ('','" + id_joueur + "','" + id_achiev + "')";
 
 			requete.executeUpdate(sql);
 			requete.close();				
@@ -53,7 +53,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 		
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `fait` WHERE id_joueur='" + id_joueur + "';";
+			String sql = "SELECT * FROM fait WHERE id_joueur='" + id_joueur + "'";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){ 
@@ -76,7 +76,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 		
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `fait` WHERE id_achivement='" + id_achiev + "';";
+			String sql = "SELECT * FROM fait WHERE id_achivement='" + id_achiev + "'";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){ 

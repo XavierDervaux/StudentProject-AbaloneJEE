@@ -3,19 +3,20 @@ package be.abalone.database;
 import java.sql.*;
 
 public class SQLRequest {
-	private static Connection connect = null;
+	static Connection connect = null;
 	
 	public static Connection getInstance(){
 		if(connect == null){
 			try{
-				String adress = "char-oracle11.condorcet.be:1521";
-				String username = "exa7";
-				String password = "AbaloneJEE23#42@12";
+				Class.forName("oracle.jdbc.driver.OracleDriver");
 				connect = DriverManager.getConnection(
-						"jdbc:oracle:thin:@" + adress + ":orcl, " + username + ", " + password);
-			}catch (SQLException e){
+						"jdbc:oracle:thin:" + 
+						"@char-oracle11.condorcet.be:1521", 
+						"exa7",
+						"AbaloneJEE23#42@12");
+			}catch (Exception e){
 				System.err.println(e.getMessage());
-			}
+			}	
 		}		
 		return connect;	
 	}

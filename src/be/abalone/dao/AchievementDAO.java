@@ -15,8 +15,10 @@ public class AchievementDAO extends DAO<Achievement>{
 		
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO `achievement` (id,titre,nom,description) "
-					   + "VALUES (" + null + ",'" + obj.getTitre() + ",'" + obj.getNom() + ",'" + obj.getDescription() + "');";
+			/*String sql = "INSERT INTO achievement (id,titre,nom,description) VALUES ('','Toast','dtre','excrtvby')";*/
+			
+			String sql = "INSERT INTO achievement (id,titre,nom,description) "
+					   + "VALUES ('','" + obj.getTitre() + "','" + obj.getNom() + "','" + obj.getDescription() + "')";
 			requete.executeUpdate(sql);
 			
 			/*Statement fetchId = connect.createStatement();
@@ -46,7 +48,7 @@ public class AchievementDAO extends DAO<Achievement>{
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "DELETE FROM `achievement` WHERE id='" + obj.getId() + "';";
+				String sql = "DELETE FROM achievement WHERE id='" + obj.getId() + "'";
 	
 				requete.executeUpdate(sql);
 				requete.close();
@@ -68,8 +70,8 @@ public class AchievementDAO extends DAO<Achievement>{
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "UPDATE `achievement` titre='" + obj.getTitre() + "', nom='" + obj.getNom() + "', decription='" + obj.getDescription() + "' " 
-						   + "WHERE id='" + obj.getId() + "';";
+				String sql = "UPDATE achievement titre='" + obj.getTitre() + "', nom='" + obj.getNom() + "', decription='" + obj.getDescription() + "' " 
+						   + "WHERE id='" + obj.getId() + "'";
 	
 				requete.executeUpdate(sql);
 				requete.close();
@@ -87,7 +89,7 @@ public class AchievementDAO extends DAO<Achievement>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `achievement` WHERE id='" + id + "';";
+			String sql = "SELECT * FROM achievement WHERE id='" + id + "'";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){
@@ -107,7 +109,7 @@ public class AchievementDAO extends DAO<Achievement>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `achievement`;";
+			String sql = "SELECT * FROM achievement";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){

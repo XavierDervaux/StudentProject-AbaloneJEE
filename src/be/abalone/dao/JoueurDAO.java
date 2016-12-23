@@ -15,8 +15,8 @@ public class JoueurDAO extends DAO<Joueur>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO `joueur` (id,pseudo,mdp,email) "
-					   + "VALUES (" + null + ", '" + obj.getPseudo() + "', '" + obj.getMdp() + "', '" + obj.getEmail() + "');";
+			String sql = "INSERT INTO joueur (id,pseudo,mdp,email) "
+					   + "VALUES ('', '" + obj.getPseudo() + "','" + obj.getMdp() + "','" + obj.getEmail() + "')";
 			requete.executeUpdate(sql);
 			
 			/*Statement fetchId = connect.createStatement();
@@ -46,7 +46,7 @@ public class JoueurDAO extends DAO<Joueur>{
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "DELETE FROM `joueur` WHERE id='" + obj.getId() + "';";
+				String sql = "DELETE FROM joueur WHERE id='" + obj.getId() + "'";
 				//Le sgbd supprimera seul les enregistrements correspondants à  la table intermédiaire pour respecter l'intégrité référentielle.
 	
 				requete.executeUpdate(sql);
@@ -69,9 +69,9 @@ public class JoueurDAO extends DAO<Joueur>{
 		}else{
 			try {
 				Statement requete = connect.createStatement();
-				String sql = "UPDATE `joueur` "
+				String sql = "UPDATE joueur "
 						   + "SET pseudo='" + obj.getPseudo() + "', mdp='" + obj.getMdp() + "', email='" + obj.getEmail() + "' " 
-						   + "WHERE id='" + obj.getId() + "';";
+						   + "WHERE id='" + obj.getId() + "'";
 	
 				requete.executeUpdate(sql);
 				requete.close();
@@ -89,7 +89,7 @@ public class JoueurDAO extends DAO<Joueur>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `joueur` WHERE id='" + id + "' ;";
+			String sql = "SELECT * FROM joueur WHERE id='" + id + "'";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){
@@ -109,7 +109,7 @@ public class JoueurDAO extends DAO<Joueur>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM `joueur`;";
+			String sql = "SELECT * FROM joueur";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){

@@ -6,7 +6,7 @@ import be.abalone.dao.*;
 import be.abalone.model.*;
 
 public class DAOFactory extends AbstractDAOFactory{
-	protected static final Connection conn = SQLRequest.getInstance();
+	private static final Connection conn = SQLRequest.getInstance();
 
 	public DAO<Achievement> getAchievementDAO(){
 		return new AchievementDAO(conn);
