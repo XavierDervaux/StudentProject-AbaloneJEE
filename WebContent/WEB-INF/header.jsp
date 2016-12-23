@@ -4,10 +4,10 @@
 	<head>
     	<meta charset="utf-8" />
        	<title>Abalone</title>
-        <link rel="stylesheet" href="style/bootstrap.min.css"> 
-   		<link rel="stylesheet" href="style/style.css">
+        <link rel="stylesheet" href="ressources/style/bootstrap.min.css"> 
+   		<link rel="stylesheet" href="ressources/style/style.css">
    		
-   		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script> 
-   		<script type="text/javascript" src="js/bootstrap.min.js"></script>
-   		<script type="text/javascript" src="js/abalone.js"></script> 
-    </head>
+   		<script type="text/javascript" src="ressources/js/jquery-3.1.1.min.js"></script> 
+   		<script type="text/javascript" src="ressources/js/bootstrap.min.js"></script>
+   		<script type="text/javascript" src="ressources/js/abalone.js"></script> 
+    </head> 
