@@ -3,6 +3,7 @@ package be.abalone.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,14 +26,16 @@ public class Index extends HttpServlet {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		PrintWriter out = response.getWriter();
 		
-		out.println(SQLRequest.getInstance()+"\n");
-		out.println(adf.toString());
-		
 		Achievement test1 = new Achievement("ACV_TEST", "Un test réussi", "Réussir à se connecter a la bdd avec succès.");
-		//Historique test2 = new Historique();
-		//Joueur test3 = new Joueur();
+		Joueur test3 = new Joueur("Roger", "cfvbhgcfbhjcgfbhjcgfbhjvcgfvbh", "u@t.com");
+		Joueur test4 = new Joueur("Marcel", "cfvbhgcfbhjcgfbhjcgfbhjvcgfvbh", "u@t.com");
+		Historique test2 = new Historique(new Date(), 6, 3, false, test3, test4);
 		
-		adf.getAchievementDAO().create(test1);
+		adf.getJoueurDAO().create(test3);
+		
+		//Creer liste de succes
+		//Gerer les booléens
+		//Récuper le dernier id enregistré
 		
 		/*Boolean estConnecte = false;
 		if(estConnecte){ //On redirige vers le menu
