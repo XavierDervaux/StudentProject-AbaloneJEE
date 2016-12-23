@@ -1,0 +1,9 @@
+* {  margin : 0 auto;}
+li > button {margin-top: 7px;}
+#corps { max-width: 1000px;}
+
+#contentConnexion { max-width: 700px; background-color:  white; padding: 10px; }
+
+.text-center {text-align: center;}
+.right {float:  right;}
+.tab-pane {padding-top: 30px;}
