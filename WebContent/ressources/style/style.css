@@ -44,3 +44,6 @@ li > button {
 .thumbnail:hover {
     background-color: #F8F8F8;
 }
+
+.grey { background-color: #F8F8F8;}
+.w-ms-100 {max-width: 100px;}

@@ -20,6 +20,11 @@
 		<servlet-name>Menu</servlet-name>
 		<servlet-class>be.abalone.controller.Menu</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>Setting</servlet-name>
+		<servlet-class>be.abalone.controller.Setting</servlet-class>
+	</servlet>
 
 	
 <!-- Mapping -->
@@ -34,5 +39,10 @@
 	<servlet-mapping>
 		<servlet-name>Menu</servlet-name>
 		<url-pattern>/Menu.html</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Setting</servlet-name>
+		<url-pattern>/Setting.html</url-pattern>
 	</servlet-mapping>
 </web-app>

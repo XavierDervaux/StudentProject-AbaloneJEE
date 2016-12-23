@@ -1,19 +1,54 @@
 /**
-   Fonctions inscriptions
+    Initialisation
+**/
+
+var MIN_MDP = 6;
+
+function init(){
+    $('[data-toggle="popover"]').popover()
+}
+
+/**
+    Fonctions setting
+**/
+function checkSetting(){
+    var ok = true;
+    
+    if($id('emailSetting').value.length == 0){
+        ok = false;
+    }else if($id('passwordSetting').value.length == 0){
+         ok = false;
+    } else if($id('confirmPasswordSetting').value.length == 0){
+         ok = false;
+    }
+    
+    if(ok && validateEmail($id('emailSetting')) && checkPassword($id('passwordSetting'),$id('confirmPasswordSetting'))){
+         $id('submitSetting').disabled = false; 
+    } else{
+         $id('submitSetting').disabled = true; 
+    }
+}
+
+function checkPasswordSetting(){
+    checkPassword($id('passwordSetting'),$id('confirmPasswordSetting'), true);
+}
+
+/**
+   Fonctions Connexion
 **/
 
 function checkConnecion(){
     ok = true;
-     if($('emailConnection').value.length == 0){
+     if($id('emailConnection').value.length == 0){
        ok = false;
-    } else if($('passwordConnection').value.length == 0){
+    } else if($id('passwordConnection').value.length == 0){
         ok = false;
     }
     
-    if(ok && validateEmail($('emailConnection'))){
-         $('submitConnection').disabled = false; 
+    if(ok && validateEmail($id('emailConnection'))){
+         $id('submitConnection').disabled = false; 
     } else{
-         $('submitConnection').disabled = true; 
+         $id('submitConnection').disabled = true; 
     }
 }
 
@@ -23,27 +58,27 @@ function checkConnecion(){
 
 function checkInscription(){
     ok = true;
-    if($('pseudoInscription').value.length == 0){
+    if($id('pseudoInscription').value.length == 0){
        ok = false;
-    } else if($('emailInscription').value.length == 0){
+    } else if($id('emailInscription').value.length == 0){
         ok = false;
-    }else if($('passwordInscription').value.length == 0){
+    }else if($id('passwordInscription').value.length == 0){
          ok = false;
-    } else if($('confirmPasswordInscription').value.length == 0){
+    } else if($id('confirmPasswordInscription').value.length == 0){
          ok = false;
     }
     
     if(ok){
-        if(checkPassword($('passwordInscription'),$('confirmPasswordInscription')) && validateEmail($('emailInscription'))){
-            $('submitInscription').disabled = false; 
+        if(checkPassword($id('passwordInscription'),$id('confirmPasswordInscription')) && validateEmail($id('emailInscription'))){
+            $id('submitInscription').disabled = false; 
         }
     } else{
-        $('submitInscription').disabled = true; 
+        $id('submitInscription').disabled = true; 
     }
 }
 
 function checkPasswordInscription(){
-    checkPassword($('passwordInscription'),$('confirmPasswordInscription'), true);
+    checkPassword($id('passwordInscription'),$id('confirmPasswordInscription'), true);
 }
 
 
@@ -51,14 +86,7 @@ function checkPasswordInscription(){
     Les fonctions génériques
 **/
 
-/**
- * If input is a string, gets the element whose ID is that string
- * else, returns the input (allowing to call with either the ID or
- * the element
- * @param elem ID string or element
- * @return Element related
- */
-function $(elem) {
+function $id(elem) {
 	var type=typeof(elem);
 	if (type=="string") {
 		return document.getElementById(elem);
@@ -68,7 +96,7 @@ function $(elem) {
 
 function checkPassword(password, confirmPassword, isColor = false){
     var ok = false;
-    if(password.value == confirmPassword.value){
+    if(password.value.length >= MIN_MDP && (password.value == confirmPassword.value)){
         ok = true;
         if(isColor){
             inputValid(password);
@@ -80,7 +108,7 @@ function checkPassword(password, confirmPassword, isColor = false){
             inputError(password);
             inputError(confirmPassword);
         }
-    }   
+    } 
     return ok;
 }
 
