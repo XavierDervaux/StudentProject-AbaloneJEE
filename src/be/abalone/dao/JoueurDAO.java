@@ -3,6 +3,10 @@ package be.abalone.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import be.abalone.model.*;
 
 public class JoueurDAO extends DAO<Joueur>{
@@ -11,6 +15,7 @@ public class JoueurDAO extends DAO<Joueur>{
 	}
 	
 	public boolean create(Joueur obj){		
+		int id;
 		boolean res = true;
 
 		try {
@@ -19,15 +24,19 @@ public class JoueurDAO extends DAO<Joueur>{
 					   + "VALUES ('', '" + obj.getPseudo() + "','" + obj.getMdp() + "','" + obj.getEmail() + "')";
 			requete.executeUpdate(sql);
 			
-			/*Statement fetchId = connect.createStatement();
-			String sql2 = "SELECT last_insert_rowid();";
-			ResultSet rs = fetchId.executeQuery(sql2);
+			Statement fetchId = connect.createStatement();
+			String sql2 = "{? = call last_inserted_rowid(?)}";
+			CallableStatement statement = connect.prepareCall(sql2); 
+			statement.registerOutParameter(1,Types.INTEGER); 
+			statement.setInt(2,1); 
+			statement.execute(); 
+			id = statement.getInt(1);
 			
-			if(rs != null){
-				obj.setId(rs.getInt("last_insert_rowid()"));
+			if(id != 0){
+				obj.setId(id);
 			}
 
-			fetchId.close();*/
+			fetchId.close();
 			requete.close();
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());

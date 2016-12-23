@@ -13,22 +13,27 @@ public class HistoriqueDAO extends DAO<Historique>{
 		super(conn);
 	}
 	
-	public boolean create(Historique obj){			
+	public boolean create(Historique obj){	
+		int id;
 		boolean res = true;
 
 		try {
 			Statement requete = connect.createStatement();
 			String sql = "INSERT INTO historique (id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant) "
 					   + "VALUES (','" + obj.getDate() + "','" + obj.getScoreGagnant() + "','" + obj.getScorePerdant() + "','" 
-					   				+ obj.getEstForfait() + "','" + obj.getGagnant().getId() + "','" + obj.getPerdant().getId() + "')";
+					   				+ Utilitaire.boolToInt(obj.getEstForfait()) + "','" + obj.getGagnant().getId() + "','" + obj.getPerdant().getId() + "')";
 			requete.executeUpdate(sql);
 			
 			Statement fetchId = connect.createStatement();
-			String sql2 = "SELECT last_insert_rowid();";
-			ResultSet rs = fetchId.executeQuery(sql2);
+			String sql2 = "{? = call last_inserted_rowid(?)}";
+			CallableStatement statement = connect.prepareCall(sql2); 
+			statement.registerOutParameter(1,Types.INTEGER); 
+			statement.setInt(2,1); 
+			statement.execute(); 
+			id = statement.getInt(1);
 			
-			if(rs != null){
-				obj.setId(rs.getInt("last_insert_rowid()"));
+			if(id != 0){
+				obj.setId(id);
 			}
 			
 			requete.close();
@@ -74,7 +79,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 				Statement requete = connect.createStatement();
 				String sql = "UPDATE historique " //(id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant)
 						   + "SET datePartie='" + obj.getDate() + "', score_gagnant='" + obj.getScoreGagnant() + "', score_perdant='" + obj.getScorePerdant() + "', est_forfait='" 
-			   				+ obj.getEstForfait() + "', id_gagnant='" + obj.getGagnant().getId() + "', id_perdant'" + obj.getPerdant().getId() + "' " 
+			   			   + Utilitaire.boolToInt(obj.getEstForfait()) + "', id_gagnant='" + obj.getGagnant().getId() + "', id_perdant'" + obj.getPerdant().getId() + "' " 
 						   + "WHERE id='" + obj.getId() + "'";
 	
 				requete.executeUpdate(sql);
@@ -99,7 +104,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 			
 			if(rs != null){ 
 				res = new Historique(rs.getInt("id"), rs.getDate("date_partie"), rs.getInt("score_gagnant"), rs.getInt("score_perdant"), 
-						        	 rs.getBoolean("est_forfait"), adf.getJoueurDAO().find(rs.getInt("id_gagnant")), 
+						        	 Utilitaire.intToBool(rs.getInt("est_forfait")), adf.getJoueurDAO().find(rs.getInt("id_gagnant")), 
 						        	 adf.getJoueurDAO().find(rs.getInt("id_perdant")) ); 
 			}
 			
@@ -125,7 +130,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 				
 				while(rs.next()){ //S'il existe des moniteurs
 					res.add(new Historique(rs.getInt("id"), rs.getDate("date_partie"), rs.getInt("score_gagnant"), rs.getInt("score_perdant"), 
-							        	   rs.getBoolean("est_forfait"), adf.getJoueurDAO().find(rs.getInt("id_gagnant")), 
+										   Utilitaire.intToBool(rs.getInt("est_forfait")), adf.getJoueurDAO().find(rs.getInt("id_gagnant")), 
 							        	   adf.getJoueurDAO().find(rs.getInt("id_perdant")))); 
 				}
 			}

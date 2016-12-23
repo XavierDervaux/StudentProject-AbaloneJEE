@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,15 +33,17 @@ public class Index extends HttpServlet {
 		try {
 			Joueur test3 = new Joueur("Roger", "cfvbhgcfbhjcgfbhjcgfbhjvcgfvbh", "u@t.com");
 			adf.getJoueurDAO().create(test3);
-			String sql = "{? = call last_inserted_rowid(?)}";
+			
+			
+			/*String sql = "{? = call last_inserted_rowid(?)}";
 			CallableStatement statement = conn.prepareCall(sql); 
 			statement.registerOutParameter(1,Types.INTEGER); 
 			statement.setInt(2,1); 
 			statement.execute(); 
-			int resultat = statement.getInt(1);
+			int resultat = statement.getInt(1);*/
 
-			out.println("Last id = " + resultat);
-		} catch (SQLException e) {
+			out.println("Last id = " + test3.getId());
+		} catch (Exception e) {
 			out.println(e.toString());
 		}
 
