@@ -1,21 +1,11 @@
 package be.abalone.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import be.abalone.database.AbstractDAOFactory;
-import be.abalone.database.DAOFactory;
-import be.abalone.database.SQLRequest;
-import be.abalone.model.*;
 
 public class Index extends HttpServlet {
 	private static final long serialVersionUID = 1L;

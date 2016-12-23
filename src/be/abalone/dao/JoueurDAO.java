@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Types;
 import be.abalone.model.*;
 
