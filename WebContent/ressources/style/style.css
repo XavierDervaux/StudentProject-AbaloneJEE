@@ -1,9 +1,46 @@
-* {  margin : 0 auto;}
-li > button {margin-top: 7px;}
-#corps { max-width: 1000px;}
+* {  
+    margin : 0 auto;
+}
+li > button {
+    margin-top: 7px;
+}
+#corps { 
+    max-width: 1000px;
+}
 
-#contentConnexion { max-width: 700px; background-color:  white; padding: 10px; }
+#contentConnexion { 
+    max-width: 700px; 
+    background-color:  white; 
+    padding: 10px; 
+}
 
-.text-center {text-align: center;}
-.right {float:  right;}
-.tab-pane {padding-top: 30px;}
+.text-center {
+    text-align: center;
+}
+.right {
+    float:  right;
+}
+.tab-pane {
+    padding-top: 30px;
+}
+
+.h100px {
+    height: 200px;
+}
+.glyphicon.center:before {
+    vertical-align: middle;
+}
+.glyph-menu {
+    display: block;
+    vertical-align: middle;
+    text-align: center; 
+    font-size: 70px;
+}
+
+.center {
+    text-align: center;
+}
+
+.thumbnail:hover {
+    background-color: #F8F8F8;
+}

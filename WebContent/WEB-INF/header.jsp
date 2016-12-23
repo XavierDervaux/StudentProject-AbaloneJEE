@@ -4,6 +4,7 @@
 	<head>
     	<meta charset="utf-8" />
        	<title>Abalone</title>
+       	<link rel="icon" type="image/png" href="ressources/style/img/favicon.png">
         <link rel="stylesheet" href="ressources/style/bootstrap.min.css"> 
    		<link rel="stylesheet" href="ressources/style/style.css">
    		
