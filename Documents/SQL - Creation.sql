@@ -35,6 +35,18 @@ CREATE TABLE fait(
 	CONSTRAINT fk_fait_achievement  FOREIGN KEY(id_achievement) REFERENCES achievement(id)
 );
 
+
+--
+-- Package servant à stocker le dernier id créé, on en aura besoin dans le programme.
+--
+
+
+create or replace PACKAGE last_inserted_id IS
+  lastId INTEGER;
+END;
+
+
+
 --
 -- Triggers pour Auto Increment
 --
@@ -52,6 +64,7 @@ BEGIN
   SELECT joueur_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
+  last_inserted_id.lastId := :new.id; --On stocke l'id créé dans le package
 END;
 /
 
@@ -63,6 +76,7 @@ BEGIN
   SELECT histo_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
+  last_inserted_id.lastId := :new.id; --On stocke l'id créé dans le package
 END;
 /
 
@@ -74,5 +88,22 @@ BEGIN
   SELECT achiev_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
+  last_inserted_id.lastId := :new.id; --On stocke l'id créé dans le package
 END;
 /
+
+
+
+--
+-- Procédure stockée pour récupérer le dernier id stocké
+--
+
+
+create or replace FUNCTION last_inserted_rowid (no INTEGER)
+    RETURN INTEGER IS last_rowid INTEGER;
+BEGIN
+    last_rowid := last_inserted_id.lastId;
+    RETURN last_rowid;
+END;
+
+
