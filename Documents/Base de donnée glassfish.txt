@@ -1,0 +1,13 @@
+Dans un premier temps, il faut copier le driver ojdbc6.jar dans le dossier glassfish\lib\ de l'installation de glassfish. Ce fichier est dans le répertoire lib du programme.
+Redémarrer glassfish avec un stop-domain, puis un start-domain.
+Se rendre sur l'interface d'administration de GlassFish à l'adresse http://localhost:4848
+	Attendre la fin du chargement
+Dans le volet de gauche, cliquer sur JDBC, puis JDBC Connection Pool.
+Cliquez sur Derby Pool pour le modifier.
+	Dans la case Datasource Classname:
+		Remplacer par oracle.jdbc.pool.OracleDataSource
+Ensuite cliquer sur la même pagesur l'onglet Additionnal properties
+	Supprimer chacun des enregistrements déjà en place.
+	Créer un champ 'password' et y introduire le mot de passe.
+	Créer un champ 'user' avec notre nom d'utilisateur.
+	Créer un champ 'url' avec le string de connexion à la base de donnée.
