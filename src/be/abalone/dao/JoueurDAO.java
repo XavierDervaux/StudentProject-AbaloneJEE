@@ -6,6 +6,9 @@ import java.util.List;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Types;
+
+import be.abalone.database.AbstractDAOFactory;
+import be.abalone.database.DAOFactory;
 import be.abalone.model.*;
 
 public class JoueurDAO extends DAO<Joueur>{
@@ -93,15 +96,39 @@ public class JoueurDAO extends DAO<Joueur>{
 	}
 	
 	public Joueur find(int id){
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		Joueur res = null;
 
 		try {
 			Statement requete = connect.createStatement();
 			String sql = "SELECT * FROM joueur WHERE id='" + id + "'";
 			ResultSet rs = requete.executeQuery(sql);
+			int id2 = rs.getInt("id");
 			
 			if(rs != null){
-				res = new Joueur( rs.getInt("id"), rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email") ); 
+				res = new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurtDAO().find(id2) ); 
+			}
+			
+			requete.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		
+		return res;
+	}
+	
+	public Joueur find(String email){
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		Joueur res = null;
+
+		try {
+			Statement requete = connect.createStatement();
+			String sql = "SELECT * FROM joueur WHERE email='" + email + "'";
+			ResultSet rs = requete.executeQuery(sql);
+			int id2 = rs.getInt("id");
+			
+			if(rs != null){
+				res = new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurtDAO().find(id2) ); 
 			}
 			
 			requete.close();
@@ -113,18 +140,20 @@ public class JoueurDAO extends DAO<Joueur>{
 	}
 	
 	public List<Joueur> getAll(){
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		List<Joueur> res = null;
 
 		try {
 			Statement requete = connect.createStatement();
 			String sql = "SELECT * FROM joueur";
 			ResultSet rs = requete.executeQuery(sql);
+			int id2 = rs.getInt("id");
 			
 			if(rs != null){
 				res = new ArrayList<Joueur>();
 				
 				while(rs.next()){ 
-					res.add(new Joueur( rs.getInt("id"), rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email") )); 
+					res.add(new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurtDAO().find(id2))); 
 				}
 			}
 		

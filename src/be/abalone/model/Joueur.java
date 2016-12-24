@@ -2,6 +2,10 @@ package be.abalone.model;
 
 import java.util.List;
 
+import be.abalone.dao.JoueurDAO;
+import be.abalone.database.AbstractDAOFactory;
+import be.abalone.database.DAOFactory;
+
 public class Joueur {
 	private int id = 0;
 	private String pseudo = null;
@@ -67,11 +71,25 @@ public class Joueur {
 
 	
 // Méthodes publiques
-//---------------------------------------------------	
-	
-	
-// Méthode privées
-//---------------------------------------------------	
+//---------------------------------------------------		
+	public void createBDD() {
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		adf.getJoueurDAO().create(this);
+	}
+    
+	public boolean findBDD() {
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		Joueur tmp = ((JoueurDAO) adf.getJoueurDAO()).find(this.getEmail()); // Il vaudra null si aucun n'existe
+
+		if (tmp != null) {
+			if (tmp.getMdp().equals(this.getMdp())) { // Le mail et le mdp est correct, on est connecté.
+				this.setId(tmp.getId());
+				this.setPseudo(tmp.getPseudo());
+				this.setAchievs(tmp.getAchievs());
+			}
+		}
+		return tmp!= null; //On confirme que l'objet a bien été modifié.		
+	}
 	
 	
 // toString, hashCode, equals
