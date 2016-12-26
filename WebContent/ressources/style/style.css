@@ -66,6 +66,16 @@ li > button {
 .bg-danger>span+span{
     margin-left: 10px;
 }
+
+.th-title {
+    background-color: #091b20; 
+    color : white;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
 /*
     Plateau
 */

@@ -16,6 +16,7 @@
 	            			out.println("<p class=\"bg-danger\"><span class=\"glyphicon glyphicon-info-sign\"></span><span>"+erreur_connection+"</span></p>");
 	            	%>
 	                    <form class="form-horizontal" name="connection" method="post" action="index.html">
+	                    <input type="checkbox" name="estConnexion" class="hidden" checked/>
 	                      <div class="form-group">
 	                        <label for="emailConnection" class="col-sm-2 control-label">Email</label>
 	                        <div class="col-sm-10">
@@ -32,7 +33,7 @@
 	                        <div class="col-sm-offset-2 col-sm-10">
 	                          <div class="checkbox">
 	                            <label>
-	                              <input type="checkbox" name="cookieConnection"> Se souvenir de moi
+	                              <input type="checkbox" name="rememberConnection"> Se souvenir de moi
 	                            </label>
 	                          </div>
 	                        </div>
@@ -51,6 +52,7 @@
 	            			out.println("<p class=\"bg-danger\"><span class=\"glyphicon glyphicon-info-sign\"></span><span>"+erreur_inscrition+"</span></p>");
 	            	%>
 	                <form class="form-horizontal" name="inscription" method="post" action="index.html">
+	                 <input type="checkbox" name="estInscription" class="hidden" checked/>
 	                    <div class="form-group">
 	                        <label for="pseudoInscription" class="col-sm-2 control-label">Votre pseudo</label>
 	                        <div class="col-sm-10">
