@@ -47,7 +47,7 @@ li > button {
     text-align: center;
 }
 
-.thumbnail:hover {
+.thumbnail:hover,  {
     background-color: #F8F8F8;
 }
 

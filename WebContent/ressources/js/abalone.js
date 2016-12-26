@@ -8,21 +8,63 @@ function init(){
     $('[data-toggle="popover"]').popover()
 }
 
+
+/**
+    Plateau
+**/
+     
+function plateau(){
+    
+    this.plateau= new Array(9,18);
+    this.selected = new Array();
+    
+    this.addSelected = function(bille, position){
+        if(this.selected.length < 3){
+            //this.selected[] = position; 
+        }
+    };
+    
+    this.removeSelected = function(bille, position){
+        if(this.selected.length > 0){
+            //this.selected[] = position;
+        }
+    };
+}
+
+function position(x, y){
+    this.x = x;
+    this.y = y;
+}
+
+
+
 /**
     Fonctions setting
 **/
+
+function $id(elem) {
+	var type=typeof(elem);
+	if (type=="string") {
+		return document.getElementById(elem);
+	}
+	return elem;
+}
+
 function checkSetting(){
     var ok = true;
     
     if($id('emailSetting').value.length == 0){
         ok = false;
-    }else if($id('passwordSetting').value.length == 0){
+    } else if($id('passwordSetting').value.length > 0 || $id('confirmPasswordSetting').value.length > 0){
          ok = false;
-    } else if($id('confirmPasswordSetting').value.length == 0){
-         ok = false;
+    } else{
+       if(checkPasswordSetting()){
+            ok = false;
+       } 
+      
     }
     
-    if(ok && validateEmail($id('emailSetting')) && checkPassword($id('passwordSetting'),$id('confirmPasswordSetting'))){
+    if(ok && validateEmail($id('emailSetting'))){
          $id('submitSetting').disabled = false; 
     } else{
          $id('submitSetting').disabled = true; 
@@ -31,6 +73,10 @@ function checkSetting(){
 
 function checkPasswordSetting(){
     checkPassword($id('passwordSetting'),$id('confirmPasswordSetting'), true);
+     if($id('passwordSetting').value.length == 0 && $id('confirmPasswordSetting').value.length == 0){
+           inputNeutre($id('passwordSetting'));
+           inputNeutre($id('confirmPasswordSetting'));
+    }
 }
 
 /**
@@ -86,14 +132,6 @@ function checkPasswordInscription(){
     Les fonctions génériques
 **/
 
-function $id(elem) {
-	var type=typeof(elem);
-	if (type=="string") {
-		return document.getElementById(elem);
-	}
-	return elem;
-}
-
 function checkPassword(password, confirmPassword, isColor = false){
     var ok = false;
     if(password.value.length >= MIN_MDP && (password.value == confirmPassword.value)){
@@ -120,6 +158,11 @@ function inputValid(control){
 function inputError(control){
     control.style.backgroundColor = "#F5E6E6";
     control.style.border = "solid 1px #DCA7A7";
+}
+
+function inputNeutre(control){
+    control.style.backgroundColor = "#FFFFFF";
+    control.style.border = "solid 1px #CCCCCC";
 }
 
 function validateEmail(mail, isColor = false)   
