@@ -1,6 +1,10 @@
 package be.abalone.model;
 
 import java.util.Date;
+import java.util.List;
+import be.abalone.dao.HistoriqueDAO;
+import be.abalone.database.AbstractDAOFactory;
+import be.abalone.database.DAOFactory;
 
 public class Historique {
 	private int id = 0;
@@ -81,6 +85,17 @@ public class Historique {
 
 // Méthodes publiques
 //---------------------------------------------------	
+	public void createBDD() {
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		adf.getHistoriqueDAO().create(this);
+	}
+    
+	public static List<Historique> findAllBDD(Joueur joueur) {
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		List<Historique> tmp = ((HistoriqueDAO) adf.getHistoriqueDAO()).getAll(joueur);
+		
+		return tmp;	
+	}
 	
 	
 // Méthode privées

@@ -143,4 +143,31 @@ public class HistoriqueDAO extends DAO<Historique>{
 		
 		return res;
 	}
+	
+	public List<Historique> getAll(Joueur joueur){
+		List<Historique> res = null;
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+
+		try {
+			Statement requete = connect.createStatement();
+			String sql = "SELECT * FROM historique WHERE id_gagnant='" + joueur.getId() + "' OR id_perdant='" + joueur.getId() + "'";
+			ResultSet rs = requete.executeQuery(sql);
+			
+			if(rs != null){
+				res = new ArrayList<Historique>();
+				
+				while(rs.next()){ //S'il existe des moniteurs
+					res.add(new Historique(rs.getInt("id"), rs.getDate("date_partie"), rs.getInt("score_gagnant"), rs.getInt("score_perdant"), 
+										   Utilitaire.intToBool(rs.getInt("est_forfait")), adf.getJoueurDAO().find(rs.getInt("id_gagnant")), 
+							        	   adf.getJoueurDAO().find(rs.getInt("id_perdant")))); 
+				}
+			}
+		
+			requete.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		
+		return res;
+	}
 }

@@ -76,6 +76,11 @@ public class Joueur {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		adf.getJoueurDAO().create(this);
 	}
+	
+	public boolean updateBDD(){
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		return adf.getJoueurDAO().update(this);
+	}
     
 	public boolean findBDD(int id) {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
@@ -87,11 +92,6 @@ public class Joueur {
 		this.setAchievs(tmp.getAchievs());
 		
 		return tmp != null; //On confirme que l'objet a bien été modifié.		
-	}
-	
-	public boolean updateBDD(){
-		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
-		return adf.getJoueurDAO().update(this);
 	}
     
 	public boolean findBDD(String email) {
