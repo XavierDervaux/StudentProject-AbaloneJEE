@@ -13,8 +13,8 @@ public class Identification {
 	public static int connexion(Joueur joueur) {
 		int rmail, rmdp, res = 0;
 		String tmpMdp, tmpMail;
-		rmail = validationEmail(joueur);
-		rmdp = validationMdp(joueur);
+		rmail = validationEmail(joueur.getEmail());
+		rmdp = validationMdp(joueur.getMdp());
 
 		if (rmail != 0) { // Le mail est incorrect
 			res = rmail;
@@ -36,8 +36,8 @@ public class Identification {
 	public static int inscription(Joueur joueur) {
 		int rmail, rmdp, res = 0;
 		String tmpMdp, tmpMail;
-		rmail = validationEmail(joueur);
-		rmdp = validationMdp(joueur);
+		rmail = validationEmail(joueur.getEmail());
+		rmdp = validationMdp(joueur.getMdp());
 
 		if (rmail != 0) { //Le mail est incorrect
 			res = rmail;
@@ -89,25 +89,22 @@ public class Identification {
 		return res;
 	}
 
-	
-// Méthode privées
-// ---------------------------------------------------
-	private static int validationEmail(Joueur joueur) {
+	public static int validationEmail(String email) {
 		int res = 0;
 
-		if (joueur.getEmail() != null && !joueur.getEmail().matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
+		if (email != null && !email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
 			res = 2;
 		}
 		return res;
 	}
 
-	private static int validationMdp(Joueur joueur) {
+	public static int validationMdp(String mdp) {
 		int res = 0;
 
-		if (joueur.getMdp() != null) {
-			if (joueur.getMdp().length() < 8)
+		if (mdp != null) {
+			if (mdp.length() < 8)
 				res = 3;
-			if (joueur.getMdp().length() > 16)
+			if (mdp.length() > 16)
 				res = 4;
 		}
 		return res;

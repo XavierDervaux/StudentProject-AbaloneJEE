@@ -30,17 +30,50 @@ public class Settings  extends HttpServlet{
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sessions = request.getSession();
-    	String mail = null, mdp = null;
+		int res = -1;
+    	String mail = null, mdp = null, output = null;
     	Joueur actuel = (Joueur) sessions.getAttribute("joueur"); //On est sur que le joueur existe car on vérifie estConnecté avant d'arriver ici
 
-		mail = Utilitaire.getValeurChamp(request, "emailInscription");
-		mdp = Utilitaire.getValeurChamp(request, "passwordInscription");
-		actuel.setEmail(mail);
-		actuel.setMdp(Utilitaire.cryptPassword(mdp));
+		mail = Utilitaire.getValeurChamp(request, "emailSetting");
+		mdp = Utilitaire.getValeurChamp(request, "passwordSetting");
 		
-		actuel.updateBDD();
-		sessions.setAttribute("joueur", actuel); //On met à jour la session
-		response.sendRedirect("/Abalone/menu.html");
+		if(mail != null) { //Changement de mail 
+			res = Identification.validationEmail(mail);
+			if(res == 0){//Le mail est valide
+				if(actuel.findBDD(mail)) {  //Si on arrive à trouver un joueur correspondant en bdd ça veut dire que l'email existe déjà
+					res = 5; 
+				} else {
+					actuel.setEmail(mail); 
+				}
+			}
+		}
+		if(mdp != null && res<=0) { //changement de mdp  et si on n'a pas déjà trouvé une erreur dans le mail
+			res = Identification.validationMdp(mdp);
+			if(res == 0){//Le mdp est valide
+				actuel.setMdp(Utilitaire.cryptPassword(mdp));
+			}
+		}
+		
+		if(res == 0) { //Au moins une opération s'est bien passé
+			actuel.updateBDD();
+			sessions.setAttribute("joueur", actuel); //On met à jour la session
+			response.sendRedirect("/Abalone/menu.html");return;
+		} else { //Au moins une opération a échoué, on retourne l'erreur
+			output = affichageSettings(res);
+			request.setAttribute("erreur", output);
+			doGet(request, response);
+		}
+		
     }
 
+	private String affichageSettings(int res) {
+		String output = null;
+		switch (res) { // Affiche du message de sortie
+			case 2: output = "Merci de saisir une adresse mail valide."; break;
+			case 3: output = "Le mot de passe doit contenir au moins 8 caractères."; break;
+			case 4: output = "Le mot de passe doit contenir moins de 16 caractères."; break;
+			case 5: output = "L'adresse E-mail saisie est déjà enregistrée."; break;
+		}
+		return output;
+	}
 }

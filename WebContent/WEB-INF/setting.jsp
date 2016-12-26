@@ -4,7 +4,7 @@
             <button type="button" class="btn btn-primary btn-lg">Retour au menu</button>
         </a>
  		<h1>Paramètre</h1>
-        <form method="post" name="setting" action="setting.html">
+        <form method="post" name="settings" action="settings.html">
         	<c:if test="${not empty erreur}"> 
 	            <p class="bg-danger"><span class="glyphicon glyphicon-info-sign"></span><span>${erreur}</span></p>
 	         </c:if>
