@@ -3,7 +3,7 @@
  		<a href="menu.html">
             <button type="button" class="btn btn-primary btn-lg">Retour au menu</button>
         </a>
- 		<h1>Paramètre</h1>
+ 		<h1>Paramètres</h1>
         <form method="post" name="setting" action="setting.html">
         	<c:if test="${not empty erreur}"> 
 	            <p class="bg-danger"><span class="glyphicon glyphicon-info-sign"></span><span>${erreur}</span></p>
@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="submit" id="submitSetting" class="btn btn-danger right" disabled="disabled">Modifier</button>
+                        <button type="submit" id="submitSetting" class="btn btn-danger right">Modifier</button>
                     </td>
                 </tr>
             </table>
