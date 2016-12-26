@@ -9,7 +9,7 @@
 	                  </div>
 	              </div>
 	            </a>
-	            <a href="achievement.html">
+	            <a href="succes.html">
 	              <div class="col-xs-6 col-md-3">
 	                  <div class="thumbnail h100px">
 	                        <h1><span class="glyphicon center glyphicon-education glyph-menu"/></h1>
