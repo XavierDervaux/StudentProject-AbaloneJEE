@@ -15,13 +15,13 @@ public class Setting  extends HttpServlet{
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Boolean estConnecte = Identification.estConnecte(request.getSession(), request.getCookies()); 
+		Boolean estConnecte = Identification.estConnecte(request.getSession(), request.getCookies()); 
 		
-		//if(estConnecte){ //On charge la page paramètre
+		if(estConnecte){ //On charge la page paramètre
 			this.getServletContext().getRequestDispatcher("/WEB-INF/setting.jsp").forward(request, response);
-    	//} else { //N'est pas encore connecté, on affihce le formulaire de connexion/inscription
-    	//	response.sendRedirect("/Abalone/Index.html");
-    	//}
+    	} else { //N'est pas encore connecté, on affihce le formulaire de connexion/inscription
+    		response.sendRedirect("/Abalone/index.html");
+    	}
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

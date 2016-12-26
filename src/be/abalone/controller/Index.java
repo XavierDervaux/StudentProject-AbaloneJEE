@@ -1,6 +1,8 @@
 package be.abalone.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,27 +23,28 @@ public class Index extends HttpServlet {
 		Boolean estConnecte = Identification.estConnecte(request.getSession(), request.getCookies()); 
 		
 		if(estConnecte){ //On redirige vers le menu 
-			response.sendRedirect("/Abalone/Menu.html"); 
+			response.sendRedirect("/Abalone/menu.html"); 
 		} else { //N'estpas encore connecté, on affihce le formulaire de connexion/inscription
 			this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response); 
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
 		HttpSession sessions = request.getSession();
 		int res=0, type=0;//Type:0 lol
 		boolean resterConnecte = false;
 		String output=null, pseudo, mdp, email;
 		Joueur input=null;
 		
-		if(Utilitaire.getBoolChamp(request, "estConnexion")){ type = 1; }
-		else if(Utilitaire.getBoolChamp(request, "estInscription")){ type = 2; }
-		else if(Utilitaire.getBoolChamp(request, "estDeconnexion")){ type = 3; } //Deconnexion
+		if(Utilitaire.getBoolCheckbox(request, "estConnexion")){ type = 1; }
+		else if(Utilitaire.getBoolCheckbox(request, "estInscription")){ type = 2; }
+		else if(Utilitaire.getBoolCheckbox(request, "estDeconnexion")){ type = 3; } //Deconnexion
 		
 		if(type == 1){ //Connexion		
 			email = Utilitaire.getValeurChamp(request, "emailConnection");
 			mdp = Utilitaire.getValeurChamp(request, "passwordConnection");
-			resterConnecte = Utilitaire.getBoolChamp(request, "rememberConnection");	
+			resterConnecte = Utilitaire.getBoolCheckbox(request, "rememberConnection");	
 			input = new Joueur ("", mdp, email); 
 			
 			res = Identification.connexion(input); // Si la connexion réussi, les propriétés de inputs seront modifiées pour obtenir un Joueur valide

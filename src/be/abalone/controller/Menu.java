@@ -21,7 +21,7 @@ public class Menu extends HttpServlet {
 		if(estConnecte){ //S'il est connecté on peut affiche le menu principal
     		this.getServletContext().getRequestDispatcher("/WEB-INF/menu.jsp").forward(request, response);
     	} else { //Sinon on le redirige vers la connexion
-    		response.sendRedirect("/Abalone/Index.html");
+    		response.sendRedirect("/Abalone/index.html");
     	}
 	}
 

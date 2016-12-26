@@ -92,12 +92,13 @@ public class Joueur {
 	public boolean findBDD(String email) {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		Joueur tmp = ((JoueurDAO) adf.getJoueurDAO()).find(email); // Il vaudra null si aucun n'existe
-
-		this.setId(tmp.getId());
-		this.setPseudo(tmp.getPseudo());
-		this.setMdp(tmp.getMdp());
-		this.setAchievs(tmp.getAchievs());
 		
+		if(tmp != null){
+			this.setId(tmp.getId());
+			this.setPseudo(tmp.getPseudo());
+			this.setMdp(tmp.getMdp());
+			this.setAchievs(tmp.getAchievs());
+		}
 		return tmp != null; //On confirme que l'objet a bien été modifié.	
 	}
     

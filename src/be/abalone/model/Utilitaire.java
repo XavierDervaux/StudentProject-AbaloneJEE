@@ -50,13 +50,12 @@ public class Utilitaire {
         return valeur;
     }
     
-    public static boolean getBoolChamp( HttpServletRequest request, String nomChamp ) {
+    public static boolean getBoolCheckbox( HttpServletRequest request, String nomChamp ) {
         boolean res = false;
     	String valeur = request.getParameter( nomChamp );
-        
-        if ( valeur.equals("true") ) {
-            res = true;
-        }
+    	if ( valeur != null)
+    		if ( valeur.equals("on") )
+    			res = true;
         return res;
     }
     
