@@ -1,17 +1,21 @@
 <%@ include file="header.jsp" %>
-    <body>
     	<div id="corps">
 	        <div id="contentConnexion">
 	          <!-- Nav tabs -->
 	          <ul class="nav nav-tabs" role="tablist">
-	            <li role="presentation" class="active"><a href="#connection" aria-controls="connection" role="tab" data-toggle="tab">Connection</a></li>
+	            <li role="presentation" class="active"><a href="#connection" aria-controls="connection" role="tab" data-toggle="tab">Connexion</a></li>
 	            <li role="presentation"><a href="#inscription" aria-controls="inscription" role="tab" data-toggle="tab">Inscription</a></li>
 	          </ul>
 	
 	          <!-- Tab panes -->
 	          <div class="tab-content">
 	            <div role="tabpanel" class="tab-pane active" id="connection">
-	                    <form class="form-horizontal" name="connection" method="post" action="">
+	            	<% 
+	            		String erreur_connection = (String)request.getAttribute("erreur");
+	            		if( erreur_connection != null)
+	            			out.println("<p class=\"bg-danger\"><span class=\"glyphicon glyphicon-info-sign\"></span><span>"+erreur_connection+"</span></p>");
+	            	%>
+	                    <form class="form-horizontal" name="connection" method="post" action="index.html">
 	                      <div class="form-group">
 	                        <label for="emailConnection" class="col-sm-2 control-label">Email</label>
 	                        <div class="col-sm-10">
@@ -28,20 +32,25 @@
 	                        <div class="col-sm-offset-2 col-sm-10">
 	                          <div class="checkbox">
 	                            <label>
-	                              <input type="checkbox"> Se souvenir de moi
+	                              <input type="checkbox" name="cookieConnection"> Se souvenir de moi
 	                            </label>
 	                          </div>
 	                        </div>
 	                    </div>
 	                  <div class="form-group">
 	                    <div class="col-sm-offset-2 col-sm-10">
-	                      <button type="submit" id="submitConnection" class="btn btn-danger right" disabled>Connection</button>
+	                      <button type="submit" id="submitConnection" class="btn btn-danger right" disabled>Connexion</button>
 	                    </div>
 	                  </div>
 	                </form>
 	            </div>
 	            <div role="tabpanel" class="tab-pane" id="inscription">
-	                <form class="form-horizontal" name="inscription" method="post" action="">
+	           		<% 
+	            		String erreur_inscrition = (String)request.getAttribute("erreur");
+	            		if( erreur_inscrition != null)
+	            			out.println("<p class=\"bg-danger\"><span class=\"glyphicon glyphicon-info-sign\"></span><span>"+erreur_inscrition+"</span></p>");
+	            	%>
+	                <form class="form-horizontal" name="inscription" method="post" action="index.html">
 	                    <div class="form-group">
 	                        <label for="pseudoInscription" class="col-sm-2 control-label">Votre pseudo</label>
 	                        <div class="col-sm-10">
@@ -57,7 +66,7 @@
 	                    <div class="form-group">
 	                        <label for="passwordInscription" class="col-sm-2 control-label">Mot de passe</label>
 	                        <div class="col-sm-10">
-	                          <input type="password" class="form-control" id="passwordInscription" name="passwordInscription" onchange="checkInscription(); checkPasswordInscription();" placeholder="Votre mot de passe" maxlength="30">
+	                          <input type="password" class="form-control" id="passwordInscription" name="passwordInscription" onchange="checkInscription(); checkPasswordInscription();" placeholder="Votre mot de passe" maxlength="16" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Le mot de passe doit contenir entre 8 et 16 caractères">
 	                        </div>
 	                    </div>
 	                    <div class="form-group">

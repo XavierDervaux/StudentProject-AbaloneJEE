@@ -1,5 +1,4 @@
 <%@ include file="header.jsp" %>
-<body onload="init();">
  	<div id="corps">
  		<h1>Paramètre</h1>
         <form method="post" name="setting" action="">

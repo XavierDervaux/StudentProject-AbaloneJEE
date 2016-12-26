@@ -36,6 +36,11 @@ li > button {
     text-align: center; 
     font-size: 70px;
 }
+.menu-a:hover{
+    text-decoration: none;
+}
+
+.navbar-brand>img {margin-top: -20px;}
 
 .center {
     text-align: center;
@@ -45,5 +50,44 @@ li > button {
     background-color: #F8F8F8;
 }
 
-.grey { background-color: #F8F8F8;}
-.w-ms-100 {max-width: 100px;}
+.grey { 
+    background-color: #F8F8F8;
+}
+.w-ms-100 {
+    max-width: 100px;
+}
+
+
+.bg-danger{
+    border-radius: 5px;
+    padding: 10px;
+    color : #3e0808;
+}
+.bg-danger>span+span{
+    margin-left: 10px;
+}
+/*
+    Plateau
+*/
+.rowBille{
+    height: 70px;
+}
+
+.bille { 
+    width: 70px;
+    height: 70px;
+    background-image: url(img/bille_empty.png);
+    display: inline-block;
+    margin-left: -4px;
+    margin-right: 0px;
+} 
+
+.bille:hover { 
+    background-image: url(img/bille_hover.png);
+}
+
+.mleft-325 {margin-left: 325px;}
+.mleft-295 {margin-left: 295px;}
+.mleft-265 {margin-left: 265px;}
+.mleft-235 {margin-left: 235px;}
+.mleft-205 {margin-left: 205px;}
