@@ -22,7 +22,7 @@ public class Settings  extends HttpServlet{
 		Boolean estConnecte = Identification.estConnecte(request.getSession(), request.getCookies()); 
 		
 		if(estConnecte){ //On charge la page paramètre
-			this.getServletContext().getRequestDispatcher("/WEB-INF/setting.jsp").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/settings.jsp").forward(request, response);
     	} else { //N'est pas encore connecté, on affihce le formulaire de connexion/inscription
     		response.sendRedirect("/Abalone/index.html");
     	}

@@ -9,6 +9,14 @@
 	                  </div>
 	              </div>
 	            </a>
+	            <a href="achievement.html">
+	              <div class="col-xs-6 col-md-3">
+	                  <div class="thumbnail h100px">
+	                        <h1><span class="glyphicon center glyphicon-education glyph-menu"/></h1>
+	                        <h2 class="center">Succès</h2>
+	                  </div>
+	              </div>
+	            </a>
 	            <a href="historique.html">
 	              <div class="col-xs-6 col-md-3">
 	                   <div class="thumbnail h100px">
