@@ -12,6 +12,7 @@ public class Identification {
 // ---------------------------------------------------
 	public static int connexion(Joueur joueur) {
 		int rmail, rmdp, res = 0;
+		String tmpMdp, tmpMail;
 		rmail = validationEmail(joueur);
 		rmdp = validationMdp(joueur);
 
@@ -20,14 +21,20 @@ public class Identification {
 		} else if (rmdp != 0) { // Le mdp est incorrect
 			res = rmdp;
 		} else { // Tout s'est bien passé
-			joueur.setMdp(Utilitaire.cryptPassword(joueur.getMdp())); // On crypte le mot de passe
-			if(joueur.findBDD()) { res = 1; } //Si on arrive à trouver un joueur correspondant en bdd
+			tmpMdp = joueur.getMdp();
+			tmpMail = joueur.getEmail();
+			if(joueur.findBDD(tmpMail)) {  //Si on arrive à trouver un joueur correspondant en bdd
+				if (joueur.checkPassword(tmpMdp)){ //Si le mdp fourni est correct
+					res = 1; 
+				}
+			}
 		}
 		return res;
 	}
 	
 	public static int inscription(Joueur joueur) {
 		int rmail, rmdp, res = 0;
+		String tmpMdp, tmpMail;
 		rmail = validationEmail(joueur);
 		rmdp = validationMdp(joueur);
 
@@ -35,10 +42,16 @@ public class Identification {
 			res = rmail;
 		} else if (rmdp != 0) { //Le mdp est incorrect
 			res = rmdp;
-		} else { //Tout est ok, on enregistre en bdd
-			joueur.setMdp(Utilitaire.cryptPassword(joueur.getMdp())); //On crypte le mot de passe
-			joueur.createBDD(); //Il est désormais enregistré dans la db
-			res = 1;
+		} else { //Les duex sont bon
+			tmpMdp = joueur.getMdp();
+			tmpMail = joueur.getEmail();
+			if(joueur.findBDD(tmpMail)) {  //Si on arrive à trouver un joueur correspondant en bdd ça veut dire que l'email existe déjà
+				res = 5; 
+			} else { //Tout est ok
+				joueur.setMdp(Utilitaire.cryptPassword(tmpMdp)); //On crypte le mot de passe
+				joueur.createBDD(); //Il est désormais enregistré dans la db
+				res = 1;
+			}
 		}
 		return res;
 	}
@@ -46,25 +59,36 @@ public class Identification {
 	public static boolean estConnecte(HttpSession sessions, Cookie[] cookies) {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		Cookie connect = null;
-		boolean res = (boolean) sessions.getAttribute("connected");
-		Joueur joueur = (Joueur) sessions.getAttribute("joueur");
-
-		if (!(res && joueur != null)) { // Si les sessions n'existent pas
-			for (Cookie cki : cookies) {
-				if (cki.getName().equals("user_email")) {
-					connect = cki;
+		Object oRes, oJoueur;
+		boolean res = false;
+		Joueur joueur = null;
+		
+		if( sessions != null ){
+			oRes = sessions.getAttribute("connected"); //Si la session existe, alors ça veut dire qu'on est connecté, pas besoin de rentrer dans les conditions
+			oJoueur = sessions.getAttribute("joueur");
+			if(oRes != null) { res = (boolean) oRes;}
+			if(oJoueur != null) { joueur = (Joueur) oJoueur;}
+		}
+		
+		if (res == false || joueur == null) { // Si les sessions n'existent pas, on vérifie si un cookie existe
+			if( cookies != null ){
+				for (Cookie cki : cookies) {
+					if (cki.getName().equals("user_email")) {
+						connect = cki; //Si on trouve un cookie avecl'email dedans ça veut dire que l'user a demandé à rester connecté.
+					}
 				}
 			}
 			if (connect != null) { // SI les cookies existent
-				joueur = ((JoueurDAO) adf.getJoueurDAO()).find(connect.getValue());
+				joueur = ((JoueurDAO) adf.getJoueurDAO()).find(connect.getValue()); //On récupère l'user correspondant au mail
 				sessions.setAttribute("connected", true);
-				sessions.setAttribute("joueur", joueur);
+				sessions.setAttribute("joueur", joueur); //On crée nos sessions, il est désormais connecté.
 				res = true;
 			}
 		}
 		return res;
 	}
 
+	
 // Méthode privées
 // ---------------------------------------------------
 	private static int validationEmail(Joueur joueur) {

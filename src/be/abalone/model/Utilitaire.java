@@ -61,9 +61,15 @@ public class Utilitaire {
     }
     
     public static void setCookie( HttpServletResponse response, String nom, String valeur, int maxAge ) {
-        Cookie cookie = new Cookie( nom, valeur );
-        cookie.setMaxAge( maxAge );
-        response.addCookie( cookie );
+        Cookie cookie = new Cookie(nom, valeur);
+        cookie.setMaxAge(maxAge);
+        response.addCookie(cookie);
+    }
+    
+    public static void unsetCookie( HttpServletResponse response, String nom){
+        Cookie cookie = new Cookie(nom, "");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 
 }

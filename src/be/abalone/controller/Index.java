@@ -29,13 +29,16 @@ public class Index extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sessions = request.getSession();
-		int res;
+		int res=0, type=0;//Type:0 lol
 		boolean resterConnecte = false;
-		String output, pseudo, mdp, email;
-		Joueur input;
+		String output=null, pseudo, mdp, email;
+		Joueur input=null;
 		
+		if(Utilitaire.getBoolChamp(request, "estConnexion")){ type = 1; }
+		else if(Utilitaire.getBoolChamp(request, "estInscription")){ type = 2; }
+		else if(Utilitaire.getBoolChamp(request, "estDeconnexion")){ type = 3; } //Deconnexion
 		
-		if(Utilitaire.getBoolChamp(request, "estConnexion")){ //Connexion		
+		if(type == 1){ //Connexion		
 			email = Utilitaire.getValeurChamp(request, "emailConnection");
 			mdp = Utilitaire.getValeurChamp(request, "passwordConnection");
 			resterConnecte = Utilitaire.getBoolChamp(request, "rememberConnection");	
@@ -43,7 +46,7 @@ public class Index extends HttpServlet {
 			
 			res = Identification.connexion(input); // Si la connexion réussi, les propriétés de inputs seront modifiées pour obtenir un Joueur valide
 			output = affichageConnexion(res);
-		} else { //Inscription
+		} else if (type == 2) { //Inscription
 			pseudo = Utilitaire.getValeurChamp(request, "pseudoInscription");
 			email = Utilitaire.getValeurChamp(request, "emailInscription");
 			mdp = Utilitaire.getValeurChamp(request, "passwordInscription");
@@ -51,6 +54,10 @@ public class Index extends HttpServlet {
 			
 			res = Identification.inscription(input);
 			output = affichageConnexion(res);
+		} else { //Deconnexion
+			sessions.removeAttribute("connected");
+			sessions.removeAttribute("joueur");
+			Utilitaire.unsetCookie(response, "user_email");
 		}
 		
 		if (res == 1) { // On définit les sessions et le cookie
@@ -60,7 +67,7 @@ public class Index extends HttpServlet {
 				Utilitaire.setCookie(response, "user_email", input.getEmail(), 60 * 60 * 24 * 365);
 			}
 			response.sendRedirect("/Abalone/Menu.html"); // On est connecté, on redirige vers le menu.
-		} else {// Ca ne s'est pas bien passé, on recharge la page avec le message d'erreur...
+		} else if (output != null) {// Ca ne s'est pas bien passé, on recharge la page avec le message d'erreur...
 			request.setAttribute("erreur", output);
 			doGet(request, response);
 		}
@@ -73,6 +80,7 @@ public class Index extends HttpServlet {
 			case 2: output = "Merci de saisir une adresse mail valide."; break;
 			case 3: output = "Le mot de passe doit contenir au moins 8 caractères."; break;
 			case 4: output = "Le mot de passe doit contenir moins de 16 caractères."; break;
+			case 5: output = "L'adresse E-mail saisie est déjà enregistrée."; break;
 		}
 		return output;
 	}

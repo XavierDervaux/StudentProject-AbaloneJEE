@@ -77,18 +77,38 @@ public class Joueur {
 		adf.getJoueurDAO().create(this);
 	}
     
-	public boolean findBDD() {
+	public boolean findBDD(int id) {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
-		Joueur tmp = ((JoueurDAO) adf.getJoueurDAO()).find(this.getEmail()); // Il vaudra null si aucun n'existe
+		Joueur tmp = adf.getJoueurDAO().find(id); // Il vaudra null si aucun n'existe
 
-		if (tmp != null) {
-			if (tmp.getMdp().equals(this.getMdp())) { // Le mail et le mdp est correct, on est connecté.
-				this.setId(tmp.getId());
-				this.setPseudo(tmp.getPseudo());
-				this.setAchievs(tmp.getAchievs());
-			}
+		this.setPseudo(tmp.getPseudo());
+		this.setMdp(tmp.getMdp());
+		this.setEmail(tmp.getEmail());
+		this.setAchievs(tmp.getAchievs());
+		
+		return tmp != null; //On confirme que l'objet a bien été modifié.		
+	}
+    
+	public boolean findBDD(String email) {
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		Joueur tmp = ((JoueurDAO) adf.getJoueurDAO()).find(email); // Il vaudra null si aucun n'existe
+
+		this.setId(tmp.getId());
+		this.setPseudo(tmp.getPseudo());
+		this.setMdp(tmp.getMdp());
+		this.setAchievs(tmp.getAchievs());
+		
+		return tmp != null; //On confirme que l'objet a bien été modifié.	
+	}
+    
+	public boolean checkPassword(String uncryptedPassword) {
+		boolean res = false;
+		String cryptedPassword = Utilitaire.cryptPassword(uncryptedPassword);
+		
+		if (this.getMdp().equals(cryptedPassword)) { //Le pass est correct
+			res = true;
 		}
-		return tmp!= null; //On confirme que l'objet a bien été modifié.		
+		return res;	
 	}
 	
 	
