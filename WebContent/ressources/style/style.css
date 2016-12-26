@@ -6,6 +6,7 @@ li > button {
 }
 #corps { 
     max-width: 1000px;
+    margin-top: 150px;
 }
 
 #contentConnexion { 
@@ -74,6 +75,13 @@ li > button {
 
 .hidden {
     visibility: hidden;
+}
+
+.no-design{
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    background: rgba(0, 0, 0, 0.0)
 }
 
 /*
