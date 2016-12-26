@@ -11,7 +11,7 @@ public class Identification {
 // Méthode publiques
 // ---------------------------------------------------
 	public static int connexion(Joueur joueur) {
-		int rmail, rmdp, res = -1;
+		int rmail, rmdp, res = 0;
 		String tmpMdp, tmpMail;
 		rmail = validationEmail(joueur);
 		rmdp = validationMdp(joueur);

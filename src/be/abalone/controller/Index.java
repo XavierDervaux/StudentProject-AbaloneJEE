@@ -46,7 +46,10 @@ public class Index extends HttpServlet {
 			input = new Joueur ("", mdp, email); 
 			
 			res = Identification.connexion(input); // Si la connexion réussi, les propriétés de inputs seront modifiées pour obtenir un Joueur valide
-			output = affichageConnexion(res);
+			if(res != 1){
+				output = affichageConnexion(res);
+				request.setAttribute("erreurConn", output);
+			}
 		} else if (type == 2) { //Inscription
 			pseudo = Utilitaire.getValeurChamp(request, "pseudoInscription");
 			email = Utilitaire.getValeurChamp(request, "emailInscription");
@@ -54,11 +57,15 @@ public class Index extends HttpServlet {
 			input = new Joueur (pseudo, mdp, email); 
 			
 			res = Identification.inscription(input);
-			output = affichageConnexion(res);
+			if(res != 1){
+				output = affichageConnexion(res);
+				request.setAttribute("erreurConn", output);
+			}
 		} else { //Deconnexion
 			sessions.removeAttribute("connected");
 			sessions.removeAttribute("joueur");
 			Utilitaire.unsetCookie(response, "user_email");
+			response.sendRedirect("/Abalone/index.html"); return; //Le return doit etre la, sinon le send redirect sera exécuté APRES le reste du code, pas immédiatement.
 		}
 		
 		if (res == 1) { // On définit les sessions et le cookie
@@ -67,11 +74,8 @@ public class Index extends HttpServlet {
 			if (resterConnecte) { // Si l'utilisateur le souhaite, on lui crée un cookie pour ne pas qu'il se relogg a chauqe fois
 				Utilitaire.setCookie(response, "user_email", input.getEmail(), 60 * 60 * 24 * 365);
 			}
-			response.sendRedirect("/Abalone/menu.html"); // On est connecté, on redirige vers le menu.
-		} else if (output != null) {// Ca ne s'est pas bien passé, on recharge la page avec le message d'erreur...
-			request.setAttribute("erreur", output);
-			doGet(request, response);
 		}
+		doGet(request, response);
 	}
 	
 	private String affichageConnexion(int res) {
