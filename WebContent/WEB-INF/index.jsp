@@ -3,18 +3,16 @@
 	        <div id="contentConnexion">
 	          <!-- Nav tabs -->
 	          <ul class="nav nav-tabs" role="tablist">
-	            <li role="presentation" class="active"><a href="#connection" aria-controls="connection" role="tab" data-toggle="tab">Connexion</a></li>
+	            <li role="presentation" class="active"><a href="#connexion" aria-controls="connexion" role="tab" data-toggle="tab">Connexion</a></li>
 	            <li role="presentation"><a href="#inscription" aria-controls="inscription" role="tab" data-toggle="tab">Inscription</a></li>
 	          </ul>
 	
 	          <!-- Tab panes -->
 	          <div class="tab-content">
-	            <div role="tabpanel" class="tab-pane active" id="connection">
-	            	<% 
-	            		String erreur_connection = (String)request.getAttribute("erreur");
-	            		if( erreur_connection != null)
-	            			out.println("<p class=\"bg-danger\"><span class=\"glyphicon glyphicon-info-sign\"></span><span>"+erreur_connection+"</span></p>");
-	            	%>
+	            <div role="tabpanel" class="tab-pane active" id="connexion">
+	            	<c:if test="${not empty erreurConn}"> 
+	            		<p class="bg-danger"><span class="glyphicon glyphicon-info-sign"></span><span>${erreurConn}</span></p>
+	           		</c:if>
 	                    <form class="form-horizontal" name="connection" method="post" action="index.html">
 	                    <input type="checkbox" name="estConnexion" class="hidden" checked/>
 	                      <div class="form-group">
@@ -26,7 +24,7 @@
 	                      <div class="form-group">
 	                        <label for="passwordConnection" class="col-sm-2 control-label">Mot de passe</label>
 	                        <div class="col-sm-10">
-	                          <input type="password" class="form-control" id="passwordConnection" name="passwordConnection" onchange="checkConnecion();" placeholder="Password" maxlength="30">
+	                          <input type="password" class="form-control" id="passwordConnection" name="passwordConnection" onchange="checkConnecion();" placeholder="Password" maxlength="16">
 	                        </div>
 	                      </div>
 	                      <div class="form-group">
@@ -46,11 +44,9 @@
 	                </form>
 	            </div>
 	            <div role="tabpanel" class="tab-pane" id="inscription">
-	           		<% 
-	            		String erreur_inscrition = (String)request.getAttribute("erreur");
-	            		if( erreur_inscrition != null)
-	            			out.println("<p class=\"bg-danger\"><span class=\"glyphicon glyphicon-info-sign\"></span><span>"+erreur_inscrition+"</span></p>");
-	            	%>
+	            <c:if test="${not empty erreurInscr}"> 
+	            	<p class="bg-danger"><span class="glyphicon glyphicon-info-sign"></span><span>${erreurInscr}</span></p>
+	            </c:if>
 	                <form class="form-horizontal" name="inscription" method="post" action="index.html">
 	                 <input type="checkbox" name="estInscription" class="hidden" checked/>
 	                    <div class="form-group">

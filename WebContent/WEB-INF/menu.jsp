@@ -17,7 +17,7 @@
 	                  </div>
 	              </div>
 	            </a>
-	            <a href="parametre.html">
+	            <a href="setting.html">
 	              <div class="col-xs-6 col-md-3">
 	                   <div class="thumbnail h100px">
 	                        <h1><span class="glyphicon center glyphicon-cog glyph-menu"/></h1>

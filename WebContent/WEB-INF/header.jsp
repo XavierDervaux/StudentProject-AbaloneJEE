@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -23,7 +24,9 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a>Bienvenue Toto</a></li>
+                   		<c:if test="${not empty joueur}"> 
+                   		 	<li><a>Bienvenue ${joueur.getPseudo()}</a></li>
+                   		</c:if>
                     </ul>
                 </div>
             </div>
