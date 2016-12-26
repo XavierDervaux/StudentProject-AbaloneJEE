@@ -1,7 +1,6 @@
 package be.abalone.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,9 +29,8 @@ public class Index extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
 		HttpSession sessions = request.getSession();
-		int res=0, type=0;//Type:0 lol
+		int res=-1, type=0;//Type:0 lol
 		boolean resterConnecte = false;
 		String output=null, pseudo, mdp, email;
 		Joueur input=null;
@@ -69,7 +67,7 @@ public class Index extends HttpServlet {
 			if (resterConnecte) { // Si l'utilisateur le souhaite, on lui crée un cookie pour ne pas qu'il se relogg a chauqe fois
 				Utilitaire.setCookie(response, "user_email", input.getEmail(), 60 * 60 * 24 * 365);
 			}
-			response.sendRedirect("/Abalone/Menu.html"); // On est connecté, on redirige vers le menu.
+			response.sendRedirect("/Abalone/menu.html"); // On est connecté, on redirige vers le menu.
 		} else if (output != null) {// Ca ne s'est pas bien passé, on recharge la page avec le message d'erreur...
 			request.setAttribute("erreur", output);
 			doGet(request, response);

@@ -98,7 +98,9 @@ public class AchievementDAO extends DAO<Achievement>{
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){
-				res = new Achievement(rs.getInt("id"), rs.getString("titre"), rs.getString("nom"), rs.getString("description")); 
+				while(rs.next()){ 
+					res = new Achievement(rs.getInt("id"), rs.getString("titre"), rs.getString("nom"), rs.getString("description")); 
+				}
 			}
 			
 			requete.close();

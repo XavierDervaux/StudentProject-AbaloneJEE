@@ -11,7 +11,7 @@ public class Identification {
 // Méthode publiques
 // ---------------------------------------------------
 	public static int connexion(Joueur joueur) {
-		int rmail, rmdp, res = 0;
+		int rmail, rmdp, res = -1;
 		String tmpMdp, tmpMail;
 		rmail = validationEmail(joueur);
 		rmdp = validationMdp(joueur);
@@ -23,6 +23,7 @@ public class Identification {
 		} else { // Tout s'est bien passé
 			tmpMdp = joueur.getMdp();
 			tmpMail = joueur.getEmail();
+			
 			if(joueur.findBDD(tmpMail)) {  //Si on arrive à trouver un joueur correspondant en bdd
 				if (joueur.checkPassword(tmpMdp)){ //Si le mdp fourni est correct
 					res = 1; 

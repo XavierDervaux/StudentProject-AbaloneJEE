@@ -103,11 +103,12 @@ public class HistoriqueDAO extends DAO<Historique>{
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){ 
+				while(rs.next()){ 
 				res = new Historique(rs.getInt("id"), rs.getDate("date_partie"), rs.getInt("score_gagnant"), rs.getInt("score_perdant"), 
 						        	 Utilitaire.intToBool(rs.getInt("est_forfait")), adf.getJoueurDAO().find(rs.getInt("id_gagnant")), 
 						        	 adf.getJoueurDAO().find(rs.getInt("id_perdant")) ); 
+				}
 			}
-			
 			requete.close();
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
