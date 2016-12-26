@@ -22,8 +22,8 @@
 	</servlet>
 	
 	<servlet>
-		<servlet-name>Setting</servlet-name>
-		<servlet-class>be.abalone.controller.Setting</servlet-class>
+		<servlet-name>Settings</servlet-name>
+		<servlet-class>be.abalone.controller.Settings</servlet-class>
 	</servlet>
 
 	
@@ -42,7 +42,7 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>Setting</servlet-name>
-		<url-pattern>/setting.html</url-pattern>
+		<servlet-name>Settings</servlet-name>
+		<url-pattern>/settings.html</url-pattern>
 	</servlet-mapping>
 </web-app>

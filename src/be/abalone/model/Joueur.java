@@ -88,6 +88,11 @@ public class Joueur {
 		
 		return tmp != null; //On confirme que l'objet a bien été modifié.		
 	}
+	
+	public boolean updateBDD(){
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		return adf.getJoueurDAO().update(this);
+	}
     
 	public boolean findBDD(String email) {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);

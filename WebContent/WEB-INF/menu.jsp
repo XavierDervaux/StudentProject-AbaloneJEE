@@ -17,11 +17,11 @@
 	                  </div>
 	              </div>
 	            </a>
-	            <a href="setting.html">
+	            <a href="settings.html">
 	              <div class="col-xs-6 col-md-3">
 	                   <div class="thumbnail h100px">
 	                        <h1><span class="glyphicon center glyphicon-cog glyph-menu"/></h1>
-	                        <h2 class="center">Paramètre</h2>
+	                        <h2 class="center">Paramètres</h2>
 	                  </div>
 	              </div>
 	            </a>
