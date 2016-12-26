@@ -40,7 +40,7 @@ public class Settings  extends HttpServlet{
 		if(mail != null) { //Changement de mail 
 			res = Identification.validationEmail(mail);
 			if(res == 0){//Le mail est valide
-				if(actuel.findBDD(mail)) {  //Si on arrive à trouver un joueur correspondant en bdd ça veut dire que l'email existe déjà
+				if( !( actuel.getEmail().equals(mail) ) && actuel.findBDD(mail)) {  //Si on arrive à trouver un joueur correspondant en bdd ça veut dire que l'email existe déjà
 					res = 5; 
 				} else {
 					actuel.setEmail(mail); 
