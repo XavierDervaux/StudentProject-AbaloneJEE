@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
-import be.abalone.model.*;
+import be.abalone.model.Achievement;
 
 public class AchievJoueurDAO extends DAO<List<Achievement>>{
 	public AchievJoueurDAO(Connection conn){
@@ -16,7 +16,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 	}
 	
 	public boolean create(List<Achievement> obj){		
-		return false; //Utilisation impossible sans l'id du joueur
+		return false;
 	}
 	
 	public boolean create(int id_joueur, int id_achiev){		
@@ -41,11 +41,11 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 	}
 	
 	public boolean delete(List<Achievement> obj){
-		return false; //Les achievements ne sont jamais supprimés d'un compte, ils sont gagnés à vie
+		return false; 
 	}
 	
 	public boolean update(List<Achievement> obj){
-		return false; //Utilisation impossible dans ce contexte
+		return false; 
 	}
 	
 	public List<Achievement> find(int id_joueur){
@@ -71,7 +71,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 		return res;
 	}
 	
-	public List<Joueur> find(int id_achiev, final int Joueur){ //Param int Joueur inutile, sert à faire un polymorphisme statique.
+	/*public List<Joueur> find(int id_achiev, final int Joueur){ //Param int Joueur inutile, sert à faire un polymorphisme statique.
 		List<Joueur> res = null;
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		
@@ -92,9 +92,9 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 		}
 		
 		return res;
-	}
+	}*/
 	
 	public List<List<Achievement>> getAll(){
-		return null; //Usage inutile
+		return null;
 	}
 }

@@ -1,12 +1,11 @@
 package be.abalone.dao;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Types;
-
 import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
 import be.abalone.model.*;
@@ -44,12 +43,11 @@ public class JoueurDAO extends DAO<Joueur>{
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			res = false;
 		}
-
 		return res;
 	}
 	
 	public boolean delete(Joueur obj){
-		boolean res = false;
+		/*boolean res = false;
 		
 		if(obj.getId() == 0){ //L'objet vient d'etre créé et ne sort pas de la DB
 			System.err.println("Erreur, vous ne pouvez pas supprimer un enregistrement sur base de cet objet.");
@@ -68,7 +66,8 @@ public class JoueurDAO extends DAO<Joueur>{
 			}
 		}
 
-		return res;
+		return res;*/
+		return false;
 	}
 	
 	public boolean update(Joueur obj){
@@ -144,7 +143,7 @@ public class JoueurDAO extends DAO<Joueur>{
 	}
 	
 	public List<Joueur> getAll(){
-		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		/*DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		List<Joueur> res = null;
 
 		try {
@@ -166,6 +165,7 @@ public class JoueurDAO extends DAO<Joueur>{
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
 		
-		return res;
+		return res;*/
+		return null;
 	}
 }

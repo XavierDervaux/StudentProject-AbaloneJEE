@@ -1,9 +1,11 @@
 package be.abalone.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import be.abalone.model.*;
+import be.abalone.model.Achievement;
 
 public class AchievementDAO extends DAO<Achievement>{
 	public AchievementDAO(Connection conn){
@@ -11,13 +13,11 @@ public class AchievementDAO extends DAO<Achievement>{
 	}
 	
 	public boolean create(Achievement obj){		
-		int id;
+		/*int id;
 		boolean res = true;
 		
 		try {
-			Statement requete = connect.createStatement();
-			/*String sql = "INSERT INTO achievement (id,titre,nom,description) VALUES ('','Toast','dtre','excrtvby')";*/
-			
+			Statement requete = connect.createStatement();			
 			String sql = "INSERT INTO achievement (id,titre,nom,description) "
 					   + "VALUES ('','" + obj.getTitre() + "','" + obj.getNom() + "','" + obj.getDescription() + "')";
 			requete.executeUpdate(sql);
@@ -40,12 +40,12 @@ public class AchievementDAO extends DAO<Achievement>{
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			res = false;
 		}
-
-		return res;
+		return res;*/
+		return false;
 	}
 	
 	public boolean delete(Achievement obj){
-		boolean res = false;
+		/*boolean res = false;
 		
 		if(obj.getId() == 0){ //L'objet vient d'etre créé et ne sort pas de la DB
 			System.err.println("Erreur, vous ne pouvez pas supprimer un enregistrement sur base de cet objet.");
@@ -62,12 +62,12 @@ public class AchievementDAO extends DAO<Achievement>{
 				System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			}
 		}
-
-		return res;
+		return res;*/
+		return false;
 	}
 	
 	public boolean update(Achievement obj){
-		boolean res = false;
+		/*boolean res = false;
 		
 		if(obj.getId() == 0){ //L'objet vient d'etre crÃ©e et ne sort pas de la DB
 			System.err.println("Erreur, vous ne pouvez pas mettre un enregistrement à jour sur base de cet objet.");
@@ -85,8 +85,8 @@ public class AchievementDAO extends DAO<Achievement>{
 				System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			}
 		}
-
-		return res;
+		return res;*/
+		return false;
 	}
 	
 	public Achievement find(int id){
@@ -107,7 +107,6 @@ public class AchievementDAO extends DAO<Achievement>{
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-		
 		return res;
 	}
 	
@@ -131,7 +130,6 @@ public class AchievementDAO extends DAO<Achievement>{
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-		
 		return res;
 	}
 }

@@ -1,12 +1,17 @@
 package be.abalone.dao;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-
 import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
-import be.abalone.model.*;
+import be.abalone.model.Historique;
+import be.abalone.model.Joueur;
+import be.abalone.model.Utilitaire;
 
 public class HistoriqueDAO extends DAO<Historique>{
 	public HistoriqueDAO(Connection conn){
@@ -31,10 +36,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 			statement.setInt(2,1); 
 			statement.execute(); 
 			id = statement.getInt(1);
-			
-			if(id != 0){
-				obj.setId(id);
-			}
+			if(id != 0){  obj.setId(id);  }
 			
 			requete.close();
 			fetchId.close();
@@ -42,14 +44,13 @@ public class HistoriqueDAO extends DAO<Historique>{
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			res = false;
 		}
-
 		return res;
 	}
 	
 	public boolean delete(Historique obj){
-		boolean res = false;
+		/*boolean res = false;
 		
-		if(obj.getId() == 0){ //L'objet vient d'etre crÃ©e et ne sort pas de la DB
+		if(obj.getId() == 0){ //L'objet vient d'etre créé et ne sort pas de la DB
 			System.err.println("Erreur, vous ne pouvez pas supprimer un enregistrement sur base de cet objet.");
 			System.err.println("Réessayez avec un objet provenant de la BDD.\n");
 		}else{
@@ -64,14 +65,14 @@ public class HistoriqueDAO extends DAO<Historique>{
 				System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			}
 		}
-
-		return res;
+		return res;*/
+		return false;
 	}
 	
 	public boolean update(Historique obj){
-		boolean res = false;
+		/*boolean res = false;
 		
-		if(obj.getId() == 0){ //L'objet vient d'etre crÃ©e et ne sort pas de la DB
+		if(obj.getId() == 0){ //L'objet vient d'etre créé et ne sort pas de la DB
 			System.err.println("Erreur, vous ne pouvez pas mettre un enregistrement à jour sur base de cet objet.");
 			System.err.println("Réessayez avec un objet provenant de la BDD.\n");
 		}else{
@@ -89,12 +90,12 @@ public class HistoriqueDAO extends DAO<Historique>{
 				System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			}
 		}
-
-		return res;
+		return res;*/
+		return false;
 	}
 	
 	public Historique find(int id){
-		Historique res = null;
+		/*Historique res = null;
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 
 		try {
@@ -113,12 +114,12 @@ public class HistoriqueDAO extends DAO<Historique>{
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-		
-		return res;
+		return res;*/
+		return null;
 	}
 	
 	public List<Historique> getAll(){
-		List<Historique> res = null;
+		/*List<Historique> res = null;
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 
 		try {
@@ -140,8 +141,8 @@ public class HistoriqueDAO extends DAO<Historique>{
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-		
-		return res;
+		return res;*/
+		return null;
 	}
 	
 	public List<Historique> getAll(Joueur joueur){
@@ -167,7 +168,6 @@ public class HistoriqueDAO extends DAO<Historique>{
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-		
 		return res;
 	}
 }
