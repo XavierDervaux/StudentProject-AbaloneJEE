@@ -12,7 +12,7 @@ public class DAOFactory extends AbstractDAOFactory{
 		return new AchievementDAO(conn);
 	}
 	
-	public DAO<List<Achievement>> getAchievJoueurtDAO(){
+	public DAO<List<Achievement>> getAchievJoueurDAO(){
 		return new AchievJoueurDAO(conn);
 	}
 	

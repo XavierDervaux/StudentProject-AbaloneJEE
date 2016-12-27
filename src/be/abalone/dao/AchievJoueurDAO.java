@@ -50,6 +50,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 	
 	public List<Achievement> find(int id_joueur){
 		List<Achievement> res = null;
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		
 		try {
 			Statement requete = connect.createStatement();
@@ -60,7 +61,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 				res = new ArrayList<Achievement>();
 				
 				while(rs.next()){
-					res.add(new Achievement(rs.getInt("id"), rs.getString("titre"), rs.getString("nom"), rs.getString("description")) ); 
+					res.add( adf.getAchievementDAO().find(rs.getInt("id_achievement")) ); 
 				}
 			}
 		} catch (Exception e) {
@@ -76,14 +77,14 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 		
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "SELECT * FROM fait WHERE id_achivement='" + id_achiev + "'";
+			String sql = "SELECT * FROM fait WHERE id_achievement='" + id_achiev + "'";
 			ResultSet rs = requete.executeQuery(sql);
 			
 			if(rs != null){ 
 				res = new ArrayList<Joueur>();
 				
 				while(rs.next()){
-					res.add(adf.getJoueurDAO().find(rs.getInt("id") )); 
+					res.add(adf.getJoueurDAO().find(rs.getInt("id_joueur") )); 
 				}
 			}
 		} catch (Exception e) {

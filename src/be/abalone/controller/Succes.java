@@ -2,6 +2,7 @@ package be.abalone.controller;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,12 +41,14 @@ public class Succes extends HttpServlet {
 		};
 		listA.sort(comp);
 		
-		for(Achievement tmp1 : listA){
+		Iterator<Achievement> iterator = listA.iterator();
+		while (iterator.hasNext()) {
+			Achievement tmp1 = iterator.next(); // On récupère l'élément courant
 			if(actuel.getAchievs() != null){
 				actuel.getAchievs().sort(comp);
 				for(Achievement tmp2 : actuel.getAchievs()){
 					if(tmp1.getId() == tmp2.getId()){ //Si au sein de la liste il existe un achievement déjà effectué par le joueur.
-						listA.remove(tmp1);//On le supprime
+						iterator.remove();//On le supprime
 					}
 				}
 			}

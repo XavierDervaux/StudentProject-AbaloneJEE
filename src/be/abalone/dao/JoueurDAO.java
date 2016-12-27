@@ -107,7 +107,7 @@ public class JoueurDAO extends DAO<Joueur>{
 			if(rs != null){
 				while(rs.next()){ 
 					int id2 = rs.getInt("id");
-					res = new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurtDAO().find(id2) ); 
+					res = new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurDAO().find(id2) ); 
 				}
 			}
 			
@@ -131,7 +131,7 @@ public class JoueurDAO extends DAO<Joueur>{
 			if(rs != null){
 				while(rs.next()){ 
 					int id2 = rs.getInt("id");
-					res = new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurtDAO().find(id2) ); 
+					res = new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurDAO().find(id2) ); 
 				}
 			}
 			
@@ -151,13 +151,13 @@ public class JoueurDAO extends DAO<Joueur>{
 			Statement requete = connect.createStatement();
 			String sql = "SELECT * FROM joueur";
 			ResultSet rs = requete.executeQuery(sql);
-			int id2 = rs.getInt("id");
 			
 			if(rs != null){
 				res = new ArrayList<Joueur>();
 				
 				while(rs.next()){ 
-					res.add(new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurtDAO().find(id2))); 
+					int id2 = rs.getInt("id");
+					res.add(new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurDAO().find(id2))); 
 				}
 			}
 		
