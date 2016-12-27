@@ -4,7 +4,7 @@ CREATE TABLE joueur(
 	mdp       VARCHAR2(256) NOT NULL,
 	email     VARCHAR2(64) 	NOT NULL,
 	CONSTRAINT pk_joueur PRIMARY KEY(id)
-);
+); ON DELETE CASCADE;
 
 CREATE TABLE historique(
 	id    			 INTEGER 		NOT NULL,
@@ -12,11 +12,11 @@ CREATE TABLE historique(
 	score_gagnant    INTEGER 		NOT NULL,
 	score_perdant    INTEGER 		NOT NULL,
 	est_forfait      NUMBER(1,0) 	NOT NULL,
-	id_gagnant       INTEGER 		NOT NULL,
+	id_gagnant       INTEGER 		NOT NULL ,
 	id_perdant		 INTEGER 		NOT NULL,
 	CONSTRAINT pk_historique 	PRIMARY KEY(id),
-	CONSTRAINT fk_histo_gagnant FOREIGN KEY(id_gagnant) REFERENCES joueur(id),
-	CONSTRAINT fk_histo_perdant FOREIGN KEY(id_perdant) REFERENCES joueur(id)
+	CONSTRAINT fk_histo_gagnant FOREIGN KEY(id_gagnant) REFERENCES joueur(id) ON DELETE CASCADE,
+	CONSTRAINT fk_histo_perdant FOREIGN KEY(id_perdant) REFERENCES joueur(id) ON DELETE CASCADE
 );
 
 CREATE TABLE achievement(
@@ -31,8 +31,8 @@ CREATE TABLE fait(
 	id_joueur      INTEGER NOT NULL,
 	id_achievement INTEGER NOT NULL,
 	CONSTRAINT pk_fait 				PRIMARY KEY(id_joueur ,id_achievement),
-	CONSTRAINT fk_fait_joueur 		FOREIGN KEY(id_joueur) 	 REFERENCES joueur(id),
-	CONSTRAINT fk_fait_achievement  FOREIGN KEY(id_achievement) REFERENCES achievement(id)
+	CONSTRAINT fk_fait_joueur 		FOREIGN KEY(id_joueur) 	 REFERENCES joueur(id) ON DELETE CASCADE,
+	CONSTRAINT fk_fait_achievement  FOREIGN KEY(id_achievement) REFERENCES achievement(id) ON DELETE CASCADE
 );
 
 

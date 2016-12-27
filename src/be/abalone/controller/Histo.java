@@ -1,19 +1,15 @@
 package be.abalone.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import be.abalone.model.Historique;
 import be.abalone.model.Identification;
 import be.abalone.model.Joueur;
-import be.abalone.model.structHisto;
 
 public class Histo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -42,7 +38,12 @@ public class Histo extends HttpServlet {
 		request.setAttribute("gagnes", getGagnees(listH, actuel));
 		request.setAttribute("perdues", getPerdues(listH, actuel));
 		request.setAttribute("forfait", getAbandonnees(listH, actuel));
-		request.setAttribute("liste", getListe(listH, actuel));
+		request.setAttribute("liste", listH);
+		
+		System.out.println(getJouees(listH));
+		System.out.println(getGagnees(listH, actuel));
+		System.out.println(getPerdues(listH, actuel));
+		System.out.println(getAbandonnees(listH, actuel));
 		
 	}
 
@@ -67,7 +68,9 @@ public class Histo extends HttpServlet {
 		
 		for(Historique tmp : listH){
 			if(tmp.getPerdant().getId() == actuel.getId()){
-				perdues++;
+				if( !(tmp.getEstForfait()) ){
+					perdues++;
+				}
 			}
 		}
 		
@@ -88,7 +91,7 @@ public class Histo extends HttpServlet {
 		return aband;
 	}
 
-	private Object getListe(List<Historique> listH, Joueur actuel) {
+	/*private Object getListe(List<Historique> listH, Joueur actuel) {
 		structHisto tmpL;
 		List<structHisto> res = new ArrayList<structHisto>();
 		
@@ -107,5 +110,5 @@ public class Histo extends HttpServlet {
 			res.add(tmpL);
 		}
 		return null;
-	}
+	}*/
 }

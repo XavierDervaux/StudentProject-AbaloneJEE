@@ -103,10 +103,10 @@ public class JoueurDAO extends DAO<Joueur>{
 			Statement requete = connect.createStatement();
 			String sql = "SELECT * FROM joueur WHERE id='" + id + "'";
 			ResultSet rs = requete.executeQuery(sql);
-			int id2 = rs.getInt("id");
 			
 			if(rs != null){
 				while(rs.next()){ 
+					int id2 = rs.getInt("id");
 					res = new Joueur( id2, rs.getString("pseudo"), rs.getString("mdp"), rs.getString("email"), adf.getAchievJoueurtDAO().find(id2) ); 
 				}
 			}
