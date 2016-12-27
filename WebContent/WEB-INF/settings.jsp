@@ -1,6 +1,6 @@
 <%@ include file="header.jsp" %>
  	<div id="corps">
- 		<a href="menu.html">
+ 		<a href="menu.html" class="button-back right">
             <button type="button" class="btn btn-primary btn-lg">Retour au menu</button>
         </a>
  		<h1>Paramètre</h1>

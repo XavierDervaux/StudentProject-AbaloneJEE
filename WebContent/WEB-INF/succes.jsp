@@ -6,43 +6,32 @@
         <h1>Succès</h1>
             <table class="table table">
                 <tr>
-                    <th colspan="2" class="th-title">Mes succès réalisés</th>
+                    <th colspan="2" class="th-title">Mes succès accomplis</th>
                 </tr>
-                <tr class="achievement">
-                    <td>
-                        <h4>Ceci test un titre</h4>
-                        <pre>Ceci est une longue et grande description.</pre>
-                    </td>
-                </tr> 
-                <tr class="achievement">
-                    <td>
-                        <h4>Ceci test un titre</h4>
-                        <pre>Ceci est une longue et grande description.</pre>
-                    </td>
-                </tr> 
-                <tr class="achievement">
-                    <td>
-                        <h4>Ceci test un titre</h4>
-                        <pre>Ceci est une longue et grande description.</pre>
-                    </td>
-                </tr> 
-                
-                
+                <c:if test="${accomplis.size() == 0}">
+                	<tr>
+                		<td> <pre>Aucun succès n'a encore été accomplis !</pre></td>
+                	</tr>
+                </c:if>
+                <c:forEach items="${accomplis}" var="item">
+                	<tr class="achievement">
+	                    <td>
+	                        <h4>${item.getNom()}</h4>
+	                        <pre>${item.getDescription()}</pre>
+	                    </td>
+                	</tr> 
+             	</c:forEach>
                 <tr>
                     <th colspan="2" class="th-title">Les succès en cours</th>
                 </tr>
-                  <tr class="achievement">
-                    <td>
-                        <h4>Ceci test un titre</h4>
-                        <pre>Ceci est une longue et grande description.</pre>
-                    </td>
-                </tr> 
-                <tr class="achievement">
-                    <td>
-                        <h4>Ceci test un titre</h4>
-                        <pre>Ceci est une longue et grande description.</pre>
-                    </td>
-                </tr> 
+                <c:forEach items="${pasEncoreAccomplis}" var="item">
+                	<tr class="achievement">
+	                    <td>
+	                        <h4>${item.getNom()}</h4>
+	                        <pre>${item.getDescription()}</pre>
+	                    </td>
+                	</tr> 
+             	</c:forEach>
         </table>
     </div>
 </body>

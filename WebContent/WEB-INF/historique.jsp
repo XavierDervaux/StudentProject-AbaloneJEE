@@ -32,6 +32,11 @@
                 <th class="th-title">Résultat</th>
                 <th class="th-title">Date de la partie</th>
             </tr>  
+             <c:if test="${liste.size() == 0}">
+                	<tr>
+                		<td colspan="3"> <pre>Vous n'avez encore joué aucune partie.</pre></td>
+                	</tr>
+                </c:if>
             <c:forEach items="${liste}" var="item">
             	<c:choose> 
             		<c:when test="${item.getGagnant().equals(joueur)}">
