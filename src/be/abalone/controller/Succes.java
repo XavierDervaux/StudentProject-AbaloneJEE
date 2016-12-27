@@ -1,6 +1,7 @@
 package be.abalone.controller;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +34,11 @@ public class Succes extends HttpServlet {
 		HttpSession sessions = request.getSession();
     	Joueur actuel = (Joueur) sessions.getAttribute("joueur");
 		List<Achievement> listA = Achievement.findAllBDD(); //Ne sera jamais null
+		
+		Comparator<Achievement> comp = (Achievement a, Achievement b) -> {
+		    return b.compareTo(a);
+		};
+		listA.sort(comp);
 		
 		for(Achievement tmp1 : listA){
 			if(actuel.getAchievs() != null){

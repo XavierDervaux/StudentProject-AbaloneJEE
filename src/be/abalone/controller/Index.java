@@ -57,9 +57,9 @@ public class Index extends HttpServlet {
 			input = new Joueur (pseudo, mdp, email); 
 			
 			res = Identification.inscription(input);
-			if(res != 1){
+			if(res != 1){ //L'inscription s'est mal passée
 				output = affichageConnexion(res);
-				request.setAttribute("erreurConn", output);
+				request.setAttribute("erreurInscr", output);
 			}
 		} else { //Deconnexion
 			sessions.removeAttribute("connected");
@@ -75,7 +75,7 @@ public class Index extends HttpServlet {
 				Utilitaire.setCookie(response, "user_email", input.getEmail(), 60 * 60 * 24 * 365);
 			}
 		}
-		doGet(request, response);
+		doGet(request, response); //Il y a eu une erreur, on renvoie ur la page.
 	}
 	
 	private String affichageConnexion(int res) {

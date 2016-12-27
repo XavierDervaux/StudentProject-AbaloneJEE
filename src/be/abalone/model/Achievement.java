@@ -116,4 +116,15 @@ public class Achievement {
 			return false;
 		return true;
 	}
+	
+	public int compareTo(Achievement a) {
+		int res = 0;
+		
+		if(a.getId() > this.id){
+			res = 1;
+		} else if(a.getId() < this.id){
+			res = -1;
+		}
+		return res;
+	}
 }
