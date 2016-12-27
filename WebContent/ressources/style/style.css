@@ -84,6 +84,17 @@ li > button {
     background: rgba(0, 0, 0, 0.0)
 }
 
+.button-back{
+    margin-top: -10px;
+}
+
+/*
+    Achievement
+*/
+.achievement>td>h4{
+    font-weight: bold;
+}
+
 /*
     Plateau
 */
