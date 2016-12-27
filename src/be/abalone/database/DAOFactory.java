@@ -24,4 +24,3 @@ public class DAOFactory extends AbstractDAOFactory{
 		return new HistoriqueDAO(conn);
 	}
 }
-
