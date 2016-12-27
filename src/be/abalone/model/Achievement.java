@@ -64,7 +64,6 @@ public class Achievement{
 	public static List<Achievement> findAllBDD() {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		List<Achievement> tmp = adf.getAchievementDAO().getAll();
-		
 		return tmp;	
 	}
 	

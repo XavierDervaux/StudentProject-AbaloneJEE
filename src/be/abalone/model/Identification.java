@@ -7,9 +7,6 @@ import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
 
 public class Identification {
-
-// Méthode publiques
-// ---------------------------------------------------
 	public static int connexion(Joueur joueur) {
 		int rmail, rmdp, res = 0;
 		String tmpMdp, tmpMail;

@@ -93,7 +93,6 @@ public class Historique {
 	public static List<Historique> findAllBDD(Joueur joueur) {
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		List<Historique> tmp = ((HistoriqueDAO) adf.getHistoriqueDAO()).getAll(joueur);
-		
 		return tmp;	
 	}
 	
@@ -102,7 +101,9 @@ public class Historique {
 //---------------------------------------------------	
 	
 	
-@Override
+// toString, hashCode, equals
+//---------------------------------------------------		
+	@Override
 	public String toString() {
 		return "Historique [id=" + id + ", date=" + date + ", scoreGagnant=" + scoreGagnant + ", scorePerdant="
 				+ scorePerdant + ", estForfait=" + estForfait + ", gagnant=" + gagnant + ", perdant=" + perdant + "]";
