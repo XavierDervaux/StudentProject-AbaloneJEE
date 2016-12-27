@@ -31,28 +31,13 @@ public class Settings  extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sessions = request.getSession();
 		int res = -1;
-    	String mail = null, mdp = null, output = null;
+    	String output = null;
+    	String mail   = Utilitaire.getValeurChamp(request, "emailSetting");
+    	String mdp    = Utilitaire.getValeurChamp(request, "passwordSetting");
     	Joueur actuel = (Joueur) sessions.getAttribute("joueur"); //On est sur que le joueur existe car on vérifie estConnecté avant d'arriver ici
-
-		mail = Utilitaire.getValeurChamp(request, "emailSetting");
-		mdp = Utilitaire.getValeurChamp(request, "passwordSetting");
 		
-		if(mail != null) { //Changement de mail 
-			res = Identification.validationEmail(mail);
-			if(res == 0){//Le mail est valide
-				if( !( actuel.getEmail().equals(mail) ) && actuel.findBDD(mail)) {  //Si on arrive à trouver un joueur correspondant en bdd ça veut dire que l'email existe déjà
-					res = 5; 
-				} else {
-					actuel.setEmail(mail); 
-				}
-			}
-		}
-		if(mdp != null && res<=0) { //changement de mdp  et si on n'a pas déjà trouvé une erreur dans le mail
-			res = Identification.validationMdp(mdp);
-			if(res == 0){//Le mdp est valide
-				actuel.setMdp(Utilitaire.cryptPassword(mdp));
-			}
-		}
+    	res = changementMail(mail, actuel);
+    	if(res <=0){ res = changementMdp(mdp, actuel); } //Si on a pas déjà trouvé une erreur avec le mail, alors on vérifie le mdp.
 		
 		if(res == 0) { //Au moins une opération s'est bien passé
 			actuel.updateBDD();
@@ -65,6 +50,32 @@ public class Settings  extends HttpServlet{
 		}
 		
     }
+
+	private int changementMdp(String mdp, Joueur actuel) {
+		int res = -1;
+		
+		if(mdp != null && res<=0) { //changement de mdp  et si on n'a pas déjà trouvé une erreur dans le mail
+			res = Identification.validationMdp(mdp);
+			if(res == 0) //Le mdp est valide
+				actuel.setMdp(Utilitaire.cryptPassword(mdp));
+		}
+		return res;
+	}
+
+	private int changementMail(String mail, Joueur actuel) {
+		int res = -1;
+
+		if(mail != null    &&    !(actuel.getEmail().equals(mail)) ){ //Si l'utilisateur a entré un nouvel email, différent de celui qu'il utilise déjà 
+			res = Identification.validationEmail(mail);
+			if(res == 0){//Le mail est valide
+				if(actuel.findBDD(mail)) //Si on arrive à trouver un joueur correspondant en bdd ça veut dire que l'email existe déjà
+					res = 5; 
+				else 
+					actuel.setEmail(mail); 
+			}
+		}
+		return res;
+	}
 
 	private String affichageSettings(int res) {
 		String output = null;

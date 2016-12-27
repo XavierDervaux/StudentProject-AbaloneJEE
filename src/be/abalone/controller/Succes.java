@@ -1,7 +1,6 @@
 package be.abalone.controller;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -35,20 +34,18 @@ public class Succes extends HttpServlet {
 		HttpSession sessions = request.getSession();
     	Joueur actuel = (Joueur) sessions.getAttribute("joueur");
 		List<Achievement> listA = Achievement.findAllBDD(); //Ne sera jamais null
+		List<Achievement> listB = actuel.getAchievs();
 		
-		Comparator<Achievement> comp = (Achievement a, Achievement b) -> {
-		    return b.compareTo(a);
-		};
-		listA.sort(comp);
+		listA.sort((Achievement a, Achievement b)->b.compareTo(a)); //On trie la liste pour que l'affichage se fasse de façon cohérente
+		if(listB != null) { listB.sort((Achievement a, Achievement b)->b.compareTo(a)); }
+		Iterator<Achievement> iListA = listA.iterator(); //Comme on va modifier la liste alors qu'on la parcourt, on doit utiliser un itérator et pas un foreach
 		
-		Iterator<Achievement> iterator = listA.iterator();
-		while (iterator.hasNext()) {
-			Achievement tmp1 = iterator.next(); // On récupère l'élément courant
-			if(actuel.getAchievs() != null){
-				actuel.getAchievs().sort(comp);
-				for(Achievement tmp2 : actuel.getAchievs()){
-					if(tmp1.getId() == tmp2.getId()){ //Si au sein de la liste il existe un achievement déjà effectué par le joueur.
-						iterator.remove();//On le supprime
+		while(iListA.hasNext()) {
+			Achievement nonFait = iListA.next(); // On récupère l'élément courant
+			if(listB != null){
+				for(Achievement fait : listB){
+					if(nonFait.getId() == fait.getId()){ //Si au sein de la liste il existe un achievement déjà effectué par le joueur.
+						iListA.remove(); //On le supprime
 					}
 				}
 			}

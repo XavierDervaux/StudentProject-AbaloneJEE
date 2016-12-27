@@ -23,59 +23,65 @@ public class Index extends HttpServlet {
 		
 		if(estConnecte){ //On redirige vers le menu 
 			response.sendRedirect("/Abalone/menu.html"); 
-		} else { //N'estpas encore connecté, on affihce le formulaire de connexion/inscription
+		} else { //N'estpas encore connecté, on affichee le formulaire de connexion/inscription
 			this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response); 
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession sessions = request.getSession();
-		int res=-1, type=0;//Type:0 lol
-		boolean resterConnecte = false;
-		String output=null, pseudo, mdp, email;
-		Joueur input=null;
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+		if(Utilitaire.getBoolCheckbox(request, "estConnexion"))
+			connexion(request, response);
+		else if(Utilitaire.getBoolCheckbox(request, "estInscription"))
+			inscription(request);
+		else
+			deconnexion(request, response);	
+		doGet(request, response); //doGet se chargera de l'erreur s'il y en a une ou fera la redirection s'il n'y en a pas.
+	}
+	
+	private void connexion(HttpServletRequest request, HttpServletResponse response){	
+		HttpSession sessions = request.getSession();	
+		String output = null;
+		String mdp    = Utilitaire.getValeurChamp(request, "passwordConnection");
+		String email  = Utilitaire.getValeurChamp(request, "emailConnection");
+		Joueur input  = new Joueur ("", mdp, email); 
+		boolean resterConnecte = Utilitaire.getBoolCheckbox(request, "rememberConnection");	
+		int res = Identification.connexion(input); // Si la connexion réussi, les propriétés de inputs seront modifiées pour obtenir un Joueur valide
 		
-		if(Utilitaire.getBoolCheckbox(request, "estConnexion")){ type = 1; }
-		else if(Utilitaire.getBoolCheckbox(request, "estInscription")){ type = 2; }
-		else if(Utilitaire.getBoolCheckbox(request, "estDeconnexion")){ type = 3; } //Deconnexion
-		
-		if(type == 1){ //Connexion		
-			email = Utilitaire.getValeurChamp(request, "emailConnection");
-			mdp = Utilitaire.getValeurChamp(request, "passwordConnection");
-			resterConnecte = Utilitaire.getBoolCheckbox(request, "rememberConnection");	
-			input = new Joueur ("", mdp, email); 
-			
-			res = Identification.connexion(input); // Si la connexion réussi, les propriétés de inputs seront modifiées pour obtenir un Joueur valide
-			if(res != 1){
-				output = affichageConnexion(res);
-				request.setAttribute("erreurConn", output);
-			}
-		} else if (type == 2) { //Inscription
-			pseudo = Utilitaire.getValeurChamp(request, "pseudoInscription");
-			email = Utilitaire.getValeurChamp(request, "emailInscription");
-			mdp = Utilitaire.getValeurChamp(request, "passwordInscription");
-			input = new Joueur (pseudo, mdp, email); 
-			
-			res = Identification.inscription(input);
-			if(res != 1){ //L'inscription s'est mal passée
-				output = affichageConnexion(res);
-				request.setAttribute("erreurInscr", output);
-			}
-		} else { //Deconnexion
-			sessions.removeAttribute("connected");
-			sessions.removeAttribute("joueur");
-			Utilitaire.unsetCookie(response, "user_email");
-			response.sendRedirect("/Abalone/index.html"); return; //Le return doit etre la, sinon le send redirect sera exécuté APRES le reste du code, pas immédiatement.
-		}
-		
-		if (res == 1) { // On définit les sessions et le cookie
+		if(res == 1){ //Tout s'est bien passé, l'user est co, on a plus qu'a définir ses sessions et cookies
 			sessions.setAttribute("connected", true);
 			sessions.setAttribute("joueur", input);
-			if (resterConnecte) { // Si l'utilisateur le souhaite, on lui crée un cookie pour ne pas qu'il se relogg a chauqe fois
-				Utilitaire.setCookie(response, "user_email", input.getEmail(), 60 * 60 * 24 * 365);
+			if (resterConnecte) { // Si l'utilisateur le souhaite, on lui crée un cookie pour ne pas qu'il se relogg a chaque fois
+				Utilitaire.setCookie(response, "user_email", input.getEmail(), 60*60*24*365);
 			}
+		} else { //Une erreur est survenue, on défini le message d'erreur pour le retour sur la page.
+			output = affichageConnexion(res);
+			request.setAttribute("erreurConn", output);
 		}
-		doGet(request, response); //Il y a eu une erreur, on renvoie ur la page.
+	}
+	
+	private void inscription(HttpServletRequest request){		
+		HttpSession sessions = request.getSession();
+		String output = null;
+		String pseudo = Utilitaire.getValeurChamp(request, "pseudoInscription");
+		String mdp    = Utilitaire.getValeurChamp(request, "passwordInscription");
+		String email  = Utilitaire.getValeurChamp(request, "emailInscription");
+		Joueur input  = new Joueur (pseudo, mdp, email); 
+		int res = Identification.inscription(input);
+
+		if(res == 1){ //L'inscription s'est bien passé, on défini les sessions.
+			sessions.setAttribute("connected", true);
+			sessions.setAttribute("joueur", input);
+		} else { //Une erreur est survenue, on défini le message d'erreur pour le retour sur la page.
+			output = affichageConnexion(res);
+			request.setAttribute("erreurInscr", output);
+		}
+	}
+	
+	private void deconnexion(HttpServletRequest request, HttpServletResponse response){
+		HttpSession sessions = request.getSession();
+		sessions.removeAttribute("connected");
+		sessions.removeAttribute("joueur"); //On supprime ses sessions
+		Utilitaire.unsetCookie(response, "user_email"); //Et son cookie éventuel
 	}
 	
 	private String affichageConnexion(int res) {

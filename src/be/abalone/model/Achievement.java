@@ -4,7 +4,7 @@ import java.util.List;
 import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
 
-public class Achievement {
+public class Achievement{
 	private int id = 0;
 	private String titre = null;
 	private String nom = null;

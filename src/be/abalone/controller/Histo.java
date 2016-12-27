@@ -31,89 +31,23 @@ public class Histo extends HttpServlet {
 	
 	private void getInfo(HttpServletRequest request){
 		HttpSession sessions = request.getSession();
+		int jouees = 0, gagnees = 0, perdues = 0, forfait = 0;
     	Joueur actuel = (Joueur) sessions.getAttribute("joueur");
 		List<Historique> listH = Historique.findAllBDD(actuel);
 		
-		request.setAttribute("jouees", getJouees(listH));
-		request.setAttribute("gagnes", getGagnees(listH, actuel));
-		request.setAttribute("perdues", getPerdues(listH, actuel));
-		request.setAttribute("forfait", getAbandonnees(listH, actuel));
+		if(listH != null){ 
+			jouees = listH.size();
+			for(Historique tmp : listH){
+				if(tmp.getGagnant().getId() == actuel.getId())  {  gagnees++;  }
+				else if(tmp.getEstForfait()) {  forfait++;  }
+				else {  perdues++;  }
+			}
+		}
+		
+		request.setAttribute("jouees", jouees);
+		request.setAttribute("gagnes", gagnees);
+		request.setAttribute("perdues", perdues);
+		request.setAttribute("forfait", forfait);
 		request.setAttribute("liste", listH);		
 	}
-
-	private int getJouees(List<Historique> listH) {
-		int res = 0;
-		
-		if(listH != null){ 
-			res = listH.size(); 
-		}
-		return res;
-	}
-
-	private int getGagnees(List<Historique> listH, Joueur actuel) {
-		int gagnees = 0;
-		
-		if(listH != null){ 
-			for(Historique tmp : listH){
-				if(tmp.getGagnant().getId() == actuel.getId()){
-					gagnees++;
-				}
-			}
-		}
-		
-		return gagnees;
-	}
-
-	private int getPerdues(List<Historique> listH, Joueur actuel) {
-		int perdues = 0;
-		
-		if(listH != null){ 
-			for(Historique tmp : listH){
-				if(tmp.getPerdant().getId() == actuel.getId()){
-					if( !(tmp.getEstForfait()) ){
-						perdues++;
-					}
-				}
-			}
-		}
-		
-		return perdues;
-	}
-
-	private int getAbandonnees(List<Historique> listH, Joueur actuel) {
-		int aband = 0;
-		
-		if(listH != null){ 
-			for(Historique tmp : listH){
-				if(tmp.getPerdant().getId() == actuel.getId()){
-					if(tmp.getEstForfait()){
-						aband++;
-					}
-				}
-			}
-		}
-		
-		return aband;
-	}
-
-	/*private Object getListe(List<Historique> listH, Joueur actuel) {
-		structHisto tmpL;
-		List<structHisto> res = new ArrayList<structHisto>();
-		
-		for(Historique tmp : listH){
-			tmpL = new structHisto();
-			if(tmp.getGagnant().getId() == actuel.getId()){
-				tmpL.adversaire = tmp.getPerdant().getPseudo();
-				tmpL.score = tmp.getScoreGagnant() + " - " + tmp.getScorePerdant();
-				tmpL.status = 0;
-			} else { //Est perdant
-				tmpL.adversaire = tmp.getGagnant().getPseudo();
-				tmpL.score = tmp.getScorePerdant() + " - " + tmp.getScoreGagnant();
-				if(tmp.getEstForfait()){ tmpL.status = 2; }
-				else{ tmpL.status = 1;}
-			}
-			res.add(tmpL);
-		}
-		return null;
-	}*/
 }
