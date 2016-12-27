@@ -1,5 +1,9 @@
 package be.abalone.model;
 
+import java.util.List;
+import be.abalone.database.AbstractDAOFactory;
+import be.abalone.database.DAOFactory;
+
 public class Achievement {
 	private int id = 0;
 	private String titre = null;
@@ -52,7 +56,17 @@ public class Achievement {
 
 // Méthodes publiques
 //---------------------------------------------------	
-	
+	public void createBDD() {
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		adf.getAchievementDAO().create(this);
+	}
+    
+	public static List<Achievement> findAllBDD() {
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		List<Achievement> tmp = adf.getAchievementDAO().getAll();
+		
+		return tmp;	
+	}
 	
 // Méthode privées
 //---------------------------------------------------	

@@ -38,13 +38,7 @@ public class Histo extends HttpServlet {
 		request.setAttribute("gagnes", getGagnees(listH, actuel));
 		request.setAttribute("perdues", getPerdues(listH, actuel));
 		request.setAttribute("forfait", getAbandonnees(listH, actuel));
-		request.setAttribute("liste", listH);
-		
-		System.out.println(getJouees(listH));
-		System.out.println(getGagnees(listH, actuel));
-		System.out.println(getPerdues(listH, actuel));
-		System.out.println(getAbandonnees(listH, actuel));
-		
+		request.setAttribute("liste", listH);		
 	}
 
 	private int getJouees(List<Historique> listH) {
