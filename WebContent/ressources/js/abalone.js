@@ -5,7 +5,11 @@
 var MIN_MDP = 8;
 
 function init(){
-    $('[data-toggle="popover"]').popover()
+    $('[data-toggle="popover"]').popover();
+    
+    if(location.hash == "#inscription"){
+       $('#contentConnexion a:last').tab('show');
+    }
 }
 
 
@@ -41,14 +45,6 @@ function position(x, y){
 /**
     Fonctions setting
 **/
-
-function $id(elem) {
-	var type=typeof(elem);
-	if (type=="string") {
-		return document.getElementById(elem);
-	}
-	return elem;
-}
 
 function checkSetting(){
     var ok = true;
@@ -125,6 +121,14 @@ function checkPasswordInscription(){
 /**
     Les fonctions génériques
 **/
+
+function $id(elem) {
+	var type=typeof(elem);
+	if (type=="string") {
+		return document.getElementById(elem);
+	}
+	return elem;
+}
 
 function checkPassword(password, confirmPassword, isColor = false){
     var ok = false;

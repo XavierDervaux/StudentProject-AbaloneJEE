@@ -6,7 +6,7 @@
 	            <li role="presentation" class="active"><a href="#connexion" aria-controls="connexion" role="tab" data-toggle="tab">Connexion</a></li>
 	            <li role="presentation"><a href="#inscription" aria-controls="inscription" role="tab" data-toggle="tab">Inscription</a></li>
 	          </ul>
-	
+	 
 	          <!-- Tab panes -->
 	          <div class="tab-content">
 	            <div role="tabpanel" class="tab-pane active" id="connexion">
@@ -18,7 +18,7 @@
 	                      <div class="form-group">
 	                        <label for="emailConnection" class="col-sm-2 control-label">Email</label>
 	                        <div class="col-sm-10">
-	                          <input type="email" class="form-control" id="emailConnection" name="emailConnection" onchange="checkConnecion(); validateEmail(this,true)" placeholder="Email" maxlength="64">
+	                          <input type="email" class="form-control" id="emailConnection" name="emailConnection" onchange="checkConnecion(); validateEmail(this,true)" placeholder="Email" maxlength="64" value="${param.emailConnection}">
 	                        </div>
 	                      </div>
 	                      <div class="form-group">
@@ -47,18 +47,18 @@
 	            <c:if test="${not empty erreurInscr}"> 
 	            	<p class="bg-danger"><span class="glyphicon glyphicon-info-sign"></span><span>${erreurInscr}</span></p>
 	            </c:if>
-	                <form class="form-horizontal" name="inscription" method="post" action="index.html">
+	                <form class="form-horizontal" name="inscription" method="post" action="index.html#inscription">
 	                 <input type="checkbox" name="estInscription" class="hidden" checked/>
 	                    <div class="form-group">
 	                        <label for="pseudoInscription" class="col-sm-2 control-label">Votre pseudo</label>
 	                        <div class="col-sm-10">
-	                          <input type="text" class="form-control" id="pseudoInscription" name="pseudoInscription" onchange="checkInscription()" placeholder="Pseudo" maxlength="64">
+	                          <input type="text" class="form-control" id="pseudoInscription" name="pseudoInscription" onchange="checkInscription()" placeholder="Pseudo" maxlength="64" value="${param.pseudoInscription}">
 	                        </div>
 	                    </div>
 	                    <div class="form-group">
 	                        <label for="emailInscription" class="col-sm-2 control-label">Email</label>
 	                        <div class="col-sm-10">
-	                          <input type="text" class="form-control" id="emailInscription" name="emailInscription" onchange="checkInscription(); validateEmail(this,true);" placeholder="Votre email" maxlength="64">
+	                          <input type="text" class="form-control" id="emailInscription" name="emailInscription" onchange="checkInscription(); validateEmail(this,true);" placeholder="Votre email" maxlength="64" value="${param.emailInscription}">
 	                        </div>
 	                    </div>
 	                    <div class="form-group">

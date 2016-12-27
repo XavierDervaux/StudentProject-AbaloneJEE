@@ -18,7 +18,7 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="index.html">
                     <img src="ressources/style/img/logo_header.png" width="140"/>
                     </a>
                 </div>
