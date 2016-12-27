@@ -32,12 +32,14 @@ public class Succes extends HttpServlet {
 	private void getInfo(HttpServletRequest request){
 		HttpSession sessions = request.getSession();
     	Joueur actuel = (Joueur) sessions.getAttribute("joueur");
-		List<Achievement> listA = Achievement.findAllBDD();
+		List<Achievement> listA = Achievement.findAllBDD(); //Ne sera jamais null
 		
 		for(Achievement tmp1 : listA){
-			for(Achievement tmp2 : actuel.getAchievs()){
-				if(tmp1.getId() == tmp2.getId()){ //Si au sein de la liste il existe un achievement déjà effectué par le joueur.
-					listA.remove(tmp1);//On le supprime
+			if(actuel.getAchievs() != null){
+				for(Achievement tmp2 : actuel.getAchievs()){
+					if(tmp1.getId() == tmp2.getId()){ //Si au sein de la liste il existe un achievement déjà effectué par le joueur.
+						listA.remove(tmp1);//On le supprime
+					}
 				}
 			}
 		}
