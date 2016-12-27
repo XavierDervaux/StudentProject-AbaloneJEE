@@ -42,15 +42,22 @@ public class Histo extends HttpServlet {
 	}
 
 	private int getJouees(List<Historique> listH) {
-		return listH.size();
+		int res = 0;
+		
+		if(listH != null){ 
+			res = listH.size(); 
+		}
+		return res;
 	}
 
 	private int getGagnees(List<Historique> listH, Joueur actuel) {
 		int gagnees = 0;
 		
-		for(Historique tmp : listH){
-			if(tmp.getGagnant().getId() == actuel.getId()){
-				gagnees++;
+		if(listH != null){ 
+			for(Historique tmp : listH){
+				if(tmp.getGagnant().getId() == actuel.getId()){
+					gagnees++;
+				}
 			}
 		}
 		
@@ -60,10 +67,12 @@ public class Histo extends HttpServlet {
 	private int getPerdues(List<Historique> listH, Joueur actuel) {
 		int perdues = 0;
 		
-		for(Historique tmp : listH){
-			if(tmp.getPerdant().getId() == actuel.getId()){
-				if( !(tmp.getEstForfait()) ){
-					perdues++;
+		if(listH != null){ 
+			for(Historique tmp : listH){
+				if(tmp.getPerdant().getId() == actuel.getId()){
+					if( !(tmp.getEstForfait()) ){
+						perdues++;
+					}
 				}
 			}
 		}
@@ -74,10 +83,12 @@ public class Histo extends HttpServlet {
 	private int getAbandonnees(List<Historique> listH, Joueur actuel) {
 		int aband = 0;
 		
-		for(Historique tmp : listH){
-			if(tmp.getPerdant().getId() == actuel.getId()){
-				if(tmp.getEstForfait()){
-					aband++;
+		if(listH != null){ 
+			for(Historique tmp : listH){
+				if(tmp.getPerdant().getId() == actuel.getId()){
+					if(tmp.getEstForfait()){
+						aband++;
+					}
 				}
 			}
 		}
