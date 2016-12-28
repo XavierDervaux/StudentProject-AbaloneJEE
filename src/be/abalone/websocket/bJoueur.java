@@ -1,11 +1,20 @@
 package be.abalone.websocket;
 
+import javax.websocket.Session;
+
 public class bJoueur {
+	private Session session;
 	private int id;
 	private int joueur_id;
 	private String joueur_pseudo;
 	private String joueur_email;
-	
+
+	public Session getSession() {
+		return session;
+	}
+	public void setSession(Session session) {
+		this.session = session;
+	}
 	public int getId() {
 		return id;
 	}

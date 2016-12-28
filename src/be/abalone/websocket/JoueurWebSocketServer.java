@@ -42,16 +42,23 @@ public class JoueurWebSocketServer {
 
             if ("add".equals(jsonMessage.getString("action"))) { //On fait un truc, ici c'et l'exemple mais ça peut etre ni'mporte qiuoi d'autre
                 bJoueur bean = new bJoueur();
+                bean.setSession(session);
                 bean.setJoueur_id(jsonMessage.getInt("id"));
                 bean.setJoueur_pseudo(jsonMessage.getString("pseudo"));
                 bean.setJoueur_email(jsonMessage.getString("email"));
  
                 this.sessionHandler.addJoueur(bean);
             }
-
-            if ("remove".equals(jsonMessage.getString("action"))) {
-                int id = (int) jsonMessage.getInt("id");
-                this.sessionHandler.removeJoueur(id);
+            
+            if("demande".equals(jsonMessage.getString("action"))) {
+                int id = (int) jsonMessage.getInt("destinataire");
+                this.sessionHandler.sendDemande(id, session);
+            }
+            
+            if("reponse".equals(jsonMessage.getString("action"))) {
+                int id = (int) jsonMessage.getInt("destinataire");
+                boolean confirm = (boolean) jsonMessage.getBoolean("confirm");
+                this.sessionHandler.sendConfirmation(id, confirm,  session);
             }
         } catch (Exception e){
         	System.out.println(e);

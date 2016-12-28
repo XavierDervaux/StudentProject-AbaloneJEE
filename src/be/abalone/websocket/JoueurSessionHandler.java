@@ -4,9 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,54 +15,35 @@ public class JoueurSessionHandler {
     private int joueurId = 0;
     private final Set<Session> sessions = new HashSet<>();
     private final Set<bJoueur> joueurs = new HashSet<>();
-    
+
+
+// Méthodes publiques
+//---------------------------------------------------	
     public void addSession(Session session) { //On ajoute l'objet a notre session et on le renvoie au client pour qu'il puisse l'afficher a son tour
         this.sessions.add(session);
         for (bJoueur bean : this.joueurs) {
-            JsonObject addMessage = createAddMessage(bean);
+            JsonProvider provider = JsonProvider.provider();
+            JsonObject addMessage = provider.createObjectBuilder()
+                    .add("action", "add")
+                    .add("id", bean.getId())
+                    .add("joueur_id", bean.getJoueur_id())
+                    .add("joueur_pseudo", bean.getJoueur_pseudo())
+                    .add("joueur_email", bean.getJoueur_email())
+                    .build();
             sendToSession(session, addMessage);
         }
     }
-
     public void removeSession(Session session) {
-        sessions.remove(session);
-    }
-    
-    public List<bJoueur> getJoueurs() {
-        return new ArrayList<>(this.joueurs);
+    	removeJoueur(session);
+    	sessions.remove(session);
     }
 
+    
     public void addJoueur(bJoueur bean) { //On ajoute un bJoueur et on le fait savoir à chaque client
-        bean.setId(this.joueurId);
+        bean.setId(this.joueurId); //On définit l'id dont on se sert pour l'identification
         this.joueurs.add(bean);
         this.joueurId++;
-        JsonObject addMessage = createAddMessage(bean);
-        sendToAllConnectedSessions(addMessage);
-    }
-
-    public void removeJoueur(int id) {
-        bJoueur bean = getJoueurById(id);
-        if (bean != null) {
-        	this.joueurs.remove(bean);
-            JsonProvider provider = JsonProvider.provider();
-            JsonObject removeMessage = provider.createObjectBuilder()
-                    .add("action", "remove")
-                    .add("id", id)
-                    .build();
-            sendToAllConnectedSessions(removeMessage);
-        }
-    }
-
-    private bJoueur getJoueurById(int id) {
-        for (bJoueur bean : this.joueurs) {
-            if (bean.getId() == id) {
-                return bean;
-            }
-        }
-        return null;
-    }
-
-    private JsonObject createAddMessage(bJoueur bean) {
+        
         JsonProvider provider = JsonProvider.provider();
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
@@ -73,7 +52,70 @@ public class JoueurSessionHandler {
                 .add("joueur_pseudo", bean.getJoueur_pseudo())
                 .add("joueur_email", bean.getJoueur_email())
                 .build();
-        return addMessage;
+        sendToAllConnectedSessions(addMessage);
+    }
+
+	public void sendDemande(int id, Session session) {
+    	bJoueur source = getJoueurBySession(session);
+    	bJoueur destin = getJoueurById(id);
+    	
+		JsonProvider provider = JsonProvider.provider();
+        JsonObject demande = provider.createObjectBuilder()
+                .add("action", "demande")
+                .add("source", source.getId())
+                .build();
+        sendToSession(destin.getSession(), demande);
+	}  
+
+	public void sendConfirmation(int id, boolean confirm, Session session) {
+    	bJoueur source = getJoueurBySession(session);
+    	bJoueur destin = getJoueurById(id);
+    	
+		JsonProvider provider = JsonProvider.provider();
+        JsonObject reponse = provider.createObjectBuilder()
+                .add("action", "reponse")
+                .add("source", source.getId())
+                .add("confirm", confirm)
+                .build();
+        sendToSession(destin.getSession(), reponse);
+	} 
+
+
+// Méthodes privées
+//---------------------------------------------------	
+    private void removeJoueur(Session session) {
+    	bJoueur del = getJoueurBySession(session);
+    	if(del != null){
+			this.joueurs.remove(del);
+			JsonProvider provider = JsonProvider.provider();
+	        JsonObject removeMessage = provider.createObjectBuilder()
+	                .add("action", "remove")
+	                .add("id", del.getId())
+	                .build();
+	        sendToAllConnectedSessions(removeMessage);
+        }
+    }
+    
+    private bJoueur getJoueurById(int id) {
+    	bJoueur res = null;
+        for (bJoueur bean : this.joueurs) {
+            if (bean.getId() == id ){
+                res = bean;
+                break; //Inutile de parcourir le reste de la liste si on a trouvé ce qu'on cherchait
+            }
+        }
+        return res;
+    }
+    
+    private bJoueur getJoueurBySession(Session session) {
+    	bJoueur res = null;
+        for (bJoueur bean : this.joueurs) {
+            if (bean.getSession().equals(session) ){
+                res = bean;
+                break; //Inutile de parcourir le reste de la liste si on a trouvé ce qu'on cherchait
+            }
+        }
+        return res;
     }
 
     private void sendToAllConnectedSessions(JsonObject message) {
@@ -89,5 +131,5 @@ public class JoueurSessionHandler {
         	this.sessions.remove(session);
             Logger.getLogger(JoueurSessionHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }  
+    }
 }
