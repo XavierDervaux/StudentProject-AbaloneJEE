@@ -12,8 +12,11 @@ function initMatchMaking(pseudo,email){
         making = new MatchMaking();
         player_current = new Joueur(-1, pseudo, email)
         making.addJoueur(player_current);
-        sendJoueur(player_current);
-
+        
+        joueurSocket.onopen = function(){
+        	sendJoueur(player_current);
+        }
+        
         $('#invitation').on('hide.bs.modal', function (e) {
             if(player_invitation != null){
                 sendResponse(player_invitation, false);
@@ -167,7 +170,7 @@ function onMessage(event) { //On reçoit un message
             break;
         }
         case "demande":{
-            getinvitation(json);
+            getInvitation(json);
             break;
         }
         case "reponse":{
