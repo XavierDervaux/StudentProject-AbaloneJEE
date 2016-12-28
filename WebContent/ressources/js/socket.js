@@ -4,18 +4,20 @@ var making;
 var player_current;
 var player_invitation;
 
-function initMatchMaking(id, pseudo,email){
+function initMatchMaking(pseudo,email){
     if(validatePageWithExtension("matchmaking")){
-        joueurSocket = new WebSocket("ws://localhost:9090/Abalone/joueurSocket");
+        joueurSocket = new WebSocket("ws://localhost:10080/Abalone/joueurSocket");
         joueurSocket.onmessage = onMessage;
         
         making = new MatchMaking();
-        player_current = new Joueur(id, pseudo, email)
+        player_current = new Joueur(-1, pseudo, email)
         making.addJoueur(player_current);
+        sendJoueur(player_current);
 
         $('#invitation').on('hide.bs.modal', function (e) {
             if(player_invitation != null){
                 sendResponse(player_invitation, false);
+                player_invitation = null;
             }
         });
     }
@@ -175,7 +177,7 @@ function onMessage(event) { //On reçoit un message
     }
 }
 
-function addJoueur(name, type, description) {
+function sendJoueur(joueur) {
     var json = {
         action: "add",
         pseudo: joueur.pseudo,
