@@ -20,8 +20,8 @@ public class JoueurSessionHandler {
     
     public void addSession(Session session) { //On ajoute l'objet a notre session et on le renvoie au client pour qu'il puisse l'afficher a son tour
         this.sessions.add(session);
-        for (bJoueur joueur : this.joueurs) {
-            JsonObject addMessage = createAddMessage(joueur);
+        for (bJoueur bean : this.joueurs) {
+            JsonObject addMessage = createAddMessage(bean);
             sendToSession(session, addMessage);
         }
     }
@@ -34,18 +34,18 @@ public class JoueurSessionHandler {
         return new ArrayList<>(this.joueurs);
     }
 
-    public void addJoueur(bJoueur joueur) { //On ajoute un bJoueur et on le fait savoir à chaque client
-        joueur.setId(this.joueurId);
-        this.joueurs.add(joueur);
+    public void addJoueur(bJoueur bean) { //On ajoute un bJoueur et on le fait savoir à chaque client
+        bean.setId(this.joueurId);
+        this.joueurs.add(bean);
         this.joueurId++;
-        JsonObject addMessage = createAddMessage(joueur);
+        JsonObject addMessage = createAddMessage(bean);
         sendToAllConnectedSessions(addMessage);
     }
 
     public void removeJoueur(int id) {
-        bJoueur joueur = getJoueurById(id);
-        if (joueur != null) {
-        	this.joueurs.remove(joueur);
+        bJoueur bean = getJoueurById(id);
+        if (bean != null) {
+        	this.joueurs.remove(bean);
             JsonProvider provider = JsonProvider.provider();
             JsonObject removeMessage = provider.createObjectBuilder()
                     .add("action", "remove")
@@ -56,20 +56,20 @@ public class JoueurSessionHandler {
     }
 
     private bJoueur getJoueurById(int id) {
-        for (bJoueur joueur : this.joueurs) {
-            if (joueur.getId() == id) {
-                return joueur;
+        for (bJoueur bean : this.joueurs) {
+            if (bean.getId() == id) {
+                return bean;
             }
         }
         return null;
     }
 
-    private JsonObject createAddMessage(bJoueur joueur) {
+    private JsonObject createAddMessage(bJoueur bean) {
         JsonProvider provider = JsonProvider.provider();
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
-                .add("id", joueur.getId())
-                //.add("joueur", joueur.getJoueur())
+                .add("id", bean.getId())
+                //.add("joueur", bean.getJoueur())
                 .build();
         return addMessage;
     }

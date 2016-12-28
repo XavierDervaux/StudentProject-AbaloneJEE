@@ -40,13 +40,13 @@ public class JoueurWebSocketServer {
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject(); //Récupération du message
 
-            if ("add".equals(jsonMessage.getString("action"))) {
-                bJoueur joueur = new bJoueur();
-                joueur.setJoueur_id(jsonMessage.getInt("id"));
-                joueur.setJoueur_pseudo(jsonMessage.getString("pseudo"));
-                joueur.setJoueur_email(jsonMessage.getString("email"));
+            if ("add".equals(jsonMessage.getString("action"))) { //On fait un truc, ici c'et l'exemple mais ça peut etre ni'mporte qiuoi d'autre
+                bJoueur bean = new bJoueur();
+                bean.setJoueur_id(jsonMessage.getInt("id"));
+                bean.setJoueur_pseudo(jsonMessage.getString("pseudo"));
+                bean.setJoueur_email(jsonMessage.getString("email"));
  
-                this.sessionHandler.addJoueur(joueur);
+                this.sessionHandler.addJoueur(bean);
             }
 
             if ("remove".equals(jsonMessage.getString("action"))) {
