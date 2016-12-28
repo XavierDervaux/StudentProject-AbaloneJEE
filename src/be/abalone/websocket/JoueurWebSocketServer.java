@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import javax.websocket.server.ServerEndpoint;
 import be.abalone.websocket.JoueurSessionHandler;
     
-@ServerEndpoint("/socket")
+@ServerEndpoint("/joueurSocket")
 public class JoueurWebSocketServer {
 	@Inject
 	private JoueurSessionHandler sessionHandler;
