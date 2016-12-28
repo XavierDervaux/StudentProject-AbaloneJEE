@@ -42,4 +42,8 @@
     <servlet-name>Settings</servlet-name>
     <url-pattern>/settings.html</url-pattern>
   </servlet-mapping>
+  
+  <!--  -->
+  <!-- /socket pointe sur be.abalone.websocket.webSocketServer.java  -->
+  <!--  -->
 </web-app>
