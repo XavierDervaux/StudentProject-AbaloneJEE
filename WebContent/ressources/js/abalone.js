@@ -12,7 +12,6 @@ function init(){
     }
 }
 
-
 /**
     Plateau
 **/
@@ -176,4 +175,13 @@ function validateEmail(mail, isColor = false)
         inputError(mail);
     } 
     return ok;
+}
+
+function validatePageWithExtension(page){
+    return (nomFichier() == page + '.php' || nomFichier() == page +'.html');
+}
+
+function nomFichier (){
+     var CheminComplet = document.location.href;
+    return  NomDuFichier = CheminComplet.substring(CheminComplet.lastIndexOf( "/" )+1 );
 }

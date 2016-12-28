@@ -1,13 +1,27 @@
-var joueurSocket = new WebSocket("ws://localhost:10080/Abalone/joueurSocket");
-joueurSocket.onmessage = onMessage;
+var joueurSocket;
 
 var making;
 var player_current;
+var player_invitation;
 
 function initMatchMaking(id, pseudo,email){
-    making = new MatchMaking();
-    player_current = new Joueur(id, pseudo, email)
-    making.addJoueur(player_current);
+    if(validatePageWithExtension("matchmaking")){
+    	alert("ok");
+        joueurSocket = new WebSocket("ws://localhost:9090/Abalone/joueurSocket");
+        joueurSocket.onmessage = onMessage;
+        
+        making = new MatchMaking();
+        player_current = new Joueur(id, pseudo, email)
+        making.addJoueur(player_current);
+
+        $('#invitation').on('hide.bs.modal', function (e) {
+            if(player_invitation != null){
+                sendResponse(player_invitation, false);
+            }
+        });
+    } else{
+    	alert("pas ok");
+    }
 }
 
 function MatchMaking(){
@@ -73,15 +87,19 @@ function genereTableJoueur(joueurs){
             var button = document.createElement("button");
 
            //Propriété de la td pseudo
-           tdPseudo.innerHTML= item.joueur_pseudo;
-           tdPseudo.className="grey td-";
+           tdPseudo.innerHTML= item.pseudo;
+           tdPseudo.className="grey td-listPlayer";
 
+           tdButton.className="wth-100 td-listPlayer";
            //Propriété du bouton
-            button.className ="btn btn-success";
+            button.className ="btn btn-lg btn-success mrg-right-10";
             button.type="button";
+            button.title="Invitation";
             button.innerHTML="Envoyer une invitation";
+           
             button.onclick = function(){
-                sendMessage(item);
+                setNotification(button);
+                sendInvitation(item);
             };
 
            //Assemblage
@@ -95,8 +113,69 @@ function genereTableJoueur(joueurs){
    }
 }
 
+function setNotification(button){
+     $(button).popover(
+        {
+            content: "Invitation envoyé !",
+            trigger:"focus",
+            placement:"top"
+        }
+     );
+}
+
 function testtoto(){
-      making.addJoueur(new Joueur(1, 'joueur_pseudo', 'joueur_email'));
+      making.addJoueur(new Joueur(1, 'toto', 'joueur_email'));
+}
+
+function respondInvitation(respond){
+   if(player_invitation != null){
+        sendResponse(player_invitation, respond);
+        player_invitation = null;
+        $('#invitation').modal('hide');
+   }
+}
+
+function getInvitation(json){
+    player_invitation = json;
+    $id('messageInvitation').innerHTML= json.pseudo_source + " veut jouer avec vous";
+    $('#invitation').modal('show');
+}
+
+function getRespond(json){
+    if(json.confirm){
+        $id('respondInvitation').innerHTML=json.pseudo_source = " a accepté votre invitation, lancement de la partie...";
+        
+        //request post à faire
+        document.location.href="partie.html";
+    } else{
+        $id('respondInvitation').innerHTML=json.pseudo_source + " a refusé votre invitation";
+    }
+}
+
+/*
+    Réponse joueur
+*/
+function onMessage(event) { //On reçoit un message
+    var json = JSON.parse(event.data);
+    
+    switch(json.action){
+        case "add":{
+            making.addJoueur(new Joueur(json.id, json.pseudo, json.email));
+            break;
+        }
+        case "remove":{
+            making.removeJoueur(new Joueur(json.id, json.pseudo, json.email));
+            break;
+        }
+        case "demande":{
+            getinvitation(json);
+            break;
+        }
+        case "reponse":{
+            getRespond(json);
+            break;
+        }
+    }
 }
 
 function addJoueur(name, type, description) {
@@ -108,7 +187,7 @@ function addJoueur(name, type, description) {
     joueurSocket.send(JSON.stringify(json));
 }
 
-this.sendInvitation = function(joueur){
+function sendInvitation (joueur){
     var json = {
         action: "demande",
         destinataire: joueur.id
@@ -116,32 +195,11 @@ this.sendInvitation = function(joueur){
     joueurSocket.send(JSON.stringify(json));
 }
 
-this.sendResponse = function(joueur, response){
+function sendResponse (joueur, response){
     var json = {
         action: "reponse",
         destinataire : joueur.id,
         confirm :response
     };
     joueurSocket.send(JSON.stringify(json));
-}
-
-
-function onMessage(event) { //On reçoit un message
-    var json = JSON.parse(event.data);
-    
-    switch(json.action){
-        case "add":{
-            break;
-        }
-        case "remove":{
-            break;
-        }
-        case "demande":{
-            break;
-        }
-        case "reponse":{
-            break;
-        }
-    }
-    alert(truc);
 }

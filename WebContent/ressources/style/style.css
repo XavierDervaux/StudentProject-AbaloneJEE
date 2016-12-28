@@ -88,6 +88,26 @@ li > button {
     margin-top: -15px;
 }
 
+.define-th{
+    height: 35px;
+    padding-left: 10px;
+}
+
+.td-listPlayer{
+    padding-left: 10px;
+    border: solid #dddddd 1px;
+    height: 40px;
+}
+
+.mrg-right-10{
+    margin-right: 10px;
+}
+
+.wth-100 {
+    width: 100px;
+}
+.
+
 /*
     Achievement
 */
