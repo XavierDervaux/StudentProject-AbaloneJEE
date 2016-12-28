@@ -6,7 +6,7 @@ var player_invitation;
 
 function initMatchMaking(pseudo,email){
     if(validatePageWithExtension("matchmaking")){
-        joueurSocket = new WebSocket("ws://localhost:10080/Abalone/joueurSocket");
+        joueurSocket = new WebSocket("ws://localhost:9090/Abalone/joueurSocket");
         joueurSocket.onmessage = onMessage;
         
         making = new MatchMaking();
@@ -81,7 +81,7 @@ function genereTableJoueur(joueurs){
     for(var i = 0; i < joueurs.length; i++){
        item = joueurs[i];
        
-       if(item != player_current){
+       if(item.email != player_current.email){
            //Genetation du tableau
             var tr = document.createElement("tr");
             var tdPseudo = document.createElement("td");
@@ -99,34 +99,30 @@ function genereTableJoueur(joueurs){
             button.title="Invitation";
             button.innerHTML="Envoyer une invitation";
            
-            button.onclick = function(){
-                setNotification(button);
-                sendInvitation(item);
-            };
+            onClickNotification(button, item);
 
            //Assemblage
            tdButton.appendChild(button);
            tr.appendChild(tdPseudo);
            tr.appendChild(tdButton);
 
-           //table.appendChild(title);
            table.appendChild(tr);
        }
    }
 }
 
-function setNotification(button){
-     $(button).popover(
-        {
-            content: "Invitation envoyé !",
-            trigger:"focus",
-            placement:"top"
-        }
-     );
-}
-
-function testtoto(){
-      making.addJoueur(new Joueur(1, 'toto', 'joueur_email'));
+function onClickNotification(button, item){
+	button.onclick = function(){
+		sendInvitation(item);
+		 $(button).popover(
+	        {
+	            content: "Invitation envoyé !",
+	            trigger:"focus",
+	            placement:"top"
+	        }
+		);
+	}
+    
 }
 
 function respondInvitation(respond){
@@ -144,13 +140,14 @@ function getInvitation(json){
 }
 
 function getRespond(json){
-    if(json.confirm){
-        $id('respondInvitation').innerHTML=json.pseudo_source = " a accepté votre invitation, lancement de la partie...";
-        
+    if(json.confirm == true){
+        $id('respondMessageInvitation').innerHTML=json.pseudo_source = " a accepté votre invitation, lancement de la partie...";
+        $('#respondInvitation').modal('show');
         //request post à faire
-        document.location.href="partie.html";
+       // document.location.href="partie.html";
     } else{
         $id('respondInvitation').innerHTML=json.pseudo_source + " a refusé votre invitation";
+        $('#respondInvitation').modal('show');
     }
 }
 
@@ -200,8 +197,8 @@ function sendInvitation (joueur){
 function sendResponse (joueur, response){
     var json = {
         action: "reponse",
-        destinataire : joueur.id,
-        confirm :response
+        destinataire : joueur.id_source,
+        confirm : response
     };
     joueurSocket.send(JSON.stringify(json));
 }

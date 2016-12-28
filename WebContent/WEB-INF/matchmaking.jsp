@@ -26,7 +26,7 @@
 	            </div>
 	          </div>
 	        </div>
-	        <div class="modal fade" tabindex="-1" role="dialog" id="invitation" aria-labelledby="invitation">
+	        <div class="modal fade" tabindex="-1" role="dialog" id="respondInvitation" aria-labelledby="respondInvitation">
 	          <div class="modal-dialog" role="document">
 	            <div class="modal-content">
 	              <div class="modal-header">
@@ -34,7 +34,7 @@
 	                <h4 class="modal-title">Réponse de votre invitation</h4>
 	              </div>
 	              <div class="modal-body">
-	                <p id="respondInvitation"></p>
+	                <p id="respondMessageInvitation"></p>
 	              </div>
 	            </div>
 	          </div>
