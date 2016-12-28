@@ -14,7 +14,7 @@
    		<script type="text/javascript" src="ressources/js/abalone.js"></script> 
    		<script type="text/javascript" src="ressources/js/socket.js"></script>  
     </head> 
-    <body onload="init(); initMatchMaking(${joueur.getId()},'${joueur.getPseudo()}','${joueur.getEmail()}')">
+    <body onload="init(); initMatchMaking('${joueur.getPseudo()}','${joueur.getEmail()}')">
     	 <header>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
