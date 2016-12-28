@@ -146,7 +146,7 @@ function getRespond(json){
         //request post à faire
        // document.location.href="partie.html";
     } else{
-        $id('respondInvitation').innerHTML=json.pseudo_source + " a refusé votre invitation";
+        $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a refusé votre invitation";
         $('#respondInvitation').modal('show');
     }
 }
