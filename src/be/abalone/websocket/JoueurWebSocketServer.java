@@ -43,7 +43,6 @@ public class JoueurWebSocketServer {
             if ("add".equals(jsonMessage.getString("action"))) { //On fait un truc, ici c'et l'exemple mais ça peut etre ni'mporte qiuoi d'autre
                 bJoueur bean = new bJoueur();
                 bean.setSession(session);
-                bean.setJoueur_id(jsonMessage.getInt("id"));
                 bean.setJoueur_pseudo(jsonMessage.getString("pseudo"));
                 bean.setJoueur_email(jsonMessage.getString("email"));
  

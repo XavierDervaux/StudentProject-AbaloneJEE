@@ -26,9 +26,8 @@ public class JoueurSessionHandler {
             JsonObject addMessage = provider.createObjectBuilder()
                     .add("action", "add")
                     .add("id", bean.getId())
-                    .add("joueur_id", bean.getJoueur_id())
-                    .add("joueur_pseudo", bean.getJoueur_pseudo())
-                    .add("joueur_email", bean.getJoueur_email())
+                    .add("pseudo", bean.getJoueur_pseudo())
+                    .add("email", bean.getJoueur_email())
                     .build();
             sendToSession(session, addMessage);
         }
@@ -48,9 +47,8 @@ public class JoueurSessionHandler {
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
                 .add("id", bean.getId())
-                .add("joueur_id", bean.getJoueur_id())
-                .add("joueur_pseudo", bean.getJoueur_pseudo())
-                .add("joueur_email", bean.getJoueur_email())
+                .add("pseudo", bean.getJoueur_pseudo())
+                .add("email", bean.getJoueur_email())
                 .build();
         sendToAllConnectedSessions(addMessage);
     }
@@ -62,7 +60,8 @@ public class JoueurSessionHandler {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject demande = provider.createObjectBuilder()
                 .add("action", "demande")
-                .add("source", source.getId())
+                .add("id_source", source.getId())
+                .add("pseudo_source", source.getJoueur_pseudo())
                 .build();
         sendToSession(destin.getSession(), demande);
 	}  

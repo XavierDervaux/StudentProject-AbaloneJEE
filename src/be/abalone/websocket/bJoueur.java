@@ -5,7 +5,6 @@ import javax.websocket.Session;
 public class bJoueur {
 	private Session session;
 	private int id;
-	private int joueur_id;
 	private String joueur_pseudo;
 	private String joueur_email;
 
@@ -20,12 +19,6 @@ public class bJoueur {
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public int getJoueur_id() {
-		return joueur_id;
-	}
-	public void setJoueur_id(int joueur_id) {
-		this.joueur_id = joueur_id;
 	}
 	public String getJoueur_pseudo() {
 		return joueur_pseudo;
