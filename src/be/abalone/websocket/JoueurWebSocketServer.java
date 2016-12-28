@@ -22,14 +22,14 @@ public class JoueurWebSocketServer {
 	
 	@OnOpen
 	public void open(Session session) { //Ouverture de session, un nouveau client vient de se connecter
+		System.out.println("connexion");
 		this.sessionHandler.addSession(session);
-		System.out.println("On reçoit");
 	}
 	
     @OnClose
     public void close(Session session) { //Un client s'est déconnecté
-    	this.sessionHandler.removeSession(session);
 		System.out.println("Déco");
+    	this.sessionHandler.removeSession(session);
     }
 
     @OnError
@@ -39,9 +39,10 @@ public class JoueurWebSocketServer {
 
     @OnMessage
     public void OnMessage(String message, Session session) { //On a reçu un message
-		System.out.println("messageentrant");
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject(); //Récupération du message
+
+    		System.out.println("Reception - " + jsonMessage.getString("action") );
 
             if ("add".equals(jsonMessage.getString("action"))) { 
                 bJoueur bean = new bJoueur();
@@ -63,7 +64,7 @@ public class JoueurWebSocketServer {
             }
             
             if("reponse".equals(jsonMessage.getString("action"))) {
-            	try{
+            	try{ //L'erreur n'est pas supposée arriver mais si par malheur elle se produit elle fera planter le serveur
             		int id = (int) jsonMessage.getInt("destinataire");
                 	boolean confirm = (boolean) jsonMessage.getBoolean("confirm");
                 	this.sessionHandler.sendConfirmation(id, confirm,  session);
