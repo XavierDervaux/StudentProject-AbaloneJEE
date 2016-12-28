@@ -4,7 +4,7 @@ import javax.websocket.Session;
 
 public class bJoueur {
 	private Session session;
-	private int id;
+	private int id; //L'id de la session du socket, aucun rapport avec l'id de BDD
 	private String joueur_pseudo;
 	private String joueur_email;
 

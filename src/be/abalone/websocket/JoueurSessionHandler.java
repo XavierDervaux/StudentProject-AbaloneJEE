@@ -74,6 +74,7 @@ public class JoueurSessionHandler {
         JsonObject reponse = provider.createObjectBuilder()
                 .add("action", "reponse")
                 .add("source", source.getId())
+                .add("pseudo_source", source.getJoueur_pseudo())
                 .add("confirm", confirm)
                 .build();
         sendToSession(destin.getSession(), reponse);
