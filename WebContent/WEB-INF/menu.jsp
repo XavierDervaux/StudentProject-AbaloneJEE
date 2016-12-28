@@ -1,7 +1,7 @@
 <%@ include file="header.jsp" %>
         <div id="corps">
         	 <div class="row">
-	            <a href="jouer.html">
+	            <a href="matchmaking.html">
 	              <div class="col-xs-6 col-md-3">
 	                  <div class="thumbnail h100px">
 	                        <h1><span class="glyphicon center glyphicon-play glyph-menu"/></h1>
