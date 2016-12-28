@@ -69,7 +69,9 @@ public class JoueurSessionHandler {
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
                 .add("id", bean.getId())
-                //.add("joueur", bean.getJoueur())
+                .add("joueur_id", bean.getJoueur_id())
+                .add("joueur_pseudo", bean.getJoueur_pseudo())
+                .add("joueur_email", bean.getJoueur_email())
                 .build();
         return addMessage;
     }
