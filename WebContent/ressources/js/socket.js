@@ -6,7 +6,6 @@ var player_invitation;
 
 function initMatchMaking(id, pseudo,email){
     if(validatePageWithExtension("matchmaking")){
-    	alert("ok");
         joueurSocket = new WebSocket("ws://localhost:9090/Abalone/joueurSocket");
         joueurSocket.onmessage = onMessage;
         
@@ -19,8 +18,6 @@ function initMatchMaking(id, pseudo,email){
                 sendResponse(player_invitation, false);
             }
         });
-    } else{
-    	alert("pas ok");
     }
 }
 
