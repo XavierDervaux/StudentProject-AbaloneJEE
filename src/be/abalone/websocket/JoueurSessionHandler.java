@@ -11,17 +11,16 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
-import be.abalone.model.Joueur;
 
 @ApplicationScoped
 public class JoueurSessionHandler {
     private int joueurId = 0;
     private final Set<Session> sessions = new HashSet<>();
-    private final Set<Joueur> joueurs = new HashSet<>();
+    private final Set<bJoueur> joueurs = new HashSet<>();
     
-    public void addSession(Session session) {
-        sessions.add(session);
-        for (Joueur joueur : joueurs) {
+    public void addSession(Session session) { //On ajoute l'objet a notre session et on le renvoie au client pour qu'il puisse l'afficher a son tour
+        this.sessions.add(session);
+        for (bJoueur joueur : this.joueurs) {
             JsonObject addMessage = createAddMessage(joueur);
             sendToSession(session, addMessage);
         }
@@ -31,22 +30,22 @@ public class JoueurSessionHandler {
         sessions.remove(session);
     }
     
-    public List<Joueur> getJoueurs() {
-        return new ArrayList<>(joueurs);
+    public List<bJoueur> getJoueurs() {
+        return new ArrayList<>(this.joueurs);
     }
 
-    public void addJoueur(Joueur joueur) {
-        joueur.setId(joueurId);
-        joueurs.add(joueur);
-        joueurId++;
+    public void addJoueur(bJoueur joueur) { //On ajoute un bJoueur et on le fait savoir à chaque client
+        joueur.setId(this.joueurId);
+        this.joueurs.add(joueur);
+        this.joueurId++;
         JsonObject addMessage = createAddMessage(joueur);
         sendToAllConnectedSessions(addMessage);
     }
 
     public void removeJoueur(int id) {
-        Joueur joueur = getJoueurById(id);
+        bJoueur joueur = getJoueurById(id);
         if (joueur != null) {
-            joueurs.remove(joueur);
+        	this.joueurs.remove(joueur);
             JsonProvider provider = JsonProvider.provider();
             JsonObject removeMessage = provider.createObjectBuilder()
                     .add("action", "remove")
@@ -56,26 +55,8 @@ public class JoueurSessionHandler {
         }
     }
 
-    public void toggleJoueur(int id) {
-        JsonProvider provider = JsonProvider.provider();
-        Joueur joueur = getJoueurById(id);
-        if (joueur != null) {
-            if ("On".equals(joueur.getStatus())) {
-                joueur.setStatus("Off");
-            } else {
-                joueur.setStatus("On");
-            }
-            JsonObject updateDevMessage = provider.createObjectBuilder()
-                    .add("action", "toggle")
-                    .add("id", joueur.getId())
-                    .add("status", joueur.getStatus())
-                    .build();
-            sendToAllConnectedSessions(updateDevMessage);
-        }
-    }
-
-    private Joueur getJoueurById(int id) {
-        for (Joueur joueur : joueurs) {
+    private bJoueur getJoueurById(int id) {
+        for (bJoueur joueur : this.joueurs) {
             if (joueur.getId() == id) {
                 return joueur;
             }
@@ -83,21 +64,18 @@ public class JoueurSessionHandler {
         return null;
     }
 
-    private JsonObject createAddMessage(Joueur joueur) {
+    private JsonObject createAddMessage(bJoueur joueur) {
         JsonProvider provider = JsonProvider.provider();
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
                 .add("id", joueur.getId())
-                .add("name", joueur.getName())
-                .add("type", joueur.getType())
-                .add("status", joueur.getStatus())
-                .add("description", joueur.getDescription())
+                //.add("joueur", joueur.getJoueur())
                 .build();
         return addMessage;
     }
 
     private void sendToAllConnectedSessions(JsonObject message) {
-        for (Session session : sessions) {
+        for (Session session : this.sessions) {
             sendToSession(session, message);
         }
     }
@@ -106,7 +84,7 @@ public class JoueurSessionHandler {
         try {
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
-            sessions.remove(session);
+        	this.sessions.remove(session);
             Logger.getLogger(JoueurSessionHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }  

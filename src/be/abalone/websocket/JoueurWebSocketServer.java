@@ -13,7 +13,6 @@ import javax.websocket.Session;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.server.ServerEndpoint;
-import be.abalone.model.Joueur;
 import be.abalone.websocket.JoueurSessionHandler;
     
 @ServerEndpoint("/socket")
@@ -42,12 +41,11 @@ public class JoueurWebSocketServer {
             JsonObject jsonMessage = reader.readObject(); //Récupération du message
 
             if ("add".equals(jsonMessage.getString("action"))) {
-                Joueur joueur = new Joueur(
-                		jsonMessage.getInt("id"),
-                		jsonMessage.getString("pseudo"),
-                		jsonMessage.getString("mdp"),
-                		jsonMessage.getString("email")
-                ); 
+                bJoueur joueur = new bJoueur();
+                joueur.setJoueur_id(jsonMessage.getInt("id"));
+                joueur.setJoueur_pseudo(jsonMessage.getString("pseudo"));
+                joueur.setJoueur_email(jsonMessage.getString("email"));
+ 
                 this.sessionHandler.addJoueur(joueur);
             }
 
