@@ -23,11 +23,13 @@ public class JoueurWebSocketServer {
 	@OnOpen
 	public void open(Session session) { //Ouverture de session, un nouveau client vient de se connecter
 		this.sessionHandler.addSession(session);
+		System.out.println("On reçoit");
 	}
 	
     @OnClose
     public void close(Session session) { //Un client s'est déconnecté
     	this.sessionHandler.removeSession(session);
+		System.out.println("Déco");
     }
 
     @OnError
@@ -37,6 +39,7 @@ public class JoueurWebSocketServer {
 
     @OnMessage
     public void handleMessage(String message, Session session) { //On a reçu un message
+		System.out.println("messageentrant");
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject(); //Récupération du message
 

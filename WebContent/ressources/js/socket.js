@@ -6,7 +6,7 @@ var player_invitation;
 
 function initMatchMaking(id, pseudo,email){
     if(validatePageWithExtension("matchmaking")){
-        joueurSocket = new WebSocket("ws://localhost:9090/Abalone/joueurSocket");
+        joueurSocket = new WebSocket("ws://localhost:10080/Abalone/joueurSocket");
         joueurSocket.onmessage = onMessage;
         
         making = new MatchMaking();
