@@ -33,8 +33,8 @@ public class JoueurSessionHandler {
         }
     }
     public void removeSession(Session session) {
-    	removeJoueur(session);
     	sessions.remove(session);
+    	removeJoueur(session);
     }
 
     

@@ -38,12 +38,12 @@ public class JoueurWebSocketServer {
     }
 
     @OnMessage
-    public void handleMessage(String message, Session session) { //On a reçu un message
+    public void OnMessage(String message, Session session) { //On a reçu un message
 		System.out.println("messageentrant");
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject(); //Récupération du message
 
-            if ("add".equals(jsonMessage.getString("action"))) { //On fait un truc, ici c'et l'exemple mais ça peut etre ni'mporte qiuoi d'autre
+            if ("add".equals(jsonMessage.getString("action"))) { 
                 bJoueur bean = new bJoueur();
                 bean.setSession(session);
                 bean.setJoueur_pseudo(jsonMessage.getString("pseudo"));
@@ -53,14 +53,24 @@ public class JoueurWebSocketServer {
             }
             
             if("demande".equals(jsonMessage.getString("action"))) {
-                int id = (int) jsonMessage.getInt("destinataire");
-                this.sessionHandler.sendDemande(id, session);
+            	try{
+	                int id = (int) jsonMessage.getInt("destinataire");
+	                this.sessionHandler.sendDemande(id, session);
+	        	} catch (Exception e) {
+	        		System.out.println("Une erreur est survenue.");
+	        		//e.printStackTrace();
+	        	}
             }
             
             if("reponse".equals(jsonMessage.getString("action"))) {
-                int id = (int) jsonMessage.getInt("destinataire");
-                boolean confirm = (boolean) jsonMessage.getBoolean("confirm");
-                this.sessionHandler.sendConfirmation(id, confirm,  session);
+            	try{
+            		int id = (int) jsonMessage.getInt("destinataire");
+                	boolean confirm = (boolean) jsonMessage.getBoolean("confirm");
+                	this.sessionHandler.sendConfirmation(id, confirm,  session);
+            	} catch (Exception e) {
+            		System.out.println("Une erreur est survenue.");
+            		//e.printStackTrace();
+            	}
             }
         } catch (Exception e){
         	System.out.println(e);
