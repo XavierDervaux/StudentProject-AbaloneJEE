@@ -10,7 +10,7 @@
                 </tr>
                 <c:if test="${accomplis.size() == 0}">
                 	<tr>
-                		<td> <pre>Aucun succès n'a encore été accomplis !</pre></td>
+                		<td> <pre>Aucun succès n'a encore été accompli !</pre></td>
                 	</tr>
                 </c:if>
                 <c:forEach items="${accomplis}" var="item">
