@@ -12,7 +12,7 @@ import javax.websocket.Session;
 
 @ApplicationScoped
 public class JoueurSessionHandler {
-    private int joueurId = 0;
+    private int joueurId = 1;
     private final Set<Session> sessions = new HashSet<>();
     private final Set<bJoueur> joueurs = new HashSet<>();
 
