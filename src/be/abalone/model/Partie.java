@@ -1,8 +1,14 @@
 package be.abalone.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Partie {
+	public static List<Partie> listParties = new ArrayList<>(); //Les parties en cours.
+	private static int idManuel = 1;
+	
+	private int uid;
 	private Bille[][] plateau = null;
 	private int scoreNoir = 0;
 	private int scoreBlanc = 0;
@@ -12,15 +18,20 @@ public class Partie {
 	
 // Constructeurs
 //---------------------------------------------------	
-	public Partie(Joueur blanc, Joueur noir) {
-		this.blanc = blanc;
-		this.noir = noir;
+	public Partie(Joueur j1, Joueur j2) {
+		this.uid = idManuel;
+		idManuel++;
+		this.noir = j1;
+		this.blanc = j2;
 		initPlateau();
 	}
 	
 
 // Getter / Setter
 //---------------------------------------------------	
+	public int getUid() {
+		return uid;
+	}
 	public Bille[][] getPlateau() {
 		return plateau;
 	}
@@ -55,7 +66,37 @@ public class Partie {
 
 // Méthodes publiques
 //---------------------------------------------------	
+
+	public void finForfait(int i) { //0 = noir forfait, 1 = blanc forfait
+		// TODO Auto-generated method stub
+		
+	}
 	
+	public void fin(int i) { //0 = noir forfait, 1 = blanc forfait
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static Partie trouverPartie(Joueur joueur1, Joueur joueur2) {
+		Partie res = null;
+		
+		for(Partie tmp : listParties){
+			if( (tmp.noir.equals(joueur1) && tmp.blanc.equals(joueur2))   ||   (tmp.noir.equals(joueur2) && tmp.blanc.equals(joueur1)) ){
+				res = tmp; break;//On ne maitrise pas l'ordre des joueurs, il faut donc vérifier les deux possibilités d'ordre.
+			}
+		}
+		return res;
+	}
+	public static Partie trouverPartie(int uid) {
+		Partie res = null;
+		
+		for(Partie tmp : listParties){
+			if(tmp.getUid() == uid){
+				res = tmp; break;
+			}
+		}
+		return res;
+	}
 	
 // Méthode privées
 //---------------------------------------------------	

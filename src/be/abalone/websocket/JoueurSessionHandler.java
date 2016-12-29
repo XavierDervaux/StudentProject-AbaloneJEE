@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
 
+import bean.bJoueur;
+
 @ApplicationScoped
 public class JoueurSessionHandler {
     private int joueurId = 1;
@@ -18,7 +20,9 @@ public class JoueurSessionHandler {
 
 
 // Méthodes publiques
-//---------------------------------------------------	
+//---------------------------------------------------
+    //---------------------------------------------------
+    //Gestion des sessions
     public void addSession(Session session) { //On ajoute l'objet a notre session et on le renvoie au client pour qu'il puisse l'afficher a son tour
         this.sessions.add(session);
         for (bJoueur bean : this.joueurs) {
@@ -36,11 +40,10 @@ public class JoueurSessionHandler {
     	sessions.remove(session);
     	removeJoueur(session);
     }
-    
-    
-    
 
-	public void checkDoublon(bJoueur bean, Session session) {
+    //---------------------------------------------------
+    //Gestion d'envois
+	public void checkDoublon(bJoueur bean) {
 		boolean dejaConnect = false;
 		
 		for(bJoueur tmp :  joueurs){
@@ -55,8 +58,7 @@ public class JoueurSessionHandler {
 	                .add("action", "dejaConnect")
 	                .add("pseudo", bean.getJoueur_pseudo())
 	                .build();
-
-	        sendToSession(session, addMessage);
+	        sendToSession(bean.getSession(), addMessage);
 		} else {
 			addJoueur(bean);
 		}

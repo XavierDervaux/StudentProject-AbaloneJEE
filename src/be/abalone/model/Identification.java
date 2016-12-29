@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import be.abalone.dao.JoueurDAO;
 import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
+import utilitaire.Utilitaire;
 
 public class Identification {
 	public static int connexion(Joueur joueur) {

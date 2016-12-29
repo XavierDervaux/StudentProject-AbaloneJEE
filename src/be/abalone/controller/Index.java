@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import be.abalone.model.*;
+import utilitaire.Utilitaire;
 
 
 public class Index extends HttpServlet {

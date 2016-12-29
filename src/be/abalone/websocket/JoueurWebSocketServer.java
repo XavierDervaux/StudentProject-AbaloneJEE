@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.server.ServerEndpoint;
 import be.abalone.websocket.JoueurSessionHandler;
+import bean.bJoueur;
     
 @ServerEndpoint("/joueurSocket")
 public class JoueurWebSocketServer {
@@ -22,13 +23,11 @@ public class JoueurWebSocketServer {
 	
 	@OnOpen
 	public void open(Session session) { //Ouverture de session, un nouveau client vient de se connecter
-		System.out.println("connexion - " + session.toString());
 		this.sessionHandler.addSession(session);
 	}
 	
     @OnClose
     public void close(Session session) { //Un client s'est déconnecté
-		System.out.println("Deco - " + session.toString());
     	this.sessionHandler.removeSession(session);
     }
 
@@ -42,15 +41,13 @@ public class JoueurWebSocketServer {
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject(); //Récupération du message
 
-    		System.out.println("Reception - " + jsonMessage.getString("action") + "   " + jsonMessage.toString());
-
             if ("add".equals(jsonMessage.getString("action"))) { 
                 bJoueur bean = new bJoueur();
                 bean.setSession(session);
                 bean.setJoueur_pseudo(jsonMessage.getString("pseudo"));
                 bean.setJoueur_email(jsonMessage.getString("email"));
  
-                this.sessionHandler.checkDoublon(bean, session);
+                this.sessionHandler.checkDoublon(bean);
             }
             
             if("demande".equals(jsonMessage.getString("action"))) {
@@ -58,8 +55,7 @@ public class JoueurWebSocketServer {
 	                int id = (int) jsonMessage.getInt("destinataire");
 	                this.sessionHandler.sendDemande(id, session);
 	        	} catch (Exception e) {
-	        		System.out.println("Une erreur est survenue.");
-	        		//e.printStackTrace();
+	        		e.printStackTrace();
 	        	}
             }
             
@@ -69,8 +65,7 @@ public class JoueurWebSocketServer {
                 	boolean confirm = (boolean) jsonMessage.getBoolean("confirm");
                 	this.sessionHandler.sendConfirmation(id, confirm,  session);
             	} catch (Exception e) {
-            		System.out.println("Une erreur est survenue.");
-            		//e.printStackTrace();
+            		e.printStackTrace();
             	}
             }
         } catch (Exception e){
