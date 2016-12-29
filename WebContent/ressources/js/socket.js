@@ -151,6 +151,11 @@ function getRespond(json){
     }
 }
 
+function getDejaConnect(json){
+    window.alert(json.pseudo + " est déjà en ligne.");
+    window.location = "menu.html";
+}
+
 /*
     Réponse joueur
 */
@@ -172,6 +177,10 @@ function onMessage(event) { //On reçoit un message
         }
         case "reponse":{
             getRespond(json);
+            break;
+        }
+        case "dejaConnect":{
+            getDejaConnect(json);
             break;
         }
     }

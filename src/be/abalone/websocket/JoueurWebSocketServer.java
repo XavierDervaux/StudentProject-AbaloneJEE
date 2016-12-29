@@ -22,13 +22,13 @@ public class JoueurWebSocketServer {
 	
 	@OnOpen
 	public void open(Session session) { //Ouverture de session, un nouveau client vient de se connecter
-		System.out.println("connexion");
+		System.out.println("connexion - " + session.toString());
 		this.sessionHandler.addSession(session);
 	}
 	
     @OnClose
     public void close(Session session) { //Un client s'est déconnecté
-		System.out.println("Déco");
+		System.out.println("Deco - " + session.toString());
     	this.sessionHandler.removeSession(session);
     }
 
@@ -42,7 +42,7 @@ public class JoueurWebSocketServer {
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject(); //Récupération du message
 
-    		System.out.println("Reception - " + jsonMessage.getString("action") );
+    		System.out.println("Reception - " + jsonMessage.getString("action") + "   " + jsonMessage.toString());
 
             if ("add".equals(jsonMessage.getString("action"))) { 
                 bJoueur bean = new bJoueur();
@@ -50,7 +50,7 @@ public class JoueurWebSocketServer {
                 bean.setJoueur_pseudo(jsonMessage.getString("pseudo"));
                 bean.setJoueur_email(jsonMessage.getString("email"));
  
-                this.sessionHandler.addJoueur(bean);
+                this.sessionHandler.checkDoublon(bean, session);
             }
             
             if("demande".equals(jsonMessage.getString("action"))) {

@@ -36,22 +36,32 @@ public class JoueurSessionHandler {
     	sessions.remove(session);
     	removeJoueur(session);
     }
-
     
-    public void addJoueur(bJoueur bean) { //On ajoute un bJoueur et on le fait savoir à chaque client
-        bean.setId(this.joueurId); //On définit l'id dont on se sert pour l'identification
-        this.joueurs.add(bean);
-        this.joueurId++;
-        
-        JsonProvider provider = JsonProvider.provider();
-        JsonObject addMessage = provider.createObjectBuilder()
-                .add("action", "add")
-                .add("id", bean.getId())
-                .add("pseudo", bean.getJoueur_pseudo())
-                .add("email", bean.getJoueur_email())
-                .build();
-        sendToAllConnectedSessions(addMessage);
-    }
+    
+    
+
+	public void checkDoublon(bJoueur bean, Session session) {
+		boolean dejaConnect = false;
+		
+		for(bJoueur tmp :  joueurs){
+			if( bean.getJoueur_email().equals( tmp.getJoueur_email() ) ){ //le mail est unique, si on en trouve un identique c'est quec'est un doublon -> LE joueur est déjà connecté.
+				dejaConnect = true; break; //Inutile de continuer a parcourir si on a déjà trouvé ce qu'on cherchait.
+			}
+		}
+		
+		if(dejaConnect){
+	        JsonProvider provider = JsonProvider.provider();
+	        JsonObject addMessage = provider.createObjectBuilder()
+	                .add("action", "dejaConnect")
+	                .add("pseudo", bean.getJoueur_pseudo())
+	                .build();
+
+	        sendToAllConnectedSessions(addMessage);
+	        //sendToSession(session, addMessage);
+		} else {
+			addJoueur(bean);
+		}
+	}
 
 	public void sendDemande(int id, Session session) {
     	bJoueur source = getJoueurBySession(session);
@@ -83,6 +93,21 @@ public class JoueurSessionHandler {
 
 // Méthodes privées
 //---------------------------------------------------	
+    private void addJoueur(bJoueur bean) { //On ajoute un bJoueur et on le fait savoir à chaque client
+        bean.setId(this.joueurId); //On définit l'id dont on se sert pour l'identification
+        this.joueurs.add(bean);
+        this.joueurId++;
+        
+        JsonProvider provider = JsonProvider.provider();
+        JsonObject addMessage = provider.createObjectBuilder()
+                .add("action", "add")
+                .add("id", bean.getId())
+                .add("pseudo", bean.getJoueur_pseudo())
+                .add("email", bean.getJoueur_email())
+                .build();
+        sendToAllConnectedSessions(addMessage);
+    }
+    
     private void removeJoueur(Session session) {
     	bJoueur del = getJoueurBySession(session);
     	if(del != null){
@@ -126,7 +151,7 @@ public class JoueurSessionHandler {
 
     private void sendToSession(Session session, JsonObject message) {
         try {
-        	System.out.println("Envoi - " + message.getString("action"));
+        	System.out.println("Envoi - " + message.getString("action") + "  " + message.toString());
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
         	this.sessions.remove(session);
