@@ -150,7 +150,7 @@ function getInvitation(json){
 
 function getRespond(json){
     if(json.confirm == true){
-        $id('respondMessageInvitation').innerHTML=json.pseudo_source = " a accepté votre invitation, lancement de la partie...";
+        $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a accepté votre invitation, lancement de la partie...";
         $('#respondInvitation').modal('show');
         //request post à faire
        // document.location.href="partie.html";
