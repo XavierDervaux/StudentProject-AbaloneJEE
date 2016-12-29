@@ -6,11 +6,11 @@ var player_invitation;
 
 function initMatchMaking(pseudo,email){
     if(validatePageWithExtension("matchmaking")){
-        joueurSocket = new WebSocket("ws://localhost:10080/Abalone/joueurSocket");
+        joueurSocket = new WebSocket("ws://localhost:9090/Abalone/joueurSocket");
         joueurSocket.onmessage = onMessage;
         
         making = new MatchMaking();
-        player_current = new Joueur(-1, pseudo, email)
+        player_current = new Joueur(-1, pseudo, email); 
         making.addJoueur(player_current);
         
         joueurSocket.onopen = function(){
@@ -23,6 +23,9 @@ function initMatchMaking(pseudo,email){
                 player_invitation = null;
             }
         });
+        $('#doubleUser').on('hidden.bs.modal', function (e) {
+        	window.location = "menu.html";
+        });
     }
 }
 
@@ -30,7 +33,12 @@ function MatchMaking(){
     this.joueurs= [];
 
     this.addJoueur = function(joueur){
-        this.joueurs.push(joueur);
+    	if(this.joueurs[this.joueurs.length-1] == null){
+    		this.joueurs[this.joueurs.length-1] = joueur;
+    	} else{
+    		this.joueurs.push(joueur);
+    	    this.joueurs.sort();
+    	}
         this.refresh();
     }
 
@@ -77,36 +85,37 @@ function genereTableJoueur(joueurs){
    
     trHEader.appendChild(th);
     table.appendChild(trHEader);
-    
     for(var i = 0; i < joueurs.length; i++){
-       item = joueurs[i];
-       
-       if(item.email != player_current.email){
-           //Genetation du tableau
-            var tr = document.createElement("tr");
-            var tdPseudo = document.createElement("td");
-            var tdButton = document.createElement("td");
-            var button = document.createElement("button");
+       if(joueurs[i] != null){
+    	   
+    	   item = joueurs[i];
+    	   if(item.email != player_current.email){
+               //Genetation du tableau
+                var tr = document.createElement("tr");
+                var tdPseudo = document.createElement("td");
+                var tdButton = document.createElement("td");
+                var button = document.createElement("button");
 
-           //Propriété de la td pseudo
-           tdPseudo.innerHTML= item.pseudo;
-           tdPseudo.className="grey td-listPlayer";
+               //Propriété de la td pseudo
+               tdPseudo.innerHTML= item.pseudo;
+               tdPseudo.className="grey td-listPlayer";
 
-           tdButton.className="wth-100 td-listPlayer";
-           //Propriété du bouton
-            button.className ="btn btn-lg btn-success mrg-right-10";
-            button.type="button";
-            button.title="Invitation";
-            button.innerHTML="Envoyer une invitation";
-           
-            onClickNotification(button, item);
+               tdButton.className="wth-100 td-listPlayer";
+               //Propriété du bouton
+                button.className ="btn btn-lg btn-success mrg-right-10";
+                button.type="button";
+                button.title="Invitation";
+                button.innerHTML="Envoyer une invitation";
+               
+                onClickNotification(button, item);
 
-           //Assemblage
-           tdButton.appendChild(button);
-           tr.appendChild(tdPseudo);
-           tr.appendChild(tdButton);
+               //Assemblage
+               tdButton.appendChild(button);
+               tr.appendChild(tdPseudo);
+               tr.appendChild(tdButton);
 
-           table.appendChild(tr);
+               table.appendChild(tr);
+           }
        }
    }
 }
@@ -152,8 +161,7 @@ function getRespond(json){
 }
 
 function getDejaConnect(json){
-    window.alert(json.pseudo + " est déjà en ligne.");
-    window.location = "menu.html";
+	$('#doubleUser').modal('show');  
 }
 
 /*
@@ -180,7 +188,7 @@ function onMessage(event) { //On reçoit un message
             break;
         }
         case "dejaConnect":{
-            getDejaConnect(json);
+        	getDejaConnect(json);
             break;
         }
     }
