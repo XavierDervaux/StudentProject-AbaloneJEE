@@ -56,8 +56,7 @@ public class JoueurSessionHandler {
 	                .add("pseudo", bean.getJoueur_pseudo())
 	                .build();
 
-	        sendToAllConnectedSessions(addMessage);
-	        //sendToSession(session, addMessage);
+	        sendToSession(session, addMessage);
 		} else {
 			addJoueur(bean);
 		}
