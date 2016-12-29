@@ -13,8 +13,9 @@ import javax.websocket.Session;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.server.ServerEndpoint;
+
+import be.abalone.bean.bJoueur;
 import be.abalone.websocket.JoueurSessionHandler;
-import bean.bJoueur;
     
 @ServerEndpoint("/joueurSocket")
 public class JoueurWebSocketServer {

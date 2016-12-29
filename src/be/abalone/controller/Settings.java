@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import be.abalone.model.Identification;
 import be.abalone.model.Joueur;
-import utilitaire.Utilitaire;
+import be.abalone.utilitaire.Utilitaire;
 
 public class Settings  extends HttpServlet{
 	private static final long serialVersionUID = 1L;

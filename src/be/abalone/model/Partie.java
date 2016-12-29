@@ -72,7 +72,7 @@ public class Partie {
 		
 	}
 	
-	public void fin(int i) { //0 = noir forfait, 1 = blanc forfait
+	public void fin(int i) {
 		// TODO Auto-generated method stub
 		
 	}

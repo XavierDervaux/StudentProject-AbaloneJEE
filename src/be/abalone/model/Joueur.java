@@ -4,7 +4,7 @@ import java.util.List;
 import be.abalone.dao.JoueurDAO;
 import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
-import utilitaire.Utilitaire;
+import be.abalone.utilitaire.Utilitaire;
 
 public class Joueur {
 	private int id = 0;

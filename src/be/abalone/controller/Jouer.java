@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import be.abalone.model.Identification;
 import be.abalone.model.Joueur;
 import be.abalone.model.Partie;
-import utilitaire.Utilitaire;
+import be.abalone.utilitaire.Utilitaire;
 
 public class Jouer extends HttpServlet {
 	private static final long serialVersionUID = 1L;

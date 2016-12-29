@@ -1,4 +1,4 @@
-package utilitaire;
+package be.abalone.utilitaire;
 
 import java.security.*;
 import javax.servlet.http.Cookie;

@@ -1,4 +1,4 @@
-package bean;
+package be.abalone.bean;
 
 import javax.websocket.Session;
 

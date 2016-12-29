@@ -10,8 +10,8 @@ import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
 import javax.websocket.Session;
 
+import be.abalone.bean.bPartie;
 import be.abalone.model.Partie;
-import bean.bPartie;
 
 @ApplicationScoped
 public class PartieSessionHandler {

@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
 
-import bean.bJoueur;
+import be.abalone.bean.bJoueur;
 
 @ApplicationScoped
 public class JoueurSessionHandler {

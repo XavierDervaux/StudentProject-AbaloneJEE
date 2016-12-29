@@ -11,7 +11,7 @@ import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
 import be.abalone.model.Historique;
 import be.abalone.model.Joueur;
-import utilitaire.Utilitaire;
+import be.abalone.utilitaire.Utilitaire;
 
 public class HistoriqueDAO extends DAO<Historique>{
 	public HistoriqueDAO(Connection conn){
