@@ -11,12 +11,13 @@
    		
    		<script type="text/javascript" src="ressources/js/jquery-3.1.1.min.js"></script> 
    		<script type="text/javascript" src="ressources/js/bootstrap.min.js"></script>
-   		<script type="text/javascript" src="ressources/js/abalone.js"></script> 
-   		<script type="text/javascript" src="ressources/js/socket.js"></script>  
+   		<script type="text/javascript" src="ressources/js/abalone.js"></script>
+   		<script type="text/javascript" src="ressources/js/socket.js"></script> 
+   		<script type="text/javascript" src="ressources/js/partie.js"></script> 
     </head> 
     <body onload="init(); initMatchMaking('${joueur.getPseudo()}','${joueur.getEmail()}')">
     	 <header>
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="index.html">

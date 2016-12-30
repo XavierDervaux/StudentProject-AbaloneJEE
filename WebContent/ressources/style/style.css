@@ -1,6 +1,22 @@
 * {  
     margin : 0 auto;
 }
+
+body{
+    background-position: top center;
+    background-image: url(img/background.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+h1{
+    color : white;
+}
+
+table{
+    background-color: white;
+}
+
 li > button {
     margin-top: 7px;
 }
@@ -13,6 +29,14 @@ li > button {
     max-width: 700px; 
     background-color:  white; 
     padding: 10px; 
+    border-radius : 5px;
+}
+
+.row h1{
+    color : #337ab7;
+}
+.row a:hover{
+    color : #31527c;
 }
 
 .text-center {
@@ -116,8 +140,64 @@ li > button {
 }
 
 /*
+    HUB Player
+*/
+#hubScore{
+    width: 630px;
+    height: 60px;
+    position: absolute;
+    top: 52px;
+    margin-left: 205px;
+    background-color: #323232;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color : white;
+    border : solid black 1px;
+    border-top: 0px;
+}
+
+#hubScorePos{
+    position: absolute;
+    top: -12px;
+}
+
+#hubScorePos>div {
+    display: inline-block;
+}
+
+.hubscore{
+    width: 50px;
+    padding-left: 20px;
+}
+
+.hubPlayer{
+    width: 255px;
+}
+
+
+#buttonAbandonner {
+    position: absolute;
+    right: 150px;
+    top: 3px;
+}
+
+/*
     Plateau
 */
+
+#syncPartie{
+    color : white;
+    text-align: center;
+    font-size: 120px;
+}
+
+@keyframes toRight {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+#syncPartie>span{
+    animation: toRight 12s linear 0s infinite;
+}
 .rowBille{
     height: 70px;
 }
@@ -133,6 +213,38 @@ li > button {
 
 .bille:hover { 
     background-image: url(img/bille_hover.png);
+}
+
+#whoPlayed{
+    position: absolute;
+    top :-15px;
+    text-align: center;
+    color : #D9534F;
+    margin-left: 205px;
+    width: 630px;
+}
+
+#finPartie, #syncPartie{
+    text-align: center;
+    background-color: #222222;
+    border-radius: 10px;
+    max-width: 500px;
+    height: 450px;
+}
+
+#syncPartie{
+    height: 280px;
+    padding-top: 20px;
+}
+#finPartieGlyph{
+    font-size: 200px;
+    height: 200px;
+}
+#finPartieTitre{
+    font-size: 80px;
+}
+#finPartieMessage{
+    font-size: 30px;
 }
 
 .mleft-325 {margin-left: 325px;}

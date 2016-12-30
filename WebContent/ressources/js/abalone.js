@@ -10,36 +10,8 @@ function init(){
     if(location.hash == "#inscription"){
        $('#contentConnexion a:last').tab('show');
     }
+    initPartie();
 }
-
-/**
-    Plateau
-**/
-     
-function plateau(){
-    
-    this.plateau= new Array(9,18);
-    this.selected = new Array();
-    
-    this.addSelected = function(bille, position){
-        if(this.selected.length < 3){
-            //this.selected[] = position; 
-        }
-    };
-    
-    this.removeSelected = function(bille, position){
-        if(this.selected.length > 0){
-            //this.selected[] = position;
-        }
-    };
-}
-
-function position(x, y){
-    this.x = x;
-    this.y = y;
-}
-
-
 
 /**
     Fonctions setting
@@ -129,6 +101,35 @@ function $id(elem) {
 	return elem;
 }
 
+
+function hide(elem) {
+	var el=$id(elem);
+
+	if (!el.defdisplay) {
+	    if ((el.style.display != 'none') && (el.style.display != 'block')) {
+		el.defdisplay=el.style.display;
+	    }
+	}
+
+	el.style.display='none';
+	return el;
+}
+
+function show(elem) {
+	var el=$id(elem);
+
+	if ((el.style.display != '') && (el.style.display != 'none')) {
+	    return el;
+	}
+
+	if (el.defdisplay) {
+	    el.style.display=el.defdisplay;
+	} else {
+	el.style.display='block';
+	}
+	return el;
+}
+
 function checkPassword(password, confirmPassword, isColor = false){
     var ok = false;
     if(password.value.length >= MIN_MDP && (password.value == confirmPassword.value)){
@@ -184,4 +185,12 @@ function validatePageWithExtension(page){
 function nomFichier (){
      var CheminComplet = document.location.href;
     return  NomDuFichier = CheminComplet.substring(CheminComplet.lastIndexOf( "/" )+1 );
+}
+
+function redirect_post(link, post_var) {
+    var form = '';
+    $.each(post_var, function(key, value) {
+        form+='<input type="hidden" name="'+key+'" value="'+value+'">';
+    });
+    $('<form class="hidden" action="'+link+'" method="POST">'+form+'</form>').appendTo('body').submit();
 }
