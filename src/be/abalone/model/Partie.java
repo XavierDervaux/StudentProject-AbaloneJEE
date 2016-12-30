@@ -2,6 +2,7 @@ package be.abalone.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Partie {
@@ -12,6 +13,8 @@ public class Partie {
 	private Bille[][] plateau = null;
 	private int scoreNoir = 0;
 	private int scoreBlanc = 0;
+	private int comboNoir = 0; //Pour l'achievement combo 2 3 4
+	private int comboBlanc = 0;//Pour l'achievement combo 2 3 4
 	private Joueur blanc = null;
 	private Joueur noir = null;
 	
@@ -66,15 +69,61 @@ public class Partie {
 
 // Méthodes publiques
 //---------------------------------------------------	
-
-	public void finForfait(int i) { //0 = noir forfait, 1 = blanc forfait
-		// TODO Auto-generated method stub
+	@SuppressWarnings("unused")
+	public int gestionMouvement(int couleur){
+		int tmp, res = -1;
 		
+		//mouvement
+		
+		if(false){ //Une bille a  été prise
+			tmp = augmenterScore(couleur);
+			if(tmp >= 0){ //Situation de victoire
+				res = tmp;
+			}
+		}
+		return res; //-1=non-autorise    0=VictoireNoir    1=VictoireBlanc     2=autorisé
 	}
 	
-	public void fin(int i) {
-		// TODO Auto-generated method stub
+	public int augmenterScore(int i){ //0=noir+1   1=blanc+1
+		int res = -1;
 		
+		if(i == 0){
+			this.scoreNoir++;
+			this.comboNoir++;
+			this.comboBlanc = 0;
+			Achievement.ACV_COMBO_2(this.noir, this.comboNoir); //Gere tous les autres combos
+			if(this.scoreNoir  >= 6){  fin(0, false); res=0;  }
+		} else {
+			this.scoreBlanc++;
+			this.comboBlanc++;
+			this.comboNoir = 0;
+			Achievement.ACV_COMBO_2(this.blanc, this.comboBlanc); //Gere tous les autres combos
+			if(this.scoreBlanc >= 6){  fin(1, false); res=1;}
+		}
+		return res; //0=noirGagne   1=BlancGagne
+	}
+
+	public void fin(int couleurGagnant, boolean estForfait) {		
+		Historique fin = null;
+		
+		if(couleurGagnant == 0){ //Noir a gagné
+			fin = new Historique(new Date(), this.scoreNoir, this.scoreBlanc, estForfait, this.noir, this.blanc);
+			fin.createBDD();
+			
+			Achievement.ACV_FIRST_WIN(this.noir); //Trigger aussi les 10 et 100
+			Achievement.ACV_PERFECT(this.noir, this.scoreNoir, this.scoreBlanc);
+			Achievement.ACV_SIX_FIVE(this.noir, this.scoreNoir, this.scoreBlanc);
+			if(estForfait) { Achievement.ACV_SURRENDER(this.noir); }
+		} else { //Blanc a gagné
+			fin = new Historique(new Date(), this.scoreBlanc, this.scoreNoir, estForfait, this.blanc, this.noir);
+			fin.createBDD();
+			
+			Achievement.ACV_FIRST_WIN(this.blanc); //Trigger aussi les 10 et 100
+			Achievement.ACV_PERFECT(this.blanc, this.scoreBlanc, this.scoreNoir);
+			Achievement.ACV_SIX_FIVE(this.blanc, this.scoreBlanc, this.scoreNoir);
+			if(estForfait) { Achievement.ACV_SURRENDER(this.blanc); }
+		}
+		listParties.remove(this); //The End
 	}
 	
 	public static Partie trouverPartie(Joueur joueur1, Joueur joueur2) {

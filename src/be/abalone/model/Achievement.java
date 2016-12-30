@@ -3,6 +3,7 @@ package be.abalone.model;
 import java.util.List;
 import be.abalone.database.AbstractDAOFactory;
 import be.abalone.database.DAOFactory;
+import be.abalone.dao.AchievJoueurDAO;
 
 public class Achievement{
 	private int id = 0;
@@ -67,8 +68,96 @@ public class Achievement{
 		return tmp;	
 	}
 	
-// Méthode privées
+	
+// Méthode statiques
 //---------------------------------------------------	
+	public static void ACV_FIRST_WIN(Joueur j){ //Gagner une partie
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 1;
+		List<Historique> listH = Historique.findAllBDD(j);
+		int c = listH.size();
+		
+		if(c >= 100){ ACV_HUNDRED_WIN(j); }
+		if(c >= 10 ){ ACV_TEN_WIN(j); }
+		if(c >= 1  ){
+			if( !(j.possedeAchievement(n)) ){ //S'il ne possède PAS le succes
+				((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+			}
+		}
+	}
+	
+	public static void ACV_TEN_WIN(Joueur j){ //Gagner 10 parties
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 2;
+		if( !(j.possedeAchievement(n)) ){ //On vérifie les conditions dans ACV_FIRST_WIN, il reste juste à vérifier qu'il ne l'a pas déjà
+			((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+		}
+	}
+	
+	public static void ACV_HUNDRED_WIN(Joueur j){ //Gagner 100 parties
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 3;
+		if( !(j.possedeAchievement(n)) ){ //On vérifie les conditions dans ACV_FIRST_WIN, il reste juste à vérifier qu'il ne l'a pas déjà
+			((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+		}
+	}
+	
+	public static void ACV_PERFECT(Joueur j, int s1, int s2){ //Gagner 6-0
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 4;
+		if( !(j.possedeAchievement(n)) ){ //S'il ne possède PAS le succes, on vérifie s'il remplis les conditions.
+			if(s1 == 6 && s2 == 0){			
+				((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+			}
+		}
+	}
+	
+	public static void ACV_SIX_FIVE(Joueur j, int s1, int s2){ //Gagner 6-5
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 5;
+		if( !(j.possedeAchievement(n)) ){ //S'il ne possède PAS le succes, on vérifie s'il remplis les conditions.
+			if(s1 == 6 && s2 == 5){			
+				((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+			}
+		}
+	}
+	
+	public static void ACV_SURRENDER(Joueur j){ //Gagner par abandon
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 6;
+		if( !(j.possedeAchievement(n)) ){ //N'est appellé qu'en cas d'abandon, rien d'autre à vérifier
+			((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+		}
+	}
+	
+	public static void ACV_COMBO_2(Joueur j, int combo){ //Prendre 2 billes de suite 
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 7;
+		
+		if(combo >= 4){ ACV_COMBO_4(j); }
+		if(combo >= 3){ ACV_COMBO_3(j); }
+		if(combo >= 2){
+			if( !(j.possedeAchievement(n)) ){ //S'il ne possède PAS le succes
+				((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+			}
+		}
+	}
+	
+	public static void ACV_COMBO_3(Joueur j){ //Prendre 3 billes de suite
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 8;
+		if( !(j.possedeAchievement(n)) ){ //Conditions déjà gerée dans combo 2
+			((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+		}
+	}
+	
+	public static void ACV_COMBO_4(Joueur j){ //Prendre 4 billes de suite
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		final int n = 9;
+		if( !(j.possedeAchievement(n)) ){ ///Conditions déjà gerée dans combo 2
+			((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
+		}
+	}
 	
 	
 // toString, hashCode, equals
@@ -115,7 +204,6 @@ public class Achievement{
 			return false;
 		return true;
 	}
-	
 	public int compareTo(Achievement a) {
 		int res = 0;
 		

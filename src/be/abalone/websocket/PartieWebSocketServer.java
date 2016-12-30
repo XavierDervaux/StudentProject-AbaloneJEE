@@ -41,9 +41,16 @@ public class PartieWebSocketServer {
 
             if ("add".equals(jsonMessage.getString("action"))) { //uid, couleur
                 int uid = jsonMessage.getInt("uid");
-                String couleur = jsonMessage.getString("couleur");
- 
+                int couleur = jsonMessage.getInt("couleur");
                 this.sessionHandler.gestionOuverture(session, uid, couleur);
+            }
+            
+            if ("forfait".equals(jsonMessage.getString("action"))) {  
+                this.sessionHandler.gestionAbandon(session, false);
+            }
+            
+            if ("move".equals(jsonMessage.getString("action"))) {  
+                this.sessionHandler.gestionMouvement(session);
             }
         } catch (Exception e){
         	System.out.println(e);

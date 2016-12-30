@@ -107,6 +107,19 @@ public class Joueur {
 		}
 		return tmp != null; //On confirme que l'objet a bien été modifié.	
 	}
+	
+	public boolean possedeAchievement(int id){
+		boolean res = false;
+		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
+		List<Achievement> tmp = adf.getAchievJoueurDAO().find(this.id);
+		
+		for(Achievement a : tmp){
+			if(a.getId() == id){
+				res = true; break;
+			}
+		}
+		return res;
+	}
     
 	public boolean checkPassword(String uncryptedPassword) {
 		boolean res = false;
