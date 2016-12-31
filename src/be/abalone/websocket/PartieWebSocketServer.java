@@ -13,13 +13,12 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
 import be.abalone.bean.bMove;
 
 @ServerEndpoint("/partieSocket")
 public class PartieWebSocketServer {
 	@Inject
-	private PartieSessionHandler sessionHandler;
+	private PartieHandler sessionHandler;
 	
 	@OnOpen
 	public void open(Session session) { 

@@ -15,7 +15,7 @@ import be.abalone.bean.bPartie;
 import be.abalone.model.Partie;
 
 @ApplicationScoped
-public class PartieSessionHandler {
+public class PartieHandler {
     private Set<bPartie> parties  = new HashSet<>();
 
 
@@ -68,29 +68,35 @@ public class PartieSessionHandler {
 	public void gestionMouvement(Session session, bMove moves) {
 		int res, couleur = getCouleurBySession(session);
 		bPartie bean = getPartieBySession(session);
-		Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
-		
-		if(actuelle.estSonTour(couleur) && actuelle.isPeutBouger()){
-			res = actuelle.gestionMouvement(couleur, moves);
-			switch(res){
-				case -1: sendUnallowed(bean);  break; 
-				case 0 : sendVictory(bean, 0); break; //noir
-				case 1 : sendVictory(bean, 1); break; //blanc
-				case 2 : sendAllowed(bean, actuelle.getScoreNoir(), actuelle.getScoreBlanc());    break; 
-			}
-		} //Sinon on l'ignore simplement
+
+		if(bean != null){ //La partie est toujours en cours
+			Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
+			
+			if(actuelle.estSonTour(couleur) && actuelle.isPeutBouger()){
+				res = actuelle.gestionMouvement(couleur, moves);
+				switch(res){
+					case -1: sendUnallowed(bean);  break; 
+					case 0 : sendVictory(bean, 0); break; //noir
+					case 1 : sendVictory(bean, 1); break; //blanc
+					case 2 : sendAllowed(bean, actuelle.getScoreNoir(), actuelle.getScoreBlanc());    break; 
+				}
+			} //Sinon on l'ignore simplement
+		}
 	}
 	
 	public void gestionFinTour(Session session) {
 		int couleur = getCouleurBySession(session);
 		bPartie bean = getPartieBySession(session);
-		Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
-		
-		if(actuelle.estSonTour(couleur)){ //Si ce n'est pas son tour ça ne posera pas de réel problème mais ça sera une nuisance graphique.
-			if(couleur == 0){ sendBeginTurn(bean.getSession_blanc()); }
-			else { sendBeginTurn(bean.getSession_blanc()); }
-			actuelle.setTour( actuelle.getTour() * -1 );
-			actuelle.setPeutBouger(true);
+
+		if(bean != null){ //La partie est toujours en cours
+			Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
+			
+			if(actuelle.estSonTour(couleur)){ //Si ce n'est pas son tour ça ne posera pas de réel problème mais ça sera une nuisance graphique.
+				if(couleur == 0){ sendBeginTurn(bean.getSession_blanc()); }
+				else { sendBeginTurn(bean.getSession_blanc()); }
+				actuelle.setTour( actuelle.getTour() * -1 );
+				actuelle.setPeutBouger(true);
+			}
 		}
 	}
 	
@@ -113,6 +119,22 @@ public class PartieSessionHandler {
                 .build();
         sendToSession(session, message);
 	}
+
+	private void sendSurrend(Session session) {
+		JsonProvider provider = JsonProvider.provider();
+        JsonObject message = provider.createObjectBuilder()
+                .add("action", "surrend")
+                .build();
+        sendToSession(session,  message);
+	}
+	
+	private void sendBeginTurn(Session session) {
+		JsonProvider provider = JsonProvider.provider();
+	    JsonObject message = provider.createObjectBuilder()
+	            .add("action", "beginTurn")
+	            .build();
+	    sendToSession(session, message);
+	}
 	
 	private void sendAllowed(bPartie bean, int sNoir, int sBlanc) {
 		JsonProvider provider = JsonProvider.provider();
@@ -134,22 +156,6 @@ public class PartieSessionHandler {
         sendToSession(bean.getSession_blanc(), message);
 	}
 
-	private void sendBeginTurn(Session session) {
-		JsonProvider provider = JsonProvider.provider();
-	    JsonObject message = provider.createObjectBuilder()
-	            .add("action", "beginTurn")
-	            .build();
-	    sendToSession(session, message);
-	}
-	
-	private void sendSurrend(Session session) {
-		JsonProvider provider = JsonProvider.provider();
-        JsonObject message = provider.createObjectBuilder()
-                .add("action", "surrend")
-                .build();
-        sendToSession(session,  message);
-	}
-	
 	private void sendVictory(bPartie bean, int couleur) {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject message = provider.createObjectBuilder()
@@ -197,7 +203,7 @@ public class PartieSessionHandler {
         	System.out.println("Envoi - " + message.getString("action") + "  " + message.toString());
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
-            Logger.getLogger(JoueurSessionHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JoueurHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

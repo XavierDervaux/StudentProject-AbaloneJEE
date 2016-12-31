@@ -15,12 +15,12 @@ import java.util.logging.Logger;
 import javax.websocket.server.ServerEndpoint;
 
 import be.abalone.bean.bJoueur;
-import be.abalone.websocket.JoueurSessionHandler;
+import be.abalone.websocket.JoueurHandler;
     
 @ServerEndpoint("/joueurSocket")
 public class JoueurWebSocketServer {
 	@Inject
-	private JoueurSessionHandler sessionHandler;
+	private JoueurHandler sessionHandler;
 	
 	@OnOpen
 	public void open(Session session) { //Ouverture de session, un nouveau client vient de se connecter
@@ -47,27 +47,18 @@ public class JoueurWebSocketServer {
                 bean.setSession(session);
                 bean.setJoueur_pseudo(jsonMessage.getString("pseudo"));
                 bean.setJoueur_email(jsonMessage.getString("email"));
- 
-                this.sessionHandler.checkDoublon(bean);
+                this.sessionHandler.gestionDoublon(bean);
             }
             
             if("demande".equals(jsonMessage.getString("action"))) {
-            	try{
-	                int id = (int) jsonMessage.getInt("destinataire");
-	                this.sessionHandler.sendDemande(id, session);
-	        	} catch (Exception e) {
-	        		e.printStackTrace();
-	        	}
+                int destId = (int) jsonMessage.getInt("destinataire");
+                this.sessionHandler.gestionDemande(destId, session);
             }
             
             if("reponse".equals(jsonMessage.getString("action"))) {
-            	try{ //L'erreur n'est pas supposée arriver mais si par malheur elle se produit elle fera planter le serveur
-            		int id = (int) jsonMessage.getInt("destinataire");
-                	boolean confirm = (boolean) jsonMessage.getBoolean("confirm");
-                	this.sessionHandler.sendConfirmation(id, confirm,  session);
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
+        		int destId = (int) jsonMessage.getInt("destinataire");
+            	boolean confirm = (boolean) jsonMessage.getBoolean("confirm");
+            	this.sessionHandler.gestionConfirmation(destId, confirm, session);
             }
         } catch (Exception e){
         	System.out.println(e);
