@@ -9,6 +9,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
 import javax.websocket.Session;
+
+import be.abalone.bean.bMove;
 import be.abalone.bean.bPartie;
 import be.abalone.model.Partie;
 
@@ -63,17 +65,32 @@ public class PartieSessionHandler {
 		}
 	}
 
-	public void gestionMouvement(Session session) {
+	public void gestionMouvement(Session session, bMove moves) {
 		int res, couleur = getCouleurBySession(session);
 		bPartie bean = getPartieBySession(session);
 		Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
 		
-		res = actuelle.gestionMouvement(couleur);
-		switch(res){
-			case -1: sendUnallowed(bean);  break; 
-			case 0 : sendVictory(bean, 0); break; //noir
-			case 1 : sendVictory(bean, 1); break; //blanc
-			case 2 : sendAllowed(bean);    break; 
+		if(actuelle.estSonTour(couleur) && actuelle.isPeutBouger()){
+			res = actuelle.gestionMouvement(couleur, moves);
+			switch(res){
+				case -1: sendUnallowed(bean);  break; 
+				case 0 : sendVictory(bean, 0); break; //noir
+				case 1 : sendVictory(bean, 1); break; //blanc
+				case 2 : sendAllowed(bean, actuelle.getScoreNoir(), actuelle.getScoreBlanc());    break; 
+			}
+		} //Sinon on l'ignore simplement
+	}
+	
+	public void gestionFinTour(Session session) {
+		int couleur = getCouleurBySession(session);
+		bPartie bean = getPartieBySession(session);
+		Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
+		
+		if(actuelle.estSonTour(couleur)){ //Si ce n'est pas son tour ça ne posera pas de réel problème mais ça sera une nuisance graphique.
+			if(couleur == 0){ sendBeginTurn(bean.getSession_blanc()); }
+			else { sendBeginTurn(bean.getSession_blanc()); }
+			actuelle.setTour( actuelle.getTour() * -1 );
+			actuelle.setPeutBouger(true);
 		}
 	}
 	
@@ -97,10 +114,12 @@ public class PartieSessionHandler {
         sendToSession(session, message);
 	}
 	
-	private void sendAllowed(bPartie bean) {
+	private void sendAllowed(bPartie bean, int sNoir, int sBlanc) {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "allowed")
+        		.add("pNoir", sNoir)
+                .add("pBlanc",sBlanc)
                 .build();
         sendToSession(bean.getSession_noir(),  message);
         sendToSession(bean.getSession_blanc(), message);
@@ -115,6 +134,14 @@ public class PartieSessionHandler {
         sendToSession(bean.getSession_blanc(), message);
 	}
 
+	private void sendBeginTurn(Session session) {
+		JsonProvider provider = JsonProvider.provider();
+	    JsonObject message = provider.createObjectBuilder()
+	            .add("action", "beginTurn")
+	            .build();
+	    sendToSession(session, message);
+	}
+	
 	private void sendSurrend(Session session) {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject message = provider.createObjectBuilder()

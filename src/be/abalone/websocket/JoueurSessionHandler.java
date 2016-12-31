@@ -86,6 +86,7 @@ public class JoueurSessionHandler {
                 .add("action", "reponse")
                 .add("source", source.getId())
                 .add("pseudo_source", source.getJoueur_pseudo())
+                .add("email_source", source.getJoueur_pseudo())
                 .add("confirm", confirm)
                 .build();
         sendToSession(destin.getSession(), reponse);
