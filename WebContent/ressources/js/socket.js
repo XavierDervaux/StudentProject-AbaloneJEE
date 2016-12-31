@@ -7,7 +7,7 @@ var player_invitation;
 function initMatchMaking(pseudo,email){
     if(validatePageWithExtension("matchmaking")){
         joueurSocket = new WebSocket("ws://localhost:9090/Abalone/joueurSocket");
-        joueurSocket.onmessage = onMessage;
+        joueurSocket.onmessage = onMessageMatchmaking;
         
         making = new MatchMaking();
         player_current = new Joueur(-1, pseudo, email); 
@@ -167,7 +167,7 @@ function getDejaConnect(json){
 /*
     Réponse joueur
 */
-function onMessage(event) { //On reçoit un message
+function onMessageMatchmaking(event) { //On reçoit un message
     var json = JSON.parse(event.data);
     
     switch(json.action){
