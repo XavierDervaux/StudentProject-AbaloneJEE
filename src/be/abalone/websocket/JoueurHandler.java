@@ -112,6 +112,7 @@ public class JoueurHandler {
                 .add("action", "demande")
                 .add("id_source", bean.getId())
                 .add("pseudo_source", bean.getJoueur_pseudo())
+                .add("email_source", bean.getJoueur_email())
                 .build();
         sendToSession(session, message);
 	}  
