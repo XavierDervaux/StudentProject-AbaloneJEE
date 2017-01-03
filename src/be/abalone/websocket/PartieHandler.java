@@ -99,7 +99,7 @@ public class PartieHandler {
 			
 			if(actuelle.estSonTour(couleur)){ //Si ce n'est pas son tour ça ne posera pas de réel problème mais ça sera une nuisance graphique.
 				if(couleur == 0){ sendBeginTurn(bean.getSession_blanc()); }
-				else { sendBeginTurn(bean.getSession_blanc()); }
+				else { sendBeginTurn(bean.getSession_noir()); }
 				actuelle.setTour( actuelle.getTour() * -1 );
 				actuelle.setPeutBouger(true);
 			}

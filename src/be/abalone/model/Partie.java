@@ -192,7 +192,7 @@ public class Partie {
 			}
 		} else if(billesCollision == 0) { res = 2; } //Si aucune bille n'entre en collision et que le mouvement est correct alors c'est bon
 		if(res ==2 ) { //Si un déplacement à été autorisé on MaJ le plateau
-			if( updatePlateau() ) { //Retourne true si une bille a été prise
+			if( updatePlateau(m) ) { //Retourne true si une bille a été prise
 				res = 3;
 			}
 		} 
@@ -215,12 +215,14 @@ public class Partie {
 	}
 
 	private int detectionCollision(bMove m, bMoveResp r) {
-		int res= -1;
+		int i, j, res= 0;
 		r.setM(m);
 		
 		switch(r.getM().getType()){
 			case 0: //Gauche 
-	
+				for(i=0; i>0; i++){
+					
+				}
 			case 1: //Haut-Gauche  
 	
 			case 2: //Haut-Droit
@@ -233,14 +235,14 @@ public class Partie {
 	
 		}	
 		//Renvoyer les 6 coordonées, +2 billes (juste les dest, pa les ori + score
-		return res;
+		return res; //nombre de billes en collision
 	}
 
 	private boolean verifierForce(int nbrBilles, int billesCollision) {		
 		return (billesCollision - nbrBilles) < 0;
 	}
 	
-	private boolean updatePlateau(){
+	private boolean updatePlateau(bMove m){
 		boolean billePrise = false;
 		//TODO		
 		return billePrise;
