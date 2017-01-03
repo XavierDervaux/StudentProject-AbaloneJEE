@@ -159,9 +159,13 @@ public class Partie {
 // Méthode privées
 //---------------------------------------------------	
 	private void initPlateau(){ //Génère le plateau de base, dût à sa forme hexagonale beaucoup de chose sont écrites manuelement.
-		int i;
+		int i, j;
 		this.plateau = new int[17][9]; //Est nul par défaut //Voir dossier sur le pourquoi 17*9
-		Arrays.fill(this.plateau, -99); //Les cases non parcourables sont -99
+		for(i=0; i<17; i++){
+			for(j=0; j<9; j++){
+				this.plateau[i][j] = -99; //Les cases non parcourables sont -99
+			}
+		}
 		
 		/*Ligne 1*/ for(i=4; i<=12; i=i+2) {    this.plateau[0][i] =  1;	}//Sur la première ligne toutes les billes sont blanches
 		/*Ligne 2*/ for(i=3; i<=13; i=i+2) {    this.plateau[1][i] =  1;    }//Sur la deuxième aussi.
