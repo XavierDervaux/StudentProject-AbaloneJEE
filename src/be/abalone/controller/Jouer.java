@@ -53,11 +53,13 @@ public class Jouer extends HttpServlet {
 					Partie.listParties.add(play);
 				}
 				request.setAttribute("id_partie", play.getUid());
-				request.setAttribute("noir", play.getNoir().getEmail());
-				request.setAttribute("blanc", play.getBlanc().getEmail());
+				request.setAttribute("noir_pseudo", play.getNoir().getPseudo());
+				request.setAttribute("noir_email", play.getNoir().getEmail());
+				request.setAttribute("blanc_pseudo", play.getBlanc().getPseudo());
+				request.setAttribute("blanc_email", play.getBlanc().getEmail());
 				this.estCorrect = true;
 			}
 		}
-		doGet(request, response);
+		doGet(request, response); //La suite se passe en JS + WebSockets
 	}
 }

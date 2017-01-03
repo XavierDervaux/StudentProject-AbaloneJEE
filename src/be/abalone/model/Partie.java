@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import be.abalone.bean.bMove;
+import be.abalone.bean.bMoveResp;
 
 public class Partie {
 	public static List<Partie> listParties = new ArrayList<>(); //Les parties en cours.
@@ -84,11 +85,12 @@ public class Partie {
 
 // Méthodes publiques
 //---------------------------------------------------	
-	public int gestionMouvement(int couleur, bMove moves){
+	public int gestionMouvement(int couleur, bMove moves, bMoveResp retour){
 		int tmp, res = -1;
 		
 		if(this.peutBouger){ //Si on a déjà bougé une fois ce tour ci on ne peut plus le faire
-			res = mouvementEstCorrect(moves); //-1 si non   2 si oui    3 si oui et score +1
+			try { res = mouvementEstCorrect(moves, retour); } //-1 si non   2 si oui    3 si oui et score +1
+			catch (Exception e){ res = -1; }
 			
 			if(res == 3){ //Une bille a  été prise
 				tmp = augmenterScore(couleur); //Si le score atteinds 6, la partie se finit ici.
@@ -178,16 +180,70 @@ public class Partie {
 		//-99 = case invallide    -1 = Aucune bille     0 = Bille noire     1=Bille blanche
 	}
 
-	private int mouvementEstCorrect(bMove moves) {
-		int res = -1;
-//TODO
+	private int mouvementEstCorrect(bMove m, bMoveResp retour) throws Exception {
+		int billesCollision, nbrBilles, res = -1;
 		
-		if(res >=2 ) {  updatePlateau();  } //Si un déplacement à été autorisé on MaJ le plateau
-		return res;//-1 si non    2 si oui    3 si oui et score +1
+		nbrBilles = compterBilles(m);
+		billesCollision = detectionCollision(m, retour); //Retourne le nombre de billes entrant en collision. (-1 si déplacement en zone interdite)
+		
+		if(billesCollision > 0){
+			if(verifierForce(nbrBilles, billesCollision)){ //Revoie vrai si la force de mouvement est suffisante ET qu'aucune bille alliée n'est sur le chemin
+				res = 2; //Si tout ça est bon alors le mouvement est valide
+			}
+		} else if(billesCollision == 0) { res = 2; } //Si aucune bille n'entre en collision et que le mouvement est correct alors c'est bon
+		if(res ==2 ) { //Si un déplacement à été autorisé on MaJ le plateau
+			if( updatePlateau() ) { //Retourne true si une bille a été prise
+				res = 3;
+			}
+		} 
+		return res;//-1 si non    2 si oui sans plus    3 si score +1
 	}
 	
-	private void updatePlateau(){
-//TODO		
+	private int compterBilles(bMove m) {
+		int nbrBilles = 0;
+		
+		if(m.ox1() > 0 && m.oy1() > 0 && m.dx1() > 0 && m.dy1() > 0){ 
+			nbrBilles++;
+			if(m.ox2() > 0 && m.oy2() > 0 && m.dx2() > 0 && m.dy2() > 0){ 
+				nbrBilles++;
+				if(m.ox3() > 0 && m.oy3() > 0 && m.dx3() > 0 && m.dy3() > 0){ 
+					nbrBilles++;	
+				}	
+			}
+		}
+		return nbrBilles;
+	}
+
+	private int detectionCollision(bMove m, bMoveResp r) {
+		int res= -1;
+		r.setM(m);
+		
+		switch(r.getM().getType()){
+			case 0: //Gauche 
+	
+			case 1: //Haut-Gauche  
+	
+			case 2: //Haut-Droit
+	
+			case 3: //Droite
+	
+			case 4: //Bas-droit  
+	
+			case 5: //Haut-Droit
+	
+		}	
+		//Renvoyer les 6 coordonées, +2 billes (juste les dest, pa les ori + score
+		return res;
+	}
+
+	private boolean verifierForce(int nbrBilles, int billesCollision) {		
+		return (billesCollision - nbrBilles) < 0;
+	}
+	
+	private boolean updatePlateau(){
+		boolean billePrise = false;
+		//TODO		
+		return billePrise;
 	}
 	
 	private int augmenterScore(int i){ //0=noir+1   1=blanc+1

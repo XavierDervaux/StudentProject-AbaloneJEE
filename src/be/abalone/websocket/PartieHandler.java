@@ -11,6 +11,7 @@ import javax.json.spi.JsonProvider;
 import javax.websocket.Session;
 
 import be.abalone.bean.bMove;
+import be.abalone.bean.bMoveResp;
 import be.abalone.bean.bPartie;
 import be.abalone.model.Partie;
 
@@ -68,22 +69,27 @@ public class PartieHandler {
 	public void gestionMouvement(Session session, bMove moves) {
 		int res, couleur = getCouleurBySession(session);
 		bPartie bean = getPartieBySession(session);
+		bMoveResp reponse = new bMoveResp();
 
 		if(bean != null){ //La partie est toujours en cours
 			Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
 			
 			if(actuelle.estSonTour(couleur) && actuelle.isPeutBouger()){
-				res = actuelle.gestionMouvement(couleur, moves);
+				res = actuelle.gestionMouvement(couleur, moves, reponse);
 				switch(res){
 					case -1: sendUnallowed(bean);  break; 
 					case 0 : sendVictory(bean, 0); break; //noir
 					case 1 : sendVictory(bean, 1); break; //blanc
-					case 2 : sendAllowed(bean, actuelle.getScoreNoir(), actuelle.getScoreBlanc());    break; 
+					case 2 : 
+						sendAllowed(session, actuelle.getScoreNoir(), actuelle.getScoreBlanc());
+						if(bean.getSession_blanc().equals(session)) {   sendMoves(bean.getSession_noir(), actuelle.getScoreNoir(), actuelle.getScoreBlanc(), reponse);   }
+						else {   sendMoves(bean.getSession_blanc(), actuelle.getScoreNoir(), actuelle.getScoreBlanc(), reponse);   }
+						break; 
 				}
 			} //Sinon on l'ignore simplement
 		}
 	}
-	
+
 	public void gestionFinTour(Session session) {
 		int couleur = getCouleurBySession(session);
 		bPartie bean = getPartieBySession(session);
@@ -136,15 +142,14 @@ public class PartieHandler {
 	    sendToSession(session, message);
 	}
 	
-	private void sendAllowed(bPartie bean, int sNoir, int sBlanc) {
+	private void sendAllowed(Session session, int sNoir, int sBlanc) {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "allowed")
         		.add("pNoir", sNoir)
                 .add("pBlanc",sBlanc)
                 .build();
-        sendToSession(bean.getSession_noir(),  message);
-        sendToSession(bean.getSession_blanc(), message);
+        sendToSession(session,  message);
 	}
 	
 	private void sendUnallowed(bPartie bean) {
@@ -156,6 +161,32 @@ public class PartieHandler {
         sendToSession(bean.getSession_blanc(), message);
 	}
 
+	private void sendMoves(Session session, int sNoir, int sBlanc, bMoveResp bean) {
+		JsonProvider provider = JsonProvider.provider();
+        JsonObject message = provider.createObjectBuilder()
+                .add("action", "move")
+        		.add("pNoir", sNoir)
+                .add("pBlanc",sBlanc)
+                .add("ori_x1", bean.getM().ox1())
+                .add("ori_y1", bean.getM().oy1())
+                .add("ori_x2", bean.getM().ox2())
+                .add("ori_y2", bean.getM().oy2())
+                .add("ori_x3", bean.getM().ox3())
+                .add("ori_y3", bean.getM().oy3())
+                .add("des_x1", bean.getM().dx1())
+                .add("des_y1", bean.getM().dy1())
+                .add("des_x2", bean.getM().dx2())
+                .add("des_y2", bean.getM().dy2())
+                .add("des_x3", bean.getM().dx3())
+                .add("des_y3", bean.getM().dy3())
+                .add("des_x4", bean.dx4())
+                .add("des_y4", bean.dy4())
+                .add("des_x5", bean.dx5())
+                .add("des_y5", bean.dy5())
+                .build();
+        sendToSession(session,  message);
+	}
+	
 	private void sendVictory(bPartie bean, int couleur) {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject message = provider.createObjectBuilder()

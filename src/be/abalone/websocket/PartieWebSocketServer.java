@@ -52,6 +52,7 @@ public class PartieWebSocketServer {
             
             if ("move".equals(jsonMessage.getString("action"))) {  
             	bMove bean = new bMove();
+            	bean.setType(jsonMessage.getInt("type"));
             	bean.setOri_x1(jsonMessage.getInt("ori_x1")); //Jusqu'a 3 billes pour bouger simultanément, source et destination
             	bean.setOri_y1(jsonMessage.getInt("ori_y1"));
             	bean.setOri_x2(jsonMessage.getInt("ori_x2"));
