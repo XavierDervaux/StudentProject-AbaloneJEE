@@ -221,10 +221,17 @@ public class PartieHandler {
     private bPartie getPartieBySession(Session session) {
     	bPartie res = null;
         for (bPartie bean : this.parties) {
-            if (bean.getSession_noir().equals(session)  ||  bean.getSession_blanc().equals(session)){
-                res = bean;
-                break; //Inutile de parcourir le reste de la liste si on a trouvé ce qu'on cherchait
-            }
+        	if(bean.getSession_noir() != null){
+        		if (bean.getSession_noir().equals(session)) {
+                    res = bean;
+                    break; //Inutile de parcourir le reste de la liste si on a trouvé ce qu'on cherchait
+                }
+        	} else if(bean.getSession_blanc() != null){
+        		if (bean.getSession_blanc().equals(session)){
+                    res = bean;
+                    break; //Inutile de parcourir le reste de la liste si on a trouvé ce qu'on cherchait
+                }
+        	}
         }
         return res;
     }

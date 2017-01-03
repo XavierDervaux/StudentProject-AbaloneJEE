@@ -43,7 +43,6 @@ public class Jouer extends HttpServlet {
 			joueur2 = new Joueur("","",mJ2); joueur2.findBDD(mJ2); //On récupère les joueurs en BDD
 			if(joueur1.getId() != 0 && joueur2.getId() != 0){ //Si tout est correct
 				play = Partie.trouverPartie(joueur1, joueur2); 
-				if(play == null) { Partie.trouverPartie(joueur2, joueur1); } //On ne maitrisepasl'ordre desjoueurs, si on ne trouve rien dans un ordre ça peut etre dans l'autre
 				if(play == null) {//Si on ne peut trouver aucune partie existante pour ces deux joueurs, on la crée. Si on en trouve une ça veut dire que l'autre joueur est passé en premier, on la récupère
 					nbrJ1 = rand.nextInt(100);
 					nbrJ2 = rand.nextInt(100);
