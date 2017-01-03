@@ -24,7 +24,7 @@ public class Index extends HttpServlet {
 		
 		if(estConnecte){ //On redirige vers le menu 
 			response.sendRedirect("/Abalone/menu.html"); 
-		} else { //N'estpas encore connecté, on affichee le formulaire de connexion/inscription
+		} else { //N'estpas encore connecté, on affiche le formulaire de connexion/inscription
 			this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response); 
 		}
 	}

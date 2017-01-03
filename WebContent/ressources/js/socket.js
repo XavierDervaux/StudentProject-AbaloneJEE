@@ -136,9 +136,14 @@ function onClickNotification(button, item){
 
 function respondInvitation(respond){
    if(player_invitation != null){
+	   tmp= player_invitation;
         sendResponse(player_invitation, respond);
-        player_invitation = null;
         $('#invitation').modal('hide');
+        
+        if(respond){
+       		sendRequestPost(tmp.email_source);
+       	}
+        player_invitation = null;
    }
 }
 
@@ -153,7 +158,8 @@ function getRespond(json){
         $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a accepté votre invitation, lancement de la partie...";
         $('#respondInvitation').modal('show');
         //request post à faire
-       // document.location.href="partie.html";
+        sendRequestPost(player_invitation.email);
+        player_invitation = null;
     } else{
         $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a refusé votre invitation";
         $('#respondInvitation').modal('show');
@@ -162,6 +168,14 @@ function getRespond(json){
 
 function getDejaConnect(json){
 	$('#doubleUser').modal('show');  
+}
+
+function sendRequestPost(email){
+	request = {
+    	joueur1 : player_current.email,
+    	joueur2 : email
+    };
+    redirect_post("jouer.html", request);
 }
 
 /*
@@ -184,7 +198,7 @@ function onMessageMatchmaking(event) { //On reçoit un message
             break;
         }
         case "reponse":{
-            getRespond(json);
+        	getRespond(json);
             break;
         }
         case "dejaConnect":{
@@ -204,6 +218,7 @@ function sendJoueur(joueur) {
 }
 
 function sendInvitation (joueur){
+	player_invitation = joueur;
     var json = {
         action: "demande",
         destinataire: joueur.id

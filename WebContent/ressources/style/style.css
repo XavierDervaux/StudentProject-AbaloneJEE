@@ -7,6 +7,7 @@ body{
     background-image: url(img/background.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-color: black;
 }
 
 h1{
@@ -29,13 +30,13 @@ li > button {
     max-width: 700px; 
     background-color:  white; 
     padding: 10px; 
-    border-radius : 5px;
+    border-radius: 5px;
 }
 
-.row h1{
+.row>a{
     color : #337ab7;
 }
-.row a:hover{
+.row>a :hover{
     color : #31527c;
 }
 
@@ -71,8 +72,15 @@ li > button {
     text-align: center;
 }
 
-.thumbnail:hover,  {
+.thumbnail:hover  {
+	color : #31527c;
     background-color: #F8F8F8;
+}
+.thumbnail>h1{
+	color : #337ab7;
+}
+.thumbnail>h1:hover{
+	color : #31527c;
 }
 
 .grey { 
@@ -156,7 +164,7 @@ li > button {
     border-top: 0px;
 }
 
-#hubScorePos{
+#hubScorePos{ 
     position: absolute;
     top: -12px;
 }
@@ -173,7 +181,23 @@ li > button {
 .hubPlayer{
     width: 255px;
 }
+.pos-right{
+    float: right;
+}
+.pos-left{
+    float: left;
+}
 
+#nameP1, #nameP2{
+    display: inline-block;
+    width: 210px;
+}
+#nameP1{
+    text-align: right;
+}
+#nameP2{
+    padding-left: 10px;
+}   
 
 #buttonAbandonner {
     position: absolute;
@@ -184,7 +208,18 @@ li > button {
 /*
     Plateau
 */
-
+#backgroundPlateau{
+    z-index: -1;
+    background-image: url(img/plateau/plateau.png);
+    width: 1000px;
+    height: 866px;
+    position: absolute;
+}
+#plateauPartie{
+    z-index: 10;
+    padding-top: 120px;
+    
+}
 #syncPartie{
     color : white;
     text-align: center;
@@ -210,10 +245,6 @@ li > button {
     margin-left: -4px;
     margin-right: 0px;
 } 
-
-.bille:hover { 
-    background-image: url(img/bille_hover.png);
-}
 
 #whoPlayed{
     position: absolute;

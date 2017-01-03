@@ -10,7 +10,6 @@ function init(){
     if(location.hash == "#inscription"){
        $('#contentConnexion a:last').tab('show');
     }
-    initPartie();
 }
 
 /**

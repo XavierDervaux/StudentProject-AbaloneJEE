@@ -15,7 +15,14 @@
    		<script type="text/javascript" src="ressources/js/socket.js"></script> 
    		<script type="text/javascript" src="ressources/js/partie.js"></script> 
     </head> 
-    <body onload="init(); initMatchMaking('${joueur.getPseudo()}','${joueur.getEmail()}')">
+    <c:choose>
+	     <c:when test="${not empty noir_pseudo}">
+	    	<body onload="init(); initMatchMaking('${joueur.getPseudo()}','${joueur.getEmail()}'); initPartie(${id_partie}, '${noir_pseudo}','${noir_email}','${blanc_pseudo}','${blanc_email}','${joueur.getEmail()}');">
+	     </c:when>
+           <c:otherwise>
+           	<body onload="init(); initMatchMaking('${joueur.getPseudo()}','${joueur.getEmail()}');">
+           </c:otherwise>
+     </c:choose>
     	 <header>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
