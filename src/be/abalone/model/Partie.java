@@ -161,8 +161,8 @@ public class Partie {
 	private void initPlateau(){ //Génère le plateau de base, dût à sa forme hexagonale beaucoup de chose sont écrites manuelement.
 		int i, j;
 		this.plateau = new int[9][17]; //Est nul par défaut //Voir dossier sur le pourquoi 17*9
-		for(i=0; i<17; i++){
-			for(j=0; j<9; j++){
+		for(i=0; i<9; i++){
+			for(j=0; j<17; j++){
 				this.plateau[i][j] = -99; //Les cases non parcourables sont -99
 			}
 		}
