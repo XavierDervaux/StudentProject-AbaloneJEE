@@ -4,7 +4,7 @@ CREATE TABLE joueur(
 	mdp       VARCHAR2(256) NOT NULL,
 	email     VARCHAR2(64) 	NOT NULL,
 	CONSTRAINT pk_joueur PRIMARY KEY(id)
-); ON DELETE CASCADE;
+); 
 
 CREATE TABLE historique(
 	id    			 INTEGER 		NOT NULL,

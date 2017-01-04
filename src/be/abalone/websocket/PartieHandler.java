@@ -83,7 +83,7 @@ public class PartieHandler {
 					case 0 : sendVictory(bean, 0); break; //noir
 					case 1 : sendVictory(bean, 1); break; //blanc
 					case 2 : 
-						sendAllowed(session, actuelle.getScoreNoir(), actuelle.getScoreBlanc());
+						sendAllowed(session, actuelle.getScoreNoir(), actuelle.getScoreBlanc(), reponse);
 						if(bean.getSession_blanc().equals(session)) {   sendMoves(bean.getSession_noir(), actuelle.getScoreNoir(), actuelle.getScoreBlanc(), reponse);   }
 						else {   sendMoves(bean.getSession_blanc(), actuelle.getScoreNoir(), actuelle.getScoreBlanc(), reponse);   }
 						break; 
@@ -148,12 +148,28 @@ public class PartieHandler {
 	    sendToSession(session, message);
 	}
 	
-	private void sendAllowed(Session session, int sNoir, int sBlanc) {
+	private void sendAllowed(Session session, int sNoir, int sBlanc, bMoveResp bean) {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "allowed")
         		.add("pNoir", sNoir)
                 .add("pBlanc",sBlanc)
+                .add("ori_x1", bean.getM().ox1())
+                .add("ori_y1", bean.getM().oy1())
+                .add("ori_x2", bean.getM().ox2())
+                .add("ori_y2", bean.getM().oy2())
+                .add("ori_x3", bean.getM().ox3())
+                .add("ori_y3", bean.getM().oy3())
+                .add("des_x1", bean.getM().dx1())
+                .add("des_y1", bean.getM().dy1())
+                .add("des_x2", bean.getM().dx2())
+                .add("des_y2", bean.getM().dy2())
+                .add("des_x3", bean.getM().dx3())
+                .add("des_y3", bean.getM().dy3())
+                .add("des_x4", bean.dx4())
+                .add("des_y4", bean.dy4())
+                .add("des_x5", bean.dx5())
+                .add("des_y5", bean.dy5())
                 .build();
         System.out.println(message.toString());
         sendToSession(session,  message);
