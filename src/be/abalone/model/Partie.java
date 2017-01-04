@@ -167,19 +167,23 @@ public class Partie {
 			}
 		}
 		
-		/*Ligne 1*/ for(i=4; i<=12; i=i+2) {    this.plateau[0][i] =  1;	}//Sur la première ligne toutes les billes sont blanches
-		/*Ligne 2*/ for(i=3; i<=13; i=i+2) {    this.plateau[1][i] =  1;    }//Sur la deuxième aussi.
-		/*Ligne 3*/ for(i=3; i<=13; i=i+2) {    this.plateau[2][i] =  1;    }//Les autres cases sont blanches
-					this.plateau[2][2]  = -1;
-					this.plateau[2][14] = -1; //Ce sont les deux seules cases vides de la ligne 3
-		/*Ligne 4*/ for(i=1; i<=15; i=i+2) {    this.plateau[3][i] = -1;    }//Aucune bille ici
-		/*Ligne 5*/ for(i=0; i<=16; i=i+2) {    this.plateau[4][i] = -1;    }//Aucune bille ici
-		/*Ligne 6*/ for(i=1; i<=15; i=i+2) {    this.plateau[5][i] = -1;    }//Aucune bille ici
-		/*Ligne 7*/ this.plateau[6][2]  = -1; //Ce sont les deux seules cases vides de la ligne 7
+		/*Ligne 1*/ for(i=4; i<=12; i=i+2) {    this.plateau[0][i] =  1;	} //Sur la première ligne toutes les billes sont blanches
+		/*Ligne 2*/ for(i=3; i<=13; i=i+2) {    this.plateau[1][i] =  1;    } //Sur la deuxième aussi.
+		/*Ligne 3*/ for(i=6; i<=10; i=i+2) {    this.plateau[2][i] =  1;    } //Les autres cases sont blanches
+					this.plateau[2][2]  = -1; 
+					this.plateau[2][4]  = -1; 
+					this.plateau[2][12] = -1; 
+					this.plateau[2][14] = -1; //Ce sont les 4 seules cases vides de la ligne 3
+		/*Ligne 4*/ for(i=1; i<=15; i=i+2) {    this.plateau[3][i] = -1;    } //Aucune bille ici
+		/*Ligne 5*/ for(i=0; i<=16; i=i+2) {    this.plateau[4][i] = -1;    } //Aucune bille ici
+		/*Ligne 6*/ for(i=1; i<=15; i=i+2) {    this.plateau[5][i] = -1;    } //Aucune bille ici
+		/*Ligne 7*/ this.plateau[6][4]  = -1; //Ce sont les 4 seules cases vides de la ligne 7
+					this.plateau[6][6]  = -1; 
 					this.plateau[6][14] = -1; 
-					for(i=3; i<=13; i=i+2) {    this.plateau[6][i] =  0;    }//Les autres cases sont noires
-		/*Ligne 8*/ for(i=3; i<=13; i=i+2) {    this.plateau[7][i] =  0;    }//Toutes les billes de la ligne 8 sont noires
-		/*Ligne 9*/ for(i=4; i<=12; i=i+2) {    this.plateau[8][i] =  0;	}//Pareil pour la 9
+					this.plateau[6][16] = -1; 
+					for(i=8; i<=12; i=i+2) {    this.plateau[6][i] =  0;    } //Les autres cases sont noires
+		/*Ligne 8*/ for(i=3; i<=13; i=i+2) {    this.plateau[7][i] =  0;    } //Toutes les billes de la ligne 8 sont noires
+		/*Ligne 9*/ for(i=4; i<=12; i=i+2) {    this.plateau[8][i] =  0;	} //Pareil pour la 9
 		
 		//-99 = case invallide    -1 = Aucune bille     0 = Bille noire     1=Bille blanche
 	}

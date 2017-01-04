@@ -76,11 +76,14 @@ public class Achievement{
 		final int n = 1;
 		List<Historique> listH = Historique.findAllBDD(j);
 		int c = listH.size();
+		System.out.println(listH.toString());
+		System.out.println(c);
 		
 		if(c >= 100){ ACV_HUNDRED_WIN(j); }
 		if(c >= 10 ){ ACV_TEN_WIN(j); }
 		if(c >= 1  ){
 			if( !(j.possedeAchievement(n)) ){ //S'il ne possède PAS le succes
+				System.out.println("toto");
 				((AchievJoueurDAO) adf.getAchievJoueurDAO()).create(j.getId(), n); //On ajoute l'achievement au joueur
 			}
 		}

@@ -34,6 +34,7 @@ public class Succes extends HttpServlet {
 		HttpSession sessions = request.getSession();
     	Joueur actuel = (Joueur) sessions.getAttribute("joueur");
 		List<Achievement> listA = Achievement.findAllBDD(); //Ne sera jamais null
+		actuel.findBDD(actuel.getEmail()); //On actualise le joueur
 		List<Achievement> listB = actuel.getAchievs();
 		
 		listA.sort((Achievement a, Achievement b)->b.compareTo(a)); //On trie la liste pour que l'affichage se fasse de façon cohérente

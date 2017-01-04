@@ -108,13 +108,13 @@ public class Joueur {
 		return tmp != null; //On confirme que l'objet a bien été modifié.	
 	}
 	
-	public boolean possedeAchievement(int id){
+	public boolean possedeAchievement(int id_acv){
 		boolean res = false;
 		DAOFactory adf = (DAOFactory) AbstractDAOFactory.getFactory(0);
 		List<Achievement> tmp = adf.getAchievJoueurDAO().find(this.id);
 		
 		for(Achievement a : tmp){
-			if(a.getId() == id){
+			if(a.getId() == id_acv){
 				res = true; break;
 			}
 		}
