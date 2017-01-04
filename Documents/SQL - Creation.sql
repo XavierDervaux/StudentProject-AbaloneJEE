@@ -37,7 +37,7 @@ CREATE TABLE fait(
 
 
 --
--- Package servant à stocker le dernier id créé, on en aura besoin dans le programme.
+-- Package utilisé pour l'aspectpersistance, stocke le dernier id créé
 --
 
 

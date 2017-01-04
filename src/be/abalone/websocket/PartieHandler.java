@@ -79,7 +79,7 @@ public class PartieHandler {
 			if(actuelle.estSonTour(couleur) && actuelle.isPeutBouger()){
 				res = actuelle.gestionMouvement(couleur, moves, reponse);
 				switch(res){
-					case -1: sendUnallowed(bean);  break; 
+					case -1: sendUnallowed(bean, session);  break; 
 					case 0 : sendVictory(bean, 0); break; //noir
 					case 1 : sendVictory(bean, 1); break; //blanc
 					case 2 : 
@@ -159,14 +159,13 @@ public class PartieHandler {
         sendToSession(session,  message);
 	}
 	
-	private void sendUnallowed(bPartie bean) {
+	private void sendUnallowed(bPartie bean, Session session) {
 		JsonProvider provider = JsonProvider.provider();
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "unallowed")
                 .build();
         System.out.println(message.toString());
-        sendToSession(bean.getSession_noir(),  message);
-        sendToSession(bean.getSession_blanc(), message);
+        sendToSession(session,  message);
 	}
 
 	private void sendMoves(Session session, int sNoir, int sBlanc, bMoveResp bean) {
