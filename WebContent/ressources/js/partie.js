@@ -1,5 +1,6 @@
 var partieSocket;
 var partie;
+var mouvementTmp;
 
 function initPartie(uid, pseudoJNoir,emailJNoir, pseudoJBlanc, emailJBlanc, emailJCurrent){        
         //On veut communiquer avec le socket
@@ -276,8 +277,6 @@ function clickBille(bille, x, y){
  * @param {int} y     [[Description]]
  */
 function survolBille(bille, x, y){
-    //debug
-    $id('whoPlayed').children[0].innerHTML = partie.plateau.terrain[x][y];
     if(partie.isTurn  > 0){ //Si c'est mon tour
         if(partie.plateau.terrain[x][y] == 0){ //Aucune bille
             setBilleImage(bille, "hover");
@@ -723,7 +722,7 @@ function setDebutPartie(json){
     
     $id('nameP1').innerHTML = partie.JoueurMe.joueur.pseudo;
     $id('nameP2').innerHTML = partie.joueurAdv.joueur.pseudo;
-   // setScore(json); 
+    //setScore(json); 
     
     //On affiche le plateau
     hideAll();
@@ -732,6 +731,7 @@ function setDebutPartie(json){
     show("hubScore");
     show("plateauPartie");
     show('buttonAbandonner');
+    showTurn();
 }
 
 
@@ -783,17 +783,19 @@ function setMessageFinPartie(isGagner, isAbandon){
  * Appeler quand le serveur indique un mouvement
  * @param {json} json Json reçu par le serveur
  */
-function setMouvementBille(json){
+function setMouvementBille(json, isMe = false){
     inversionMatrice(json);
     var row, color;
     //On effecture le mouvement demandé
     var plat = $id('plateauPartie').children;
     var valeur = 1;
-    if(json.action == "move"){ //on déplace les billes de l'adversaire
-        color = partie.joueurAdv.color;
-        valeur *= -1; 
-    } else{ //On déplace mes billes
-        color = partie.JoueurMe.color;
+    var color;
+    
+    if(isMe){
+    	color = partie.JoueurMe.color;
+    } else{
+    	valeur *= -1; 
+    	color = partie.joueurAdv.color;
     }
     
     if(json.ori_x1 != -1){
@@ -844,8 +846,10 @@ function setMouvementBille(json){
     partie.plateau.billeSelected.init();  //On vide les billes selectionnées.
     partie.plateau.billeMove.init();
     
-    sendNextTurn();
-    partie.nextTurn();   //On change de tour
+    if(isMe){
+    	sendNextTurn();
+    	partie.nextTurn();   //On change de tour
+    }
 }
 
 function determineColDOM(x, y){
@@ -924,6 +928,10 @@ function setBilleImage(bille, type, color = -1){
     }
 }
 
+function setUnauthorized(){
+	 $('#noAuthorized').modal('show');
+}
+
 /*****************************************************
  *
  *  Fonctions de la gestion du socket de la partie
@@ -944,12 +952,14 @@ function onMessagePartie(event) {
             break;
         }
         case "allowed":{    //Mouvement autorisé
-            setMouvementBille(json);
+            setMouvementBille(mouvementTmp, true);
             setScore(json);
+            mouvementTmp = null;
             break;
         }    
         case "unallowed":{  //Mouvement pas autorisé
-            break;
+        	setUnauthorized();
+        	break;
         } 
         case "move":{  //Mouvement de l'adversaire
             setMouvementBille(json);
@@ -1003,8 +1013,7 @@ function sendForfait(){
 function sendMouvement(){
     inversionMatrice();
     var json = {
-       // action: "move",
-        action: "allowed",   
+        action: "move",   
         ori_x1 : sendMouvementFormate(partie.plateau.billeSelected.vecteur[0],0),
         ori_y1 : sendMouvementFormate(partie.plateau.billeSelected.vecteur[0],1),
         des_x1 : sendMouvementFormate(partie.plateau.billeMove.vecteur[0],0),
@@ -1016,8 +1025,13 @@ function sendMouvement(){
         ori_x3 : sendMouvementFormate(partie.plateau.billeSelected.vecteur[2],0),
         ori_y3 : sendMouvementFormate(partie.plateau.billeSelected.vecteur[2],1),
         des_x3 : sendMouvementFormate(partie.plateau.billeMove.vecteur[2],0),
-        des_y3 : sendMouvementFormate(partie.plateau.billeMove.vecteur[2],1)
+        des_y3 : sendMouvementFormate(partie.plateau.billeMove.vecteur[2],1),
+        des_x4 : -1,
+        des_y4 : -1,
+        des_x5 : -1,
+        des_y5 : -1
     };
+    mouvementTmp = json;
     partieSocket.send(JSON.stringify(json));
 }
 
@@ -1056,49 +1070,49 @@ function sendPartiePlayer(){
 function inversionMatrice(json = null){
     if(partie.JoueurMe.color == 1){ //si je suis blanc, je dois inverser les lignes et col
         if(json == null){
-           for(i=0; i < partie.plateau.billeSelected.vecteur.length; i++){
+           for(i=0; i < partie.plateau.billeSelected.current; i++){
                 if(partie.plateau.billeSelected.vecteur[i].x > -1){
-                    partie.plateau.billeSelected.vecteur[i].x = 9 - partie.plateau.billeSelected.vecteur[i].x;
+                    partie.plateau.billeSelected.vecteur[i].x = 8 - partie.plateau.billeSelected.vecteur[i].x;
                     partie.plateau.billeSelected.vecteur[i].y = 16 - partie.plateau.billeSelected.vecteur[i].y;
                 }
             }
-            for(i=0; i < partie.plateau.billeMove.vecteur.length; i++){
+            for(i=0; i < partie.plateau.billeMove.current; i++){
                 if(partie.plateau.billeMove.vecteur[i].x > -1){
-                    partie.plateau.billeMove.vecteur[i].x = 9 - partie.plateau.billeMove.vecteur[i].x;
+                    partie.plateau.billeMove.vecteur[i].x = 8 - partie.plateau.billeMove.vecteur[i].x;
                     partie.plateau.billeMove.vecteur[i].y = 16 - partie.plateau.billeMove.vecteur[i].y;
                 }
             } 
         } else{
             if(json.ori_x1 > -1){
-                json.ori_x1 = 9 -  json.ori_x1;
+                json.ori_x1 = 8 -  json.ori_x1;
                 json.ori_y1 = 16 -  json.ori_y1;
             }
             if(json.ori_x2 > -1){
-                json.ori_x2 = 9 -  json.ori_x2;
+                json.ori_x2 = 8 -  json.ori_x2;
                 json.ori_y2 = 16 -  json.ori_y2;
             }
             if(json.ori_x3 > -1){
-                json.ori_x3 = 9 -  json.ori_x3;
+                json.ori_x3 = 8 -  json.ori_x3;
                  json.ori_y3 = 16 -  json.ori_y3;
             }
             if(json.des_x1 > -1){
-                json.des_x1 = 9 -  json.des_x1;
+                json.des_x1 = 8 -  json.des_x1;
                 json.des_y1 = 16 -  json.des_y1;
             }
            if(json.des_x2 > -1){
-                 json.des_x2 = 9 -  json.des_x2;
+                 json.des_x2 = 8 -  json.des_x2;
                  json.des_y2 = 16 -  json.des_y2;
             }
            if(json.des_x3 > -1){
-                 json.des_x3 = 9 -  json.des_x3;
+                 json.des_x3 = 8 -  json.des_x3;
                  json.des_y3 = 16 -  json.des_y3;
             }
            if(json.des_x4 > -1){
-                json.des_x4 = 9 -  json.des_x4;
+                json.des_x4 = 8 -  json.des_x4;
                  json.des_y4 = 16 -  json.des_y4;
             }
             if(json.des_x5 > -1){
-                json.des_x5 = 9 -  json.des_x5;
+                json.des_x5 = 8 -  json.des_x5;
                 json.des_y5 = 16 -  json.des_y5;
             }   
         }
