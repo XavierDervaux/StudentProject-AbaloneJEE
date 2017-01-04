@@ -843,7 +843,9 @@ function setMouvementBille(json){
     //on vide la selection
     partie.plateau.billeSelected.init();  //On vide les billes selectionnées.
     partie.plateau.billeMove.init();
- //   partie.nextTurn();   //On change de tour
+    
+    sendNextTurn();
+    partie.nextTurn();   //On change de tour
 }
 
 function determineColDOM(x, y){
@@ -961,8 +963,11 @@ function onMessagePartie(event) {
         case "timeout":{    //L'adversaire à quitter violament 
             setFinPartie(true, true);
             break;
-        }   
-            
+        }  
+        case "beginTurn":{
+        	partie.nextTurn();
+        	break;
+        }
         case "victoire":{    //Victoire
             //Vérifie si je suis la couleur gagniante.
             if(victoire.gagnant ==  this.partie.JoueurMe.color){
@@ -973,6 +978,13 @@ function onMessagePartie(event) {
             break;
         }
     }
+}
+
+function sendNextTurn(){
+    var json = {
+        action: "finTour"
+    };
+    partieSocket.send(JSON.stringify(json));
 }
 
 /**

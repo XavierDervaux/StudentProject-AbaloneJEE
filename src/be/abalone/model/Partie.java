@@ -275,6 +275,216 @@ public class Partie {
 		return res; //0=noirGagne   1=BlancGagne
 	}
 	
+// Système de collission 
+//---------------------------------------------------	
+	private int billeColission = -1;
+	private int couleur;
+	private boolean possiblePoint = false;
+	
+	private void validationMouvement(bMove moves, bMoveResp r){
+		int nbrBille = 0, tmp;
+		int xDirection, yDirection, nbrBillesEnnemie = 0;
+		
+		if(isColission(moves)){ //On rencontre une bille ennemie sur notre chemin
+			
+			nbrBille = nbrBilles(moves); //Nombre de bille avec moi
+			tmp = billeColission+1%nbrBille; //Je prend une autre bille en déplacement pour comparaison
+			
+			if(isVerticalRight(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){ //Verticale droite
+				if(getBilleY(moves,tmp) > getBilleY(moves, this.billeColission)){ //je remonte sur le plateau
+					xDirection = -1;
+					yDirection = 1;
+				} else{ //je descend
+					xDirection = 1;
+					yDirection = -1;
+				}
+			} else if(isVerticalLeft(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){//Verticale gauche 
+				if(getBilleY(moves,tmp) < getBilleY(moves, this.billeColission)){ //je remonte sur le plateau
+					xDirection = -1;
+					yDirection = -1;
+				} else{ //je descend
+					xDirection = 1;
+					yDirection = 1;
+				}
+			}else{ //Hozirontale
+				if(getBilleX(moves,tmp) < getBilleX(moves, this.billeColission)){ //je vais vers à la gauche
+					xDirection = 0;
+					yDirection = -1;
+				} else{ //je vais vers la droite
+					xDirection = 0;
+					yDirection = 1;
+				}
+			}
+			
+			//Suite du code
+			nbrBillesEnnemie = nbrBillesEnnemie(moves,xDirection, yDirection); //nombre de bille ennemie sur le chemin
+			if( nbrBillesEnnemie < nbrBille){ //si elle sont en infériorité numérique je pousse
+				setCoordonneeResp(moves, r, nbrBillesEnnemie, xDirection, yDirection);
+				if(this.possiblePoint){ //Je gagne un point
+					//Fonction qui augmente le score ici
+				}
+				//J'envois le packet de validation.
+			} else{ //Je peux pas pousser, envoyer le packet de refus
+				
+			}
+		}else{
+			r.setM(moves);
+		}
+	}
+	
+	//Déplace les billes poussées
+	private void setCoordonneeResp (bMove moves, bMoveResp r, int nbrBille ,int xDirection, int yDirection){
+		int i, tmpX, tmpY;
+		
+		r.setM(moves);
+		tmpX = getBilleX(moves, this.billeColission);
+		tmpY = getBilleY(moves, this.billeColission);
+		
+		for(i=0; i < nbrBille; i++){
+			tmpX += xDirection;
+			tmpY += yDirection;
+			if(this.plateau[tmpX][tmpY] != -99){
+				this.plateau[tmpX][tmpY] = this.couleur+1%2;
+				if(i == 0){
+					r.setDes_x4(tmpX);
+					r.setDes_y4(tmpY);
+				}else{
+					r.setDes_x5(tmpX);
+					r.setDes_y5(tmpY);
+				}
+			}
+		}
+		//Met à jour le reste du plateau
+		updateBillePlateau(moves);
+	}
+	
+	private void updateBillePlateau(bMove moves){
+		if(moves.ox1() > -1 && moves.oy1() > -1){
+			this.plateau[moves.ox1()][moves.oy1()] = -1;
+		}
+		if(moves.ox2() > -1 && moves.oy2() > -1){
+			this.plateau[moves.ox2()][moves.oy3()] = -1;
+		}
+		if(moves.ox2() > -1 && moves.oy3() > -1){
+			this.plateau[moves.ox3()][moves.oy3()] = -1;
+		}
+		
+		if(moves.dx1() > -1 && moves.dy1() > -1){
+			this.plateau[moves.dx1()][moves.dy1()] = this.couleur;
+		}
+		if(moves.dx2() > -1 && moves.dy2() > -1){
+			this.plateau[moves.dx2()][moves.dy3()] = this.couleur;
+		}
+		if(moves.dx2() > -1 && moves.dy3() > -1){
+			this.plateau[moves.dx3()][moves.dy3()] = this.couleur;
+		}
+	}
+	
+	private int nbrBillesEnnemie(bMove moves, int xDirection, int yDirection){
+		int i, j, nbr = 1;
+		boolean stop = false;
+		
+		i = getBilleX(moves, this.billeColission);
+		j = getBilleY(moves, this.billeColission);
+		i += xDirection;
+		j += yDirection;
+		
+		while(i > 0 && i < 9 && j > 0 && j < 17 && nbr < 2 && !stop){
+			if(this.plateau[i][j] == -99){
+				stop = true;
+			} else if(this.plateau[i][j] == this.couleur){
+				nbr = 10;
+			} else if(this.plateau[i][j] == this.couleur+1%2){
+				nbr++;
+			}
+			i += xDirection;
+			j += yDirection;
+		}
+		
+		this.possiblePoint = stop;
+		
+		return nbr;
+	}
+	
+	private int nbrBilles(bMove moves){
+		int nbr = 0;
+		if(moves.ox1() > -1 && moves.oy1() > -1){
+			nbr++;
+		}
+		if(moves.ox2() > -1 && moves.oy2() > -1){
+			nbr++;
+		}
+		if(moves.ox2() > -1 && moves.oy3() > -1){
+			nbr++;
+		}
+		return nbr;
+	}
+	
+	private int getBilleX(bMove moves, int bille){
+		int x;
+		if(bille == 1){
+			x = moves.dx1();
+		} else if(bille == 2){
+			x = moves.dx2();
+		} else{
+			x = moves.dx3();
+		}
+		return x;
+	}
+	
+	private int getBilleY(bMove moves, int bille){
+		int y;
+		if(bille == 1){
+			y = moves.dy1();
+		} else if(bille == 2){
+			y = moves.dy2();
+		} else{
+			y = moves.dy3();
+		}
+		return y;
+	}
+	
+	private boolean isColission(bMove moves){
+		boolean colission = false;
+		
+		if(isColissionBille(moves.dx1(),moves.dy1())){
+			this.billeColission = 1;
+			colission = true;
+		} else if(isColissionBille(moves.dx2(),moves.dy2())){
+			this.billeColission = 2;
+			colission = true;
+		} else if(isColissionBille(moves.dx3(),moves.dy3())){
+			this.billeColission = 3;
+			colission = true;
+		}
+		return colission;
+	}
+	
+	private boolean isColissionBille(int x, int y){
+		boolean valide = false;
+		if(x > -1 && y > -1){
+			if(this.plateau[x][y] == this.couleur+1%2){ 
+				valide = true;
+			}
+		}
+		return valide;
+	}
+	private boolean equalsCoordinate(int x1, int y1, int x2, int y2){
+		return (equalsX(x1,x2) && equalsY(y1, y2));
+	}
+	private boolean equalsY(int y1, int y2){
+		return y1 == y2;
+	}
+	private boolean equalsX(int x1, int x2){
+		return x1 == x2;
+	}
+	private boolean isVerticalRight(int x1, int y1, int x2, int y2){
+		return(equalsCoordinate(x1, y1, x2-1, y2+1) || equalsCoordinate(x1, y1, x2+1, y2-1));
+	}
+	private boolean isVerticalLeft(int x1, int y1, int x2, int y2){
+		return(equalsCoordinate(x1, y1, x2+1, y2+1) || equalsCoordinate(x1, y1, x2-1, y2-1));
+	}	
+
 	
 // toString, hashCode, equals
 //---------------------------------------------------	
