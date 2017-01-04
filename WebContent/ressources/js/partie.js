@@ -1,6 +1,5 @@
 var partieSocket;
 var partie;
-var mouvementTmp;
 
 function initPartie(uid, pseudoJNoir,emailJNoir, pseudoJBlanc, emailJBlanc, emailJCurrent){        
         //On veut communiquer avec le socket
@@ -831,6 +830,9 @@ function setMouvementBille(json, isMe = false){
         row = plat[json.des_x3].children;
         setBilleImage(row[determineColDOM(json.des_x3,json.des_y3)], "", color);
     }
+    
+   	valeur *= -1; 
+	color = partie.joueurAdv.color;
     if(json.des_x4 != -1){
         partie.plateau.terrain[json.des_x4][json.des_y4] = valeur;
         row = plat[json.des_x4].children;
@@ -952,12 +954,12 @@ function onMessagePartie(event) {
             break;
         }
         case "allowed":{    //Mouvement autorisé
-            setMouvementBille(mouvementTmp, true);
+            setMouvementBille(json, true);
             setScore(json);
-            mouvementTmp = null;
             break;
         }    
         case "unallowed":{  //Mouvement pas autorisé
+        	partie.plateau.billeMove.init();   
         	setUnauthorized();
         	break;
         } 
@@ -1031,7 +1033,6 @@ function sendMouvement(){
         des_x5 : -1,
         des_y5 : -1
     };
-    mouvementTmp = json;
     partieSocket.send(JSON.stringify(json));
 }
 
