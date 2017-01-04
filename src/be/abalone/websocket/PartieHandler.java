@@ -116,6 +116,7 @@ public class PartieHandler {
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "pret")
                 .build();
+        System.out.println(message.toString());
         sendToSession(bean.getSession_noir(), message);
         sendToSession(bean.getSession_blanc(), message);
     }
@@ -125,6 +126,7 @@ public class PartieHandler {
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "timeout")
                 .build();
+        System.out.println(message.toString());
         sendToSession(session, message);
 	}
 
@@ -133,6 +135,7 @@ public class PartieHandler {
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "surrend")
                 .build();
+        System.out.println(message.toString());
         sendToSession(session,  message);
 	}
 	
@@ -141,6 +144,7 @@ public class PartieHandler {
 	    JsonObject message = provider.createObjectBuilder()
 	            .add("action", "beginTurn")
 	            .build();
+        System.out.println(message.toString());
 	    sendToSession(session, message);
 	}
 	
@@ -151,6 +155,7 @@ public class PartieHandler {
         		.add("pNoir", sNoir)
                 .add("pBlanc",sBlanc)
                 .build();
+        System.out.println(message.toString());
         sendToSession(session,  message);
 	}
 	
@@ -159,6 +164,7 @@ public class PartieHandler {
         JsonObject message = provider.createObjectBuilder()
                 .add("action", "unallowed")
                 .build();
+        System.out.println(message.toString());
         sendToSession(bean.getSession_noir(),  message);
         sendToSession(bean.getSession_blanc(), message);
 	}
@@ -186,6 +192,7 @@ public class PartieHandler {
                 .add("des_x5", bean.dx5())
                 .add("des_y5", bean.dy5())
                 .build();
+        System.out.println(message.toString());
         sendToSession(session,  message);
 	}
 	
@@ -195,6 +202,7 @@ public class PartieHandler {
                 .add("action", "victoire")
                 .add("gagnant", couleur) 
                 .build();
+        System.out.println(message.toString());
         sendToSession(bean.getSession_noir(),  message);
         sendToSession(bean.getSession_blanc(), message);
 	}
