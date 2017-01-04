@@ -40,7 +40,7 @@ public class JoueurDAO extends DAO<Joueur>{
 			fetchId.close();
 			requete.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 			res = false;
 		}
 		return res;
@@ -87,7 +87,7 @@ public class JoueurDAO extends DAO<Joueur>{
 				requete.close();
 				res = true;
 			} catch (Exception e) {
-				System.err.println(e.getClass().getName() + ": " + e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
@@ -112,7 +112,7 @@ public class JoueurDAO extends DAO<Joueur>{
 			
 			requete.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		return res;
@@ -136,7 +136,7 @@ public class JoueurDAO extends DAO<Joueur>{
 			
 			requete.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		return res;

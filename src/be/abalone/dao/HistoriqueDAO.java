@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import be.abalone.database.AbstractDAOFactory;
@@ -21,11 +23,12 @@ public class HistoriqueDAO extends DAO<Historique>{
 	public boolean create(Historique obj){	
 		int id;
 		boolean res = true;
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO historique (id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant) "
-					   + "VALUES (','" + obj.getDate() + "','" + obj.getScoreGagnant() + "','" + obj.getScorePerdant() + "','" 
+			String sql = "INSERT INTO historique(id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant) "
+					   + "VALUES('','" + formatter.format(obj.getDate()) + "','" + obj.getScoreGagnant() + "','" + obj.getScorePerdant() + "','" 
 					   				+ Utilitaire.boolToInt(obj.getEstForfait()) + "','" + obj.getGagnant().getId() + "','" + obj.getPerdant().getId() + "')";
 			requete.executeUpdate(sql);
 			
@@ -41,7 +44,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 			requete.close();
 			fetchId.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 			res = false;
 		}
 		return res;
@@ -166,7 +169,7 @@ public class HistoriqueDAO extends DAO<Historique>{
 		
 			requete.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		return res;
 	}

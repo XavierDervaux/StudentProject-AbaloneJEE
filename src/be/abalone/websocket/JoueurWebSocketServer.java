@@ -61,7 +61,7 @@ public class JoueurWebSocketServer {
             	this.sessionHandler.gestionConfirmation(destId, confirm, session);
             }
         } catch (Exception e){
-        	System.out.println(e);
+			e.printStackTrace();
         }
     }
 }  

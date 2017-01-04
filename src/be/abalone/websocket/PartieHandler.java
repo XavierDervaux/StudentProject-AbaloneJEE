@@ -53,14 +53,16 @@ public class PartieHandler {
 		if(bean != null){ //La partie est toujours en cours
 			Partie actuelle = Partie.trouverPartie(bean.getUid_partie());
 			
-			if(couleur == 0){ //C'est noir qui abandonne
-				actuelle.fin(1, true);
-				if(estTimeOut){ sendTimeOut(bean.getSession_blanc()); }//On prévient blanc
-				else          { sendSurrend(bean.getSession_blanc()); }
-			} else { //C'est blanc qui s'est déconnecté
-				actuelle.fin(0, true);
-				if(estTimeOut){ sendTimeOut(bean.getSession_noir()); } //On prévient noir
-				else          { sendSurrend(bean.getSession_noir()); }
+			if(actuelle != null){
+				if(couleur == 0){ //C'est noir qui abandonne
+					actuelle.fin(1, true);
+					if(estTimeOut){ sendTimeOut(bean.getSession_blanc()); }//On prévient blanc
+					else          { sendSurrend(bean.getSession_blanc()); }
+				} else { //C'est blanc qui s'est déconnecté
+					actuelle.fin(0, true);
+					if(estTimeOut){ sendTimeOut(bean.getSession_noir()); } //On prévient noir
+					else          { sendSurrend(bean.getSession_noir()); }
+				}
 			}
 			parties.remove(actuelle); //La partie est finie, pas de raison de la garder
 		}
@@ -226,7 +228,8 @@ public class PartieHandler {
                     res = bean;
                     break; //Inutile de parcourir le reste de la liste si on a trouvé ce qu'on cherchait
                 }
-        	} else if(bean.getSession_blanc() != null){
+        	} 
+        	if(bean.getSession_blanc() != null){
         		if (bean.getSession_blanc().equals(session)){
                     res = bean;
                     break; //Inutile de parcourir le reste de la liste si on a trouvé ce qu'on cherchait
@@ -238,7 +241,6 @@ public class PartieHandler {
 
     private void sendToSession(Session session, JsonObject message) {
         try {
-        	System.out.println("Envoi - " + message.getString("action") + "  " + message.toString());
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
             Logger.getLogger(JoueurHandler.class.getName()).log(Level.SEVERE, null, ex);

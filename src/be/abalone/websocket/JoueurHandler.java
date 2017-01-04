@@ -168,7 +168,6 @@ public class JoueurHandler {
 
     private void sendToSession(Session session, JsonObject message) {
         try {
-        	System.out.println("Envoi - " + message.getString("action") + "  " + message.toString());
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
         	this.sessions.remove(session);

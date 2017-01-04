@@ -33,7 +33,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 			//Le SGBD retournera une erreur sila combinaison des id existe déjà , a cause de la contrainte d'unicité des identifiants.
 			//Cela signifie que la clé existe déjà , donc pas besoin de l'insérer et cela n'influe pas sur le reste du déroulement.
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 			res = false;
 		}
 
@@ -65,7 +65,7 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 				}
 			}
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		return res;

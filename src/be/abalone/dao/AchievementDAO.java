@@ -105,7 +105,7 @@ public class AchievementDAO extends DAO<Achievement>{
 			
 			requete.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		return res;
 	}
@@ -128,7 +128,7 @@ public class AchievementDAO extends DAO<Achievement>{
 			
 			requete.close();
 		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		return res;
 	}

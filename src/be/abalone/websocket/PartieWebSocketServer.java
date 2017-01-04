@@ -18,7 +18,7 @@ import be.abalone.bean.bMove;
 @ServerEndpoint("/partieSocket")
 public class PartieWebSocketServer {
 	@Inject
-	private PartieHandler sessionHandler;
+	private PartieHandler partieHandler;
 	
 	@OnOpen
 	public void open(Session session) { 
@@ -27,7 +27,7 @@ public class PartieWebSocketServer {
 	
     @OnClose
     public void close(Session session) { 
-    	sessionHandler.gestionFermeture(session);
+    	this.partieHandler.gestionFermeture(session);
     }
 
     @OnError
@@ -43,11 +43,11 @@ public class PartieWebSocketServer {
             if ("add".equals(jsonMessage.getString("action"))) { //uid, couleur
                 int uid = jsonMessage.getInt("uid");
                 int couleur = jsonMessage.getInt("couleur");
-                this.sessionHandler.gestionOuverture(session, uid, couleur);
+                this.partieHandler.gestionOuverture(session, uid, couleur);
             }
             
             if ("forfait".equals(jsonMessage.getString("action"))) {  
-                this.sessionHandler.gestionAbandon(session, false);
+                this.partieHandler.gestionAbandon(session, false);
             }
             
             if ("move".equals(jsonMessage.getString("action"))) {  
@@ -65,11 +65,11 @@ public class PartieWebSocketServer {
             	bean.setDes_y2(jsonMessage.getInt("des_y2"));
             	bean.setDes_x3(jsonMessage.getInt("des_x3"));
             	bean.setDes_y3(jsonMessage.getInt("des_y3"));       
-                this.sessionHandler.gestionMouvement(session, bean);
+                this.partieHandler.gestionMouvement(session, bean);
             }
             
             if("finTour".equals(jsonMessage.getString("action"))){
-                this.sessionHandler.gestionFinTour(session);
+                this.partieHandler.gestionFinTour(session);
             }
         } catch (Exception e){
         	System.out.println(e);
