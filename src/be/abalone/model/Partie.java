@@ -230,7 +230,7 @@ public class Partie {
 			if(nbrBille > 1){
 				if(isVerticalRight(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){ //Verticale droite
 					System.out.println("Je suis une rangé de bille verticale droite");
-					if(getBilleY(moves,tmp) < getBilleY(moves, this.billeColission)){ //je remonte sur le plateau
+					if(getBilleOY(moves,tmp) < getBilleDY(moves, this.billeColission)){ //je remonte sur le plateau
 						xDirection = -1;
 						yDirection = 1;
 					} else{ //je descend
@@ -239,7 +239,7 @@ public class Partie {
 					}
 				} else if(isVerticalLeft(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){//Verticale gauche 
 					System.out.println("Je suis une rangé de bille verticale gauche");
-					if(getBilleY(moves,tmp) > getBilleY(moves, this.billeColission)){ //je remonte sur le plateau
+					if(getBilleOY(moves,tmp) > getBilleDY(moves, this.billeColission)){ //je remonte sur le plateau
 						xDirection = -1;
 						yDirection = -1;
 					} else{ //je descend
@@ -248,7 +248,7 @@ public class Partie {
 					}
 				}else{ //Hozirontale
 					System.out.println("Je suis une rangé de bille horizontale");
-					if(getBilleY(moves,tmp) < getBilleY(moves, this.billeColission)){ //je vais vers à la droite
+					if(getBilleOY(moves,tmp) < getBilleDY(moves, this.billeColission)){ //je vais vers à la droite
 						System.out.println("Je vais vers la droite");
 						xDirection = 0;
 						yDirection = 2;
@@ -288,14 +288,14 @@ public class Partie {
 		int i, tmpX, tmpY;
 		
 		r.setM(moves);
-		tmpX = getBilleX(moves, this.billeColission);
-		tmpY = getBilleY(moves, this.billeColission);
+		tmpX = getBilleDX(moves, this.billeColission);
+		tmpY = getBilleDY(moves, this.billeColission);
 		
 		for(i=0; i < nbrBille; i++){
 			tmpX += xDirection;
 			tmpY += yDirection;
 		//	if(this.plateau[tmpX][tmpY] != -99){
-				this.plateau[tmpX][tmpY] = this.couleur+1%2;
+				this.plateau[tmpX][tmpY] = (this.couleur+1)%2;
 				if(i == 0){
 					r.setDes_x4(tmpX);
 					r.setDes_y4(tmpY);
@@ -334,8 +334,8 @@ public class Partie {
 		int i, j, nbr = 1;
 		boolean stop = false;
 		
-		i = getBilleX(moves, this.billeColission);
-		j = getBilleY(moves, this.billeColission);
+		i = getBilleDX(moves, this.billeColission);
+		j = getBilleDY(moves, this.billeColission);
 		System.out.println("Avant boucle while1 :" + nbr +" - [" + i+"][" + j+"]");
 		i += xDirection;
 		j += yDirection;
@@ -374,7 +374,7 @@ public class Partie {
 		}
 		return nbr;
 	}
-	private int getBilleX(bMove moves, int bille){ 
+	private int getBilleDX(bMove moves, int bille){ 
 		int x;
 		if(bille == 1){
 			x = moves.dx1();
@@ -385,7 +385,7 @@ public class Partie {
 		}
 		return x;
 	}
-	private int getBilleY(bMove moves, int bille){ 
+	private int getBilleDY(bMove moves, int bille){ 
 		int y;
 		if(bille == 1){
 			y = moves.dy1();
@@ -393,6 +393,18 @@ public class Partie {
 			y = moves.dy2();
 		} else{
 			y = moves.dy3();
+		}
+		return y;
+	}
+	
+	private int getBilleOY(bMove moves, int bille){ 
+		int y;
+		if(bille == 1){
+			y = moves.oy1();
+		} else if(bille == 2){
+			y = moves.oy2();
+		} else{
+			y = moves.oy3();
 		}
 		return y;
 	}
