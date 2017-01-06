@@ -180,11 +180,11 @@ public class Partie {
 		/*Ligne 4*/ for(i=1; i<=15; i=i+2) {    this.plateau[3][i] = -1;    } //Aucune bille ici
 		/*Ligne 5*/ for(i=0; i<=16; i=i+2) {    this.plateau[4][i] = -1;    } //Aucune bille ici
 		/*Ligne 6*/ for(i=1; i<=15; i=i+2) {    this.plateau[5][i] = -1;    } //Aucune bille ici
-		/*Ligne 7*/ this.plateau[6][4]  = -1; //Ce sont les 4 seules cases vides de la ligne 7
-					this.plateau[6][6]  = -1; 
+		/*Ligne 7*/ this.plateau[6][2]  = -1; //Ce sont les 4 seules cases vides de la ligne 7
+					this.plateau[6][4]  = -1; 
+					this.plateau[6][12] = -1; 
 					this.plateau[6][14] = -1; 
-					this.plateau[6][16] = -1; 
-					for(i=8; i<=12; i=i+2) {    this.plateau[6][i] =  0;    } //Les autres cases sont noires
+					for(i=6; i<=10; i=i+2) {    this.plateau[6][i] =  0;    } //Les autres cases sont noires
 		/*Ligne 8*/ for(i=3; i<=13; i=i+2) {    this.plateau[7][i] =  0;    } //Toutes les billes de la ligne 8 sont noires
 		/*Ligne 9*/ for(i=4; i<=12; i=i+2) {    this.plateau[8][i] =  0;	} //Pareil pour la 9
 		
@@ -225,12 +225,12 @@ public class Partie {
 		if(isColission(moves)){ //On rencontre une bille ennemie sur notre chemin
 			
 			nbrBille = nbrBilles(moves); //Nombre de bille avec moi
-			tmp = billeColission+1%nbrBille; //Je prend une autre bille en déplacement pour comparaison
+			//tmp = billeColission+1%nbrBille; //Je prend une autre bille en déplacement pour comparaison
 			System.out.println("Nombre de bille" + nbrBille);
 			if(nbrBille > 1){
 				if(isVerticalRight(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){ //Verticale droite
-					System.out.println("Je suis une rangé de bille verticale droite");
-					if(getBilleOY(moves,tmp) < getBilleDY(moves, this.billeColission)){ //je remonte sur le plateau
+					System.out.println("Je suis une rangé de bille verticale droite["+getBilleOX(moves,this.billeColission)+"]["+ getBilleDX(moves, this.billeColission)+"]");
+					if(getBilleOX(moves,this.billeColission) > getBilleDX(moves, this.billeColission)){ //je remonte sur le plateau
 						xDirection = -1;
 						yDirection = 1;
 					} else{ //je descend
@@ -238,8 +238,8 @@ public class Partie {
 						yDirection = -1;
 					}
 				} else if(isVerticalLeft(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){//Verticale gauche 
-					System.out.println("Je suis une rangé de bille verticale gauche");
-					if(getBilleOY(moves,tmp) > getBilleDY(moves, this.billeColission)){ //je remonte sur le plateau
+					System.out.println("Je suis une rangé de bille verticale gauche["+getBilleOX(moves,this.billeColission)+"]["+ getBilleDX(moves, this.billeColission)+"]");
+					if(getBilleOX(moves,this.billeColission) > getBilleDX(moves, this.billeColission)){ //je remonte sur le plateau
 						xDirection = -1;
 						yDirection = -1;
 					} else{ //je descend
@@ -248,7 +248,7 @@ public class Partie {
 					}
 				}else{ //Hozirontale
 					System.out.println("Je suis une rangé de bille horizontale");
-					if(getBilleOY(moves,tmp) < getBilleDY(moves, this.billeColission)){ //je vais vers à la droite
+					if(getBilleOY(moves,this.billeColission) < getBilleDY(moves, this.billeColission)){ //je vais vers à la droite
 						System.out.println("Je vais vers la droite");
 						xDirection = 0;
 						yDirection = 2;
@@ -261,7 +261,6 @@ public class Partie {
 				
 				//Suite du code
 				nbrBillesEnnemie = nbrBillesEnnemie(moves,xDirection, yDirection); //nombre de bille ennemie sur le chemin
-				System.out.println("Nombre de bille ennemie : " + nbrBillesEnnemie);
 				System.out.println("Nombre de bille à moi : " + nbrBille);
 				if( nbrBillesEnnemie < nbrBille){ //si elle sont en infériorité numérique je pousse
 					setCoordonneeResp(moves, r, nbrBillesEnnemie, xDirection, yDirection);
@@ -281,6 +280,8 @@ public class Partie {
 			res = 2;
 			updateBillePlateau(moves);
 		}
+		
+		this.billeColission = 0;
 		return res;
 	}
 	
@@ -294,16 +295,18 @@ public class Partie {
 		for(i=0; i < nbrBille; i++){
 			tmpX += xDirection;
 			tmpY += yDirection;
-		//	if(this.plateau[tmpX][tmpY] != -99){
-				this.plateau[tmpX][tmpY] = (this.couleur+1)%2;
-				if(i == 0){
-					r.setDes_x4(tmpX);
-					r.setDes_y4(tmpY);
-				}else{
-					r.setDes_x5(tmpX);
-					r.setDes_y5(tmpY);
+			if((tmpX > -1 && tmpX < 9) && (tmpY > -1 && tmpX < 17)){
+				if(this.plateau[tmpX][tmpY] != -99){
+					this.plateau[tmpX][tmpY] = (this.couleur+1)%2;
+					if(i == 0){
+						r.setDes_x4(tmpX);
+						r.setDes_y4(tmpY);
+					}else{
+						r.setDes_x5(tmpX);
+						r.setDes_y5(tmpY);
+					}
 				}
-		//	}
+			}
 		}
 		//Met à jour le reste du plateau
 		updateBillePlateau(moves);
@@ -315,7 +318,7 @@ public class Partie {
 		if(moves.ox2() > -1 && moves.oy2() > -1){
 			this.plateau[moves.ox2()][moves.oy2()] = -1;
 		}
-		if(moves.ox2() > -1 && moves.oy3() > -1){
+		if(moves.ox3() > -1 && moves.oy3() > -1){
 			this.plateau[moves.ox3()][moves.oy3()] = -1;
 		}
 		
@@ -325,7 +328,7 @@ public class Partie {
 		if(moves.dx2() > -1 && moves.dy2() > -1){
 			this.plateau[moves.dx2()][moves.dy2()] = this.couleur;
 		}
-		if(moves.dx2() > -1 && moves.dy3() > -1){
+		if(moves.dx3() > -1 && moves.dy3() > -1){
 			this.plateau[moves.dx3()][moves.dy3()] = this.couleur;
 		}
 	}
@@ -336,26 +339,27 @@ public class Partie {
 		
 		i = getBilleDX(moves, this.billeColission);
 		j = getBilleDY(moves, this.billeColission);
-		System.out.println("Avant boucle while1 :" + nbr +" - [" + i+"][" + j+"]");
+		System.out.println("Avant boucle while1 :" + nbr +" - [" + i +"][" + j +"]");
 		i += xDirection;
 		j += yDirection;
-		System.out.println("Avant boucle while2 :" + nbr +" - [" + i+"][" + j+"]");
+		System.out.println("Avant boucle while2 :" + nbr +" - [" + i +"][" + j +"]");
 		
-		while(i > 0 && i < 9 && j > 0 && j < 17 && nbr < 2 && !stop && this.plateau[i][j] != -1){
-			System.out.println("je suis dans la boucle while");
+		while(nbr < 3 && i > -1 &&  i < 9 && j > -1 && j < 17 && !stop && this.plateau[i][j] != -1){
 			if(this.plateau[i][j] == -99){
 				stop = true;
 			} else if(this.plateau[i][j] == this.couleur){
-				System.out.println("Couleur amical rencontrée :" + nbr +" - [" + i+"][" + j+"]");
 				nbr = 10;
 			} else if(this.plateau[i][j] == (this.couleur+1)%2){
-				System.out.println("Couleur pas amical rencontrée :" + nbr +" - [" + i+"][" + j+"]");
 				nbr++;
 			}
 			i += xDirection;
 			j += yDirection;
+			
 		}
-		
+		if(!stop && (i < 0 || i > 8 || j < 0 || j > 16)){
+			possiblePoint = true;
+		}
+		System.out.println("Nombre de bille ennemie : " + nbr);
 		this.possiblePoint = stop;
 		
 		return nbr;
@@ -407,6 +411,18 @@ public class Partie {
 			y = moves.oy3();
 		}
 		return y;
+	}
+	
+	private int getBilleOX(bMove moves, int bille){ 
+		int x;
+		if(bille == 1){
+			x = moves.ox1();
+		} else if(bille == 2){
+			x = moves.ox2();
+		} else{
+			x = moves.ox3();
+		}
+		return x;
 	}
 	private boolean isColission(bMove moves){ 
 		boolean colission = false;

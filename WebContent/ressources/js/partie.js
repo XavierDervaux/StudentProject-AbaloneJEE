@@ -301,6 +301,20 @@ function unsurvolBille(bille, x, y){
    }
 }
 
+function resetBilleSelected(){
+	var vecteur = partie.plateau.billeSelected.vecteur;
+	var plat = $id('plateauPartie').children;
+	var row;
+	
+	for(i=0; i < partie.plateau.billeSelected.current; i++){
+		partie.plateau.terrain[vecteur[i].x][vecteur[i].y] = 1;
+		 row = plat[vecteur[i].x].children;
+		 setBilleImage(row[determineColDOM(vecteur[i].x,vecteur[i].y)], "", partie.JoueurMe.color);
+	}
+	partie.plateau.billeSelected.init();   
+}
+
+
 /**
  * Fonction qui est appelé quand un le joueur clique
  * sur le bouton abandonner
@@ -452,17 +466,24 @@ function checkMouvement(x, y){
             if(middle.equalsX(x+1) || middle.equalsX(x-1)){ //Si je me déplace horizontalement
                 var nbr = 0;
                 
-                if(middle.equalsCoordinate(x+1,y+1) && isNeighbourTopOrBottom(vecteur, true) == 2){ //Déplacement vers le haut
+                if(middle.equalsCoordinate(x+1,y+1) && isNeighbourTopOrBottom(vecteur, true) == 2){ //Déplacement vers le haut gauche
                     partie.plateau.billeMove.addBille(vecteur[0].x-1, vecteur[0].y-1);
                     partie.plateau.billeMove.addBille(vecteur[1].x-1, vecteur[1].y-1);
                     
                     return true;
-                } else if(middle.equalsCoordinate(x-1,y-1) && isNeighbourTopOrBottom(vecteur, false) == 2){//Déplacement vers le bas
+                } else if(middle.equalsCoordinate(x+1,y-1) && isNeighbourTopOrBottom(vecteur, true, false) == 2){ //Déplacement vers le haut droite
+                	artie.plateau.billeMove.addBille(vecteur[0].x-1, vecteur[0].y+1);
+                    partie.plateau.billeMove.addBille(vecteur[1].x-1, vecteur[1].y+1);
+                    return true;
+                }  else if(middle.equalsCoordinate(x-1,y-1) && isNeighbourTopOrBottom(vecteur, false) == 2){//Déplacement vers le bas droite
                     partie.plateau.billeMove.addBille(vecteur[0].x+1, vecteur[0].y+1);
                     partie.plateau.billeMove.addBille(vecteur[1].x+1, vecteur[1].y+1);
-                    
                     return true;
-                }
+                }  else if(middle.equalsCoordinate(x-1,y+1) && isNeighbourTopOrBottom(vecteur, false, false) == 2){//Déplacement vers le bas gauche
+                    partie.plateau.billeMove.addBille(vecteur[0].x+1, vecteur[0].y-1);
+                    partie.plateau.billeMove.addBille(vecteur[1].x+1, vecteur[1].y-1);
+                    return true;
+                } 
             } else if(middle.equalsX(x)){ //déplacement gauche ou droite sur la même ligne
                 if(isNeighbourY(vecteur[0], y) ||isNeighbourY(vecteur[1], y)){ //Elle est voisine à une de mes billes
                     if(middle.y > y){ //Je me déplace vers à gauche
@@ -476,7 +497,7 @@ function checkMouvement(x, y){
                     return true;
                 }
             }
-    }
+         }
     } 
     else if(nbr == 3){ //Si j'ai 3 billes à deplacer
         var middle = billeMiddle();
@@ -570,18 +591,31 @@ function checkMouvement(x, y){
     return false;
 }
 
-function isNeighbourTopOrBottom(vecteur, isTop){
+function isNeighbourTopOrBottom(vecteur, isTop, isLeft = true){
     var nbr = 0; 
     for(i=0; i < vecteur.length; i++){
         if(vecteur[i] != null){
             if(isTop){
-                if(partie.plateau.terrain[vecteur[i].x-1][vecteur[i].y-1] == 0){
-                    nbr++;
-                }
+            	if(isLeft){
+            		if(partie.plateau.terrain[vecteur[i].x-1][vecteur[i].y-1] == 0){
+                        nbr++;
+                    }
+            	} else{
+            		if(partie.plateau.terrain[vecteur[i].x-1][vecteur[i].y+1] == 0){
+                        nbr++;
+                    }
+            	}
+                
             } else{
-                if(partie.plateau.terrain[vecteur[i].x+1][vecteur[i].y+1] == 0){
-                    nbr++;
-                }
+            	if(isLeft){
+            		if(partie.plateau.terrain[vecteur[i].x+1][vecteur[i].y+1] == 0){
+                        nbr++;
+                    }
+            	} else{
+            		if(partie.plateau.terrain[vecteur[i].x+1][vecteur[i].y-1] == 0){
+                        nbr++;
+                    }
+            	}
             }
 
         }
@@ -884,17 +918,17 @@ function showTurn(){
  */
 function setScore(json){
     if(partie.JoueurMe.color == 0){
-        partie.JoueurMe.score = json.sNoir;
-        partie.joueurAdv.score = json.sBlanc;
+        partie.JoueurMe.score = json.pNoir;
+        partie.joueurAdv.score = json.pBlanc;
         
-        $id('scoreP1').innerHTML = json.sNoir;
-        $id('scoreP2').innerHTML = json.sBlanc;
+        $id('scoreP1').innerHTML = json.pNoir;
+        $id('scoreP2').innerHTML = json.pBlanc;
     } else{
-        partie.JoueurMe.score = json.sBlanc;
-        partie.joueurAdv.score = json.sNoir;
+        partie.JoueurMe.score = json.pBlanc;
+        partie.joueurAdv.score = json.pNoir;
         
-        $id('scoreP1').innerHTML = json.sBlanc;
-        $id('scoreP2').innerHTML = json.sNoir;
+        $id('scoreP1').innerHTML = json.pBlanc;
+        $id('scoreP2').innerHTML = json.pNoir;
     }
 }
 
@@ -960,6 +994,7 @@ function onMessagePartie(event) {
         }    
         case "unallowed":{  //Mouvement pas autorisé
         	partie.plateau.billeMove.init();   
+        	resetBilleSelected();
         	setUnauthorized();
         	break;
         } 
