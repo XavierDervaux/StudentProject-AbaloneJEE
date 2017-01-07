@@ -472,7 +472,7 @@ function checkMouvement(x, y){
                     
                     return true;
                 } else if(middle.equalsCoordinate(x+1,y-1) && isNeighbourTopOrBottom(vecteur, true, false) == 2){ //Déplacement vers le haut droite
-                	artie.plateau.billeMove.addBille(vecteur[0].x-1, vecteur[0].y+1);
+                	partie.plateau.billeMove.addBille(vecteur[0].x-1, vecteur[0].y+1);
                     partie.plateau.billeMove.addBille(vecteur[1].x-1, vecteur[1].y+1);
                     return true;
                 }  else if(middle.equalsCoordinate(x-1,y-1) && isNeighbourTopOrBottom(vecteur, false) == 2){//Déplacement vers le bas droite
@@ -794,20 +794,20 @@ function setFinPartie(isGagner, isAbandon){
  * @param {boolean} isGagner  [[Description]]
  * @param {boolean} isAbandon [[Description]]
  */
-function setMessageFinPartie(isGagner, isAbandon){
-    if(isGagner){ //Vous avez gagnez
+function setMessageFinPartie(isGagner, isAbandon){ 
+    if(isGagner){ //Vous avez gagné
         $id('finPartieTitre').innerHTML="Victoire !";
         if(isAbandon){  //Vous avez gagnez par abandon
-             $id('finPartieMessage').innerHTML="Votre adversaire a abandonné !";
+             $id('finPartieMessage').innerHTML="Votre adversaire a abandonné !"; 
         } else{ //Vous avez gagnez normalement
-             $id('finPartieMessage').innerHTML="Vous avez gagné "+partie.scoreMe + " - " + partie.scoreAdversaire;
+             $id('finPartieMessage').innerHTML="Vous avez gagné "+partie.JoueurMe.score + " - " +  partie.joueurAdv.score;
         }
     } else{
          $id('finPartieTitre').innerHTML="Defaite !";
         if(isAbandon){  //Vous avez gagnez par abandon
              $id('finPartieMessage').innerHTML="Votre avez abandonné !";
         } else{ //Vous avez gagnez normalement
-             $id('finPartieMessage').innerHTML="Vous avez perdu "+partie.scoreMe + " - " + partie.scoreAdversaire;
+             $id('finPartieMessage').innerHTML="Vous avez perdu "+partie.JoueurMe.score + " - " + partie.joueurAdv.score;
         }
     }
 }
@@ -993,6 +993,7 @@ function onMessagePartie(event) {
             break;
         }    
         case "unallowed":{  //Mouvement pas autorisé
+        	inversionMatrice();
         	partie.plateau.billeMove.init();   
         	resetBilleSelected();
         	setUnauthorized();
@@ -1017,7 +1018,7 @@ function onMessagePartie(event) {
         }
         case "victoire":{    //Victoire
             //Vérifie si je suis la couleur gagniante.
-            if(victoire.gagnant ==  this.partie.JoueurMe.color){
+            if(json.gagnant ==  partie.JoueurMe.color){
                 setFinPartie(true, false);
             }else{
                  setFinPartie(false, false);

@@ -211,25 +211,15 @@ public class Partie {
 	}
 	
 	private int validationMouvement(bMove moves, bMoveResp r){ 
-		System.out.println("Coucou c'est moi dans validationMouvement() !");
-		System.out.println("ori_x1: " + moves.ox1() + ", ori_y1: " + moves.oy1());
-		System.out.println("ori_x2: " + moves.ox2() + ", ori_y2: " + moves.oy2());
-		System.out.println("ori_x3: " + moves.ox3() + ", ori_y3: " + moves.oy3());
-		System.out.println("des_x1: " + moves.dx1() + ", des_y3: " + moves.dy1());
-		System.out.println("des_x2: " + moves.dx2() + ", des_y3: " + moves.dy2());
-		System.out.println("des_x3: " + moves.dx3() + ", des_y3: " + moves.dy3());
 		int res = -1;
-		int nbrBille = 0, tmp;
+		int nbrBille = 0;
 		int xDirection, yDirection, nbrBillesEnnemie = 0;
 		
 		if(isColission(moves)){ //On rencontre une bille ennemie sur notre chemin
 			
 			nbrBille = nbrBilles(moves); //Nombre de bille avec moi
-			//tmp = billeColission+1%nbrBille; //Je prend une autre bille en déplacement pour comparaison
-			System.out.println("Nombre de bille" + nbrBille);
 			if(nbrBille > 1){
 				if(isVerticalRight(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){ //Verticale droite
-					System.out.println("Je suis une rangé de bille verticale droite["+getBilleOX(moves,this.billeColission)+"]["+ getBilleDX(moves, this.billeColission)+"]");
 					if(getBilleOX(moves,this.billeColission) > getBilleDX(moves, this.billeColission)){ //je remonte sur le plateau
 						xDirection = -1;
 						yDirection = 1;
@@ -238,30 +228,24 @@ public class Partie {
 						yDirection = -1;
 					}
 				} else if(isVerticalLeft(moves.ox1(), moves.oy1(), moves.ox2(), moves.oy2())){//Verticale gauche 
-					System.out.println("Je suis une rangé de bille verticale gauche["+getBilleOX(moves,this.billeColission)+"]["+ getBilleDX(moves, this.billeColission)+"]");
 					if(getBilleOX(moves,this.billeColission) > getBilleDX(moves, this.billeColission)){ //je remonte sur le plateau
 						xDirection = -1;
 						yDirection = -1;
 					} else{ //je descend
 						xDirection = 1;
 						yDirection = 1;
-					}
+					} 
 				}else{ //Hozirontale
-					System.out.println("Je suis une rangé de bille horizontale");
 					if(getBilleOY(moves,this.billeColission) < getBilleDY(moves, this.billeColission)){ //je vais vers à la droite
-						System.out.println("Je vais vers la droite");
 						xDirection = 0;
 						yDirection = 2;
 					} else{ //je vais vers la gauche
-						System.out.println("Je vais vers la gauche");
 						xDirection = 0;
 						yDirection = -2;
-					}
+					} 
 				}
 				
-				//Suite du code
 				nbrBillesEnnemie = nbrBillesEnnemie(moves,xDirection, yDirection); //nombre de bille ennemie sur le chemin
-				System.out.println("Nombre de bille à moi : " + nbrBille);
 				if( nbrBillesEnnemie < nbrBille){ //si elle sont en infériorité numérique je pousse
 					setCoordonneeResp(moves, r, nbrBillesEnnemie, xDirection, yDirection);
 					if(this.possiblePoint){ //Je gagne un point
@@ -282,6 +266,7 @@ public class Partie {
 		}
 		
 		this.billeColission = 0;
+		this.possiblePoint = false;
 		return res;
 	}
 	
@@ -339,10 +324,8 @@ public class Partie {
 		
 		i = getBilleDX(moves, this.billeColission);
 		j = getBilleDY(moves, this.billeColission);
-		System.out.println("Avant boucle while1 :" + nbr +" - [" + i +"][" + j +"]");
 		i += xDirection;
 		j += yDirection;
-		System.out.println("Avant boucle while2 :" + nbr +" - [" + i +"][" + j +"]");
 		
 		while(nbr < 3 && i > -1 &&  i < 9 && j > -1 && j < 17 && !stop && this.plateau[i][j] != -1){
 			if(this.plateau[i][j] == -99){
@@ -354,12 +337,13 @@ public class Partie {
 			}
 			i += xDirection;
 			j += yDirection;
-			
 		}
-		if(!stop && (i < 0 || i > 8 || j < 0 || j > 16)){
-			possiblePoint = true;
+		if(!stop)
+		{
+			if(i < 0 || i > 8 || j < 0 || j > 16){
+				stop = true;
+			}
 		}
-		System.out.println("Nombre de bille ennemie : " + nbr);
 		this.possiblePoint = stop;
 		
 		return nbr;
@@ -437,7 +421,6 @@ public class Partie {
 			this.billeColission = 3;
 			colission = true;
 		}
-		System.out.println("Ma colission est ma bille : " + this.billeColission);
 		return colission;
 	}
 	private boolean isColissionBille(int x, int y){
