@@ -76,10 +76,10 @@ li > button {
 	color : #31527c;
     background-color: #F8F8F8;
 }
-.thumbnail>h1{
+.thumbnail>h1, .thumbnail>button>h1{
 	color : #337ab7;
 }
-.thumbnail>h1:hover{
+.thumbnail>h1:hover, .thumbnail>button>h1:hover{
 	color : #31527c;
 }
 
