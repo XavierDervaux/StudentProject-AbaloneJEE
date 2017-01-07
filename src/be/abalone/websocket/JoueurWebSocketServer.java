@@ -17,7 +17,7 @@ import javax.websocket.server.ServerEndpoint;
 import be.abalone.bean.bJoueur;
 import be.abalone.websocket.JoueurHandler;
     
-@ServerEndpoint("/joueurSocket")
+@ServerEndpoint("/joueurSocket") //Définis l'adresse que les clients doivent donner pour se connecter à la WebSocket
 public class JoueurWebSocketServer {
 	@Inject
 	private JoueurHandler sessionHandler;
