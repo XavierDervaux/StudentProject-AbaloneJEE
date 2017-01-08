@@ -107,3 +107,18 @@ BEGIN
 END;
 
 
+
+--
+-- Insertions
+--
+
+
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_FIRST_WIN','Il faut une première fois à tout','Gagner votre première partie contre un adversaire humain.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_PERFECT','Le fruit de la compétence','Gagner une partie en n''ayant perdu aucune bille.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_SIX_FIVE','In Extremis','Gagner une partie avec un score de 6 - 5.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_TEN_WIN','La chance du débutant ?','Gagner 10 parties contre un adversaire humain.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_HUNDRER_WIN','Excusez du peu...','Gagner 100 parties contre un adversaire humain.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_SURRENDER','Trouillard !','Gagner une partie par abandon.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_COMBO_2','Combo !','Prendre deux billes à la suite.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_COMBO_3','Combo x3 !','Prendre trois billes à la suite.');
+INSERT INTO ACHIEVEMENT (ID,TITRE,NOM,DESCRIPTION) VALUES('','ACV_COMBO_4','Combo x4 !','Prendre quatre billes à la suite.');
