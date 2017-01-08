@@ -79,7 +79,7 @@ function genereTableJoueur(joueurs){
     
     var trHEader = document.createElement("tr");
     var th = document.createElement("th");
-    th.innerHTML = "Joueurs connect√©s";
+    th.innerHTML = "Joueurs connectÈs";
     th.colSpan="2" ;
     th.className="th-title define-th";
    
@@ -96,12 +96,12 @@ function genereTableJoueur(joueurs){
                 var tdButton = document.createElement("td");
                 var button = document.createElement("button");
 
-               //Propri√©t√© de la td pseudo
+               //PropriÈtÈ de la td pseudo
                tdPseudo.innerHTML= item.pseudo;
                tdPseudo.className="grey td-listPlayer";
 
                tdButton.className="wth-100 td-listPlayer";
-               //Propri√©t√© du bouton
+               //PropriÈtÈ du bouton
                 button.className ="btn btn-lg btn-success mrg-right-10";
                 button.type="button";
                 button.title="Invitation";
@@ -125,7 +125,7 @@ function onClickNotification(button, item){
 		sendInvitation(item);
 		 $(button).popover(
 	        {
-	            content: "Invitation envoy√© !",
+	            content: "Invitation envoyÈ !",
 	            trigger:"focus",
 	            placement:"top"
 	        }
@@ -155,13 +155,13 @@ function getInvitation(json){
 
 function getRespond(json){
     if(json.confirm == true){
-        $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a accept√© votre invitation, lancement de la partie...";
+        $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a acceptÈ votre invitation, lancement de la partie...";
         $('#respondInvitation').modal('show');
-        //request post √† faire
+        //request post ‡ faire
         sendRequestPost(player_invitation.email);
         player_invitation = null;
     } else{
-        $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a refus√© votre invitation";
+        $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a refusÈ votre invitation";
         $('#respondInvitation').modal('show');
     }
 }
@@ -179,7 +179,7 @@ function sendRequestPost(email){
 }
 
 /*
-    R√©ponse joueur
+    RÈponse joueur
 */
 function onMessageMatchmaking(event) { //On re√ßoit un message
     var json = JSON.parse(event.data);
