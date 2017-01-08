@@ -125,7 +125,7 @@ function onClickNotification(button, item){
 		sendInvitation(item);
 		 $(button).popover(
 	        {
-	            content: "Invitation envoyé !",
+	            content: "Invitation envoyée !",
 	            trigger:"focus",
 	            placement:"top"
 	        }
@@ -157,7 +157,7 @@ function getRespond(json){
     if(json.confirm == true){
         $id('respondMessageInvitation').innerHTML=json.pseudo_source + " a accepté votre invitation, lancement de la partie...";
         $('#respondInvitation').modal('show');
-        //request post à faire
+        //request post Ã  faire
         sendRequestPost(player_invitation.email);
         player_invitation = null;
     } else{

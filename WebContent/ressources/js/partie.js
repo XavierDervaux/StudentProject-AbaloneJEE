@@ -1,8 +1,3 @@
-é
-è
-à
-ê
-
 var partieSocket;
 var partie;
 
@@ -102,7 +97,7 @@ function Bille(x, y) {
 }
 
 /**
- * Object Plateay qui gère la position des billes et les déplacements.
+ * Object Plateay qui gère la position des billes et les dèplacements.
  */
 function Plateau(){
     this.terrain = new Array(9);
@@ -198,7 +193,7 @@ function VecteurBille(size, valDefault = null){
        return this.current == 0;
     }
     
-    //Ajoute la bille selectionné au vecteur
+    //Ajoute la bille selectionnée au vecteur
     this.addBille = function(x, y){
         if(this.current < this.vecteur.length){
             this.vecteur[this.current] = new Bille(x,y);
@@ -321,7 +316,7 @@ function resetBilleSelected(){
 
 
 /**
- * Fonction qui est appelé quand un le joueur clique
+ * Fonction qui est appelée quand un le joueur clique
  * sur le bouton abandonner
  */
 function setAbandonner(){
@@ -491,7 +486,7 @@ function checkMouvement(x, y){
                 } 
             } else if(middle.equalsX(x)){ //déplacement gauche ou droite sur la même ligne
                 if(isNeighbourY(vecteur[0], y) ||isNeighbourY(vecteur[1], y)){ //Elle est voisine à une de mes billes
-                    if(middle.y > y){ //Je me déplace vers à gauche
+                    if(middle.y > y){ //Je me déplace vers ma gauche
                         partie.plateau.billeMove.addBille(vecteur[0].x, vecteur[0].y-2);
                         partie.plateau.billeMove.addBille(vecteur[1].x, vecteur[1].y-2);
                     } else{ //Je me déplace vers ma droite
@@ -578,7 +573,7 @@ function checkMouvement(x, y){
                 }
             } else if(middle.equalsX(x)){ //déplacement gauche ou droite sur la même ligne
                 if(isNeighbourY(vecteur[0], y) ||isNeighbourY(vecteur[1], y) || isNeighbourY(vecteur[2], y) ){ //Elle est voisine à une de mes billes
-                    if(middle.y > y){ //Je me déplace vers à gauche
+                    if(middle.y > y){ //Je me déplace vers ma gauche
                         partie.plateau.billeMove.addBille(vecteur[0].x, vecteur[0].y-2);
                         partie.plateau.billeMove.addBille(vecteur[1].x, vecteur[1].y-2);
                         partie.plateau.billeMove.addBille(vecteur[2].x, vecteur[2].y-2);
@@ -805,21 +800,21 @@ function setMessageFinPartie(isGagner, isAbandon){
         if(isAbandon){  //Vous avez gagnez par abandon
              $id('finPartieMessage').innerHTML="Votre adversaire a abandonné !"; 
         } else{ //Vous avez gagnez normalement
-             $id('finPartieMessage').innerHTML="Vous avez gagné "+partie.JoueurMe.score + " - " +  partie.joueurAdv.score;
+             $id('finPartieMessage').innerHTML="Vous avez gagné "+ (partie.JoueurMe.score + 1) + " - " +  partie.joueurAdv.score;
         }
     } else{
          $id('finPartieTitre').innerHTML="Defaite !";
         if(isAbandon){  //Vous avez gagnez par abandon
              $id('finPartieMessage').innerHTML="Votre avez abandonné !";
         } else{ //Vous avez gagnez normalement
-             $id('finPartieMessage').innerHTML="Vous avez perdu "+partie.JoueurMe.score + " - " + partie.joueurAdv.score;
+             $id('finPartieMessage').innerHTML="Vous avez perdu "+partie.JoueurMe.score + " - " + (partie.joueurAdv.score + 1);
         }
     }
 }
 
 /**
  * Appeler quand le serveur indique un mouvement
- * @param {json} json Json reÃ§u par le serveur
+ * @param {json} json Json reçu par le serveur
  */
 function setMouvementBille(json, isMe = false){
     inversionMatrice(json);
@@ -870,8 +865,13 @@ function setMouvementBille(json, isMe = false){
         setBilleImage(row[determineColDOM(json.des_x3,json.des_y3)], "", color);
     }
     
-   	valeur *= -1; 
-	color = partie.joueurAdv.color;
+   
+   	if(!isMe){
+   		color = partie.JoueurMe.color;
+   	}else{
+   		color = partie.joueurAdv.color;
+   	}
+	valeur *= -1; 
     if(json.des_x4 != -1){
         partie.plateau.terrain[json.des_x4][json.des_y4] = valeur;
         row = plat[json.des_x4].children;
@@ -982,13 +982,13 @@ function setUnauthorized(){
 
 /**
  * Gère les messages que le serveur m'envoit
- * @param {object} event Json reÃ§u par le socket
+ * @param {object} event Json reçu par le socket
  */
 function onMessagePartie(event) {
     var json = JSON.parse(event.data);
     
     switch(json.action){
-        case "pret":{      //Synchronisaiton terminé
+        case "pret":{      //Synchronisaiton terminée
             setDebutPartie(json);
             break;
         }
@@ -1022,7 +1022,7 @@ function onMessagePartie(event) {
         	break;
         }
         case "victoire":{    //Victoire
-            //Vérifie si je suis la couleur gagniante.
+            //Vérifie si je suis la couleur gagnante.
             if(json.gagnant ==  partie.JoueurMe.color){
                 setFinPartie(true, false);
             }else{
@@ -1090,7 +1090,7 @@ function sendMouvementFormate(vecteur, coord){
 }
  
 /**
- * J'ai bien reÃ§u les informations et je passe la main à l'adversaire.
+ * J'ai bien reçu les informations et je passe la main à l'adversaire.
  */
 function sendFinTour(){
     var json = {
