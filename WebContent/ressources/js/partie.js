@@ -800,14 +800,14 @@ function setMessageFinPartie(isGagner, isAbandon){
         if(isAbandon){  //Vous avez gagnez par abandon
              $id('finPartieMessage').innerHTML="Votre adversaire a abandonné !"; 
         } else{ //Vous avez gagnez normalement
-             $id('finPartieMessage').innerHTML="Vous avez gagné "+partie.JoueurMe.score + " - " +  partie.joueurAdv.score;
+             $id('finPartieMessage').innerHTML="Vous avez gagné "+partie.JoueurMe.score+1 + " - " +  partie.joueurAdv.score;
         }
     } else{
          $id('finPartieTitre').innerHTML="Defaite !";
         if(isAbandon){  //Vous avez gagnez par abandon
              $id('finPartieMessage').innerHTML="Votre avez abandonné !";
         } else{ //Vous avez gagnez normalement
-             $id('finPartieMessage').innerHTML="Vous avez perdu "+partie.JoueurMe.score + " - " + partie.joueurAdv.score;
+             $id('finPartieMessage').innerHTML="Vous avez perdu "+partie.JoueurMe.score + " - " + partie.joueurAdv.score+1;
         }
     }
 }
@@ -865,8 +865,13 @@ function setMouvementBille(json, isMe = false){
         setBilleImage(row[determineColDOM(json.des_x3,json.des_y3)], "", color);
     }
     
-   	valeur *= -1; 
-	color = partie.joueurAdv.color;
+   
+   	if(!isMe){
+   		color = partie.JoueurMe.color;
+   	}else{
+   		color = partie.joueurAdv.color;
+   	}
+	valeur *= -1; 
     if(json.des_x4 != -1){
         partie.plateau.terrain[json.des_x4][json.des_y4] = valeur;
         row = plat[json.des_x4].children;
