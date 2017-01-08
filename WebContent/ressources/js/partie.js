@@ -3,7 +3,7 @@ var partie;
 
 function initPartie(uid, pseudoJNoir,emailJNoir, pseudoJBlanc, emailJBlanc, emailJCurrent){        
         //On veut communiquer avec le socket
-        partieSocket = new WebSocket("ws://localhost:9090/Abalone/partieSocket");
+        partieSocket = new WebSocket("ws://localhost:8080/Abalone/partieSocket");
         partieSocket.onmessage = onMessagePartie;
          
         //Pour une utilisation correcte, on vire le responsive.
