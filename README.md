@@ -1,2 +1,2 @@
-#README.md
-Projet réalisé dans le cadre scolaire visant à implément un jeu d'Abalone sous forme d'interface Web, dévellopé en Java EE. Projet réalisé par Andy Bianco et Dervaux Xavier.
+#Prototype terminÃ©, fonctionnel pour tous les cas testÃ©s
+Projet rÃ©alisÃ© dans le cadre scolaire visant Ã  implÃ©ment un jeu d'Abalone sous forme d'interface Web, dÃ©vellopÃ© en Java EE. Projet rÃ©alisÃ© par Andy Bianco et Dervaux Xavier.
