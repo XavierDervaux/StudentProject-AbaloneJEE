@@ -1,8 +1,10 @@
 package be.abalone.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import be.abalone.database.AbstractDAOFactory;
@@ -19,16 +21,14 @@ public class AchievJoueurDAO extends DAO<List<Achievement>>{
 	}
 	
 	public boolean create(int id_joueur, int id_achiev){
-		System.out.println("michel");
 		boolean res = true;
 
 		try {
-			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO fait (id_joueur,id_achievement) "
-					   + "VALUES ('" + id_joueur + "','" + id_achiev + "')";
-
-			requete.executeUpdate(sql);
-			requete.close();			
+			String sql = "{call pkg_achievement.createAchievJoueur(?,?)}";
+			CallableStatement statement = connect.prepareCall(sql); 
+			statement.setInt(1,id_joueur); 
+			statement.setInt(2,id_achiev); 
+			statement.execute(); 
 			//Le SGBD retournera une erreur sila combinaison des id existe déjà , a cause de la contrainte d'unicité des identifiants.
 			//Cela signifie que la clé existe déjà , donc pas besoin de l'insérer et cela n'influe pas sur le reste du déroulement.
 		} catch (Exception e) {

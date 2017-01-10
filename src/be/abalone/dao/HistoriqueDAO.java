@@ -27,16 +27,21 @@ public class HistoriqueDAO extends DAO<Historique>{
 
 		try {
 			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO historique(id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant) "
+		/*	String sql = "INSERT INTO historique(id,date_partie,score_gagnant,score_perdant,est_forfait,id_gagnant,id_perdant) "
 					   + "VALUES('','" + formatter.format(obj.getDate()) + "','" + obj.getScoreGagnant() + "','" + obj.getScorePerdant() + "','" 
 					   				+ Utilitaire.boolToInt(obj.getEstForfait()) + "','" + obj.getGagnant().getId() + "','" + obj.getPerdant().getId() + "')";
 			requete.executeUpdate(sql);
-			
+			*/
 			Statement fetchId = connect.createStatement();
-			String sql2 = "{? = call last_inserted_rowid(?)}";
-			CallableStatement statement = connect.prepareCall(sql2); 
+			String sql = "{? = call pkg_historique.createHistorique(?,?,?,?,?,?)}";
+			CallableStatement statement = connect.prepareCall(sql); 
 			statement.registerOutParameter(1,Types.INTEGER); 
-			statement.setInt(2,1); 
+			statement.setString(2,formatter.format(obj.getDate())); 
+			statement.setInt(3, obj.getScoreGagnant()); 
+			statement.setInt(4, obj.getScorePerdant()); 
+			statement.setBoolean(5,obj.getEstForfait()); 
+			statement.setInt(6,obj.getGagnant().getId()); 
+			statement.setInt(7,obj.getPerdant().getId());
 			statement.execute(); 
 			id = statement.getInt(1);
 			if(id != 0){  obj.setId(id);  }

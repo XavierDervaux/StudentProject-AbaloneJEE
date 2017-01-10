@@ -20,25 +20,18 @@ public class JoueurDAO extends DAO<Joueur>{
 		boolean res = true;
 
 		try {
-			Statement requete = connect.createStatement();
-			String sql = "INSERT INTO joueur (id,pseudo,mdp,email) "
-					   + "VALUES ('', '" + obj.getPseudo() + "','" + obj.getMdp() + "','" + obj.getEmail() + "')";
-			requete.executeUpdate(sql);
-			
-			Statement fetchId = connect.createStatement();
-			String sql2 = "{? = call last_inserted_rowid(?)}";
-			CallableStatement statement = connect.prepareCall(sql2); 
+			String sql = "{? = call pkg_joueur.createjoueur(?,?,?)}";
+			CallableStatement statement = connect.prepareCall(sql); 
 			statement.registerOutParameter(1,Types.INTEGER); 
-			statement.setInt(2,1); 
+			statement.setString(2,obj.getPseudo()); 
+			statement.setString(3,obj.getMdp()); 
+			statement.setString(4,obj.getEmail()); 
 			statement.execute(); 
 			id = statement.getInt(1);
 			
 			if(id != 0){
 				obj.setId(id);
 			}
-
-			fetchId.close();
-			requete.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = false;
@@ -78,13 +71,13 @@ public class JoueurDAO extends DAO<Joueur>{
 			System.err.println("Réessayez avec un objet provenant de la BDD.\n");
 		}else{
 			try {
-				Statement requete = connect.createStatement();
-				String sql = "UPDATE joueur "
-						   + "SET pseudo='" + obj.getPseudo() + "', mdp='" + obj.getMdp() + "', email='" + obj.getEmail() + "' " 
-						   + "WHERE id='" + obj.getId() + "'";
-	
-				requete.executeUpdate(sql);
-				requete.close();
+				String sql = "{call pkg_joueur.updateJoueur(?,?,?,?)}";
+				CallableStatement statement = connect.prepareCall(sql); 
+				statement.setString(1,obj.getPseudo()); 
+				statement.setString(2,obj.getMdp()); 
+				statement.setString(3,obj.getEmail()); 
+				statement.setInt(4,obj.getId()); 
+				statement.execute();
 				res = true;
 			} catch (Exception e) {
 				e.printStackTrace();

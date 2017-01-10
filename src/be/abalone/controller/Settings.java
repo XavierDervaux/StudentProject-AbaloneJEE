@@ -52,13 +52,13 @@ public class Settings  extends HttpServlet{
     }
 
 	private int changementMdp(String mdp, Joueur actuel) {
-		int res = -1;
+		int res = 0;
 		
-		if(mdp != null && res<=0) { //changement de mdp  et si on n'a pas déjà trouvé une erreur dans le mail
+		if(mdp != null) { //changement de mdp  et si on n'a pas déjà trouvé une erreur dans le mail
 			res = Identification.validationMdp(mdp);
 			if(res == 0) //Le mdp est valide
 				actuel.setMdp(Utilitaire.cryptPassword(mdp));
-		}
+		} else { res = -1; }
 		return res;
 	}
 
