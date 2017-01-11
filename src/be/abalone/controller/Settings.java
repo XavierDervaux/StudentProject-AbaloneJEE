@@ -38,7 +38,6 @@ public class Settings  extends HttpServlet{
 		
     	res = changementMail(mail, actuel);
     	if(res <=0){ res = changementMdp(mdp, actuel); } //Si on a pas déjà trouvé une erreur avec le mail, alors on vérifie le mdp.
-		
 		if(res == 0) { //Au moins une opération s'est bien passé
 			actuel.updateBDD();
 			sessions.setAttribute("joueur", actuel); //On met à jour la session
@@ -54,11 +53,13 @@ public class Settings  extends HttpServlet{
 	private int changementMdp(String mdp, Joueur actuel) {
 		int res = 0;
 		
-		if(mdp != null) { //changement de mdp  et si on n'a pas déjà trouvé une erreur dans le mail
+		if(mdp != null && res<=0) { //changement de mdp  et si on n'a pas déjà trouvé une erreur dans le mail
 			res = Identification.validationMdp(mdp);
 			if(res == 0) //Le mdp est valide
 				actuel.setMdp(Utilitaire.cryptPassword(mdp));
-		} else { res = -1; }
+			else
+				res = -1;
+		}
 		return res;
 	}
 
