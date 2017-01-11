@@ -40,17 +40,70 @@ CREATE TABLE fait(
 -- Package utilisé pour l'aspectpersistance, stocke le dernier id créé
 --
 
+--Achivement
 
-create or replace PACKAGE last_inserted_id IS
-  lastId INTEGER;
-END;
+create or replace package pkg_achievement is
+    lastId integer;
+    procedure createAchievJoueur (id_joueur in number, id_achiev in number);
+end pkg_achievement;
+/
+create or replace package body pkg_achievement is
+     procedure createAchievJoueur (id_joueur in number, id_achiev in number) is
+        begin
+            INSERT INTO fait (id_joueur,id_achievement) VALUES (id_joueur,id_achiev);
+        exception
+            when DUP_VAL_ON_INDEX then
+                DBMS_OUTPUT.PUT_LINE('Duplication id invalide');
+    end createAchievJoueur;
+end pkg_achievement;
 
+
+--Historique
+
+create or replace package pkg_historique is
+    lastId integer;
+    function last_id_historique return integer;
+end pkg_historique;
+/
+create or replace package body pkg_historique is
+    function last_id_historique return integer 
+        is last_id integer;
+        begin 
+            last_id := lastId;
+            return last_id;
+    end last_id_historique;
+end pkg_historique;
+/
+
+--Joueur
+
+create or replace package pkg_joueur is
+    lastId integer;
+    function createJoueur (pseudo in varchar2, mdp in varchar2, email in varchar2) return integer;
+    procedure updateJoueur (v_pseudo in varchar2, v_mdp in varchar2, v_email in varchar2, v_id in number);
+end pkg_joueur;
+/
+create or replace package body pkg_joueur is 
+    function createJoueur (pseudo in varchar2, mdp in varchar2, email in varchar2) return integer is
+        begin
+            INSERT INTO joueur (id,pseudo,mdp,email) VALUES ('', pseudo, mdp, email);
+            return lastId;
+        exception
+            when DUP_VAL_ON_INDEX then
+                DBMS_OUTPUT.PUT_LINE('Duplication id invalide');
+    end createJoueur;
+
+    procedure updateJoueur (v_pseudo in varchar2, v_mdp in varchar2, v_email in varchar2, v_id in number) is
+        begin
+            update joueur set pseudo = v_pseudo, mdp= v_mdp, email= v_email WHERE id= v_id;
+    end updateJoueur;
+end pkg_joueur;
+/
 
 
 --
 -- Triggers pour Auto Increment
 --
-
 
 CREATE SEQUENCE joueur_seq START WITH 1;
 CREATE SEQUENCE histo_seq START WITH 1;
@@ -64,7 +117,7 @@ BEGIN
   SELECT joueur_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
-  last_inserted_id.lastId := :new.id; --On stocke l'id créé dans le package
+  PKG_JOUEUR.lastId := :new.id; --On stocke l'id créé dans le package
 END;
 /
 
@@ -76,7 +129,7 @@ BEGIN
   SELECT histo_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
-  last_inserted_id.lastId := :new.id; --On stocke l'id créé dans le package
+  PKG_HISTORIQUE.lastId := :new.id; --On stocke l'id créé dans le package
 END;
 /
 
@@ -88,24 +141,9 @@ BEGIN
   SELECT achiev_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
-  last_inserted_id.lastId := :new.id; --On stocke l'id créé dans le package
+  PKG_ACHIEVEMENT.lastId := :new.id; --On stocke l'id créé dans le package
 END;
 /
-
-
-
---
--- Procédure stockée pour récupérer le dernier id stocké
---
-
-
-create or replace FUNCTION last_inserted_rowid (no INTEGER)
-    RETURN INTEGER IS last_rowid INTEGER;
-BEGIN
-    last_rowid := last_inserted_id.lastId;
-    RETURN last_rowid;
-END;
-
 
 
 --
